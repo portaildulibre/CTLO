@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles relatives aux instructions if, while et switch">
+	<description>
+		<![CDATA[
+			L'ensemble des règles et recommandations introduites dans ce sous chapitre ont
+			pour objectif d'améliorer la lisibilité et la bonne et rapide compréhension du code
+			(suppression du code mort, simplification des instructions).
+		]]>
+	</description>
+
+    <rule name="EmptyIfStmt"
+          message="Les blocs if vides doivent être supprimés."
+          ref="rulesets/basic.xml/EmptyIfStmt">
+	      <description>
+	      	<![CDATA[
+Les blocs if vides doivent être supprimés.
+			]]>
+	    </description>
+        <priority>3</priority>
+	      <example>
+	    	<![CDATA[
+				public class Foo {
+				 void bar(int x) {
+				  if (x == 0) {
+				   // empty!
+				  }
+				 }
+				}
+	 			]]>
+	       </example>
+    </rule>
+	<rule	name="AssignmentInOperand"
+			message="Éviter les assignements au sein d'opérandes"
+			ref="rulesets/controversial.xml/AssignmentInOperand">
+			<description>
+				<![CDATA[
+				Éviter les assignements au sein d'opérandes (l'instruction if par exemple) cela rend le
+				code plus difficile à lire et plus compliqué.
+				]]>
+			</description>
+			<priority>3</priority>
+			<example>
+				<![CDATA[
+					public class Foo {
+						public void bar()
+						{
+							int x = 2;
+							if ((x = getX()) == 3)
+							{
+								System.out.println("3!");
+							}
+						}
+
+						private int getX()
+						{
+							return 3;
+						}
+					}
+				]]>
+			</example>
+	</rule>
+
+    <rule name="CollapsibleIfStatements"
+          message="Regrouper les instructions if si possible"
+          ref="rulesets/basic.xml/CollapsibleIfStatements">
+		<description>
+				<![CDATA[
+					Deux instructions if peuvent parfois être
+					regroupées à travers l'utilisation d'un
+					opérateur booléen.
+				]]>
+		</description>
+      	<priority>3</priority>
+	    <example>
+			<![CDATA[
+				public class Foo
+				{
+				 void bar() {
+				  if (x) {
+				   if (y) {
+				    // do stuff
+				   }
+				  }
+				 }
+				}
+			]]>
+      </example>
+    </rule>
+
+	<rule 	name="EmptyWhileStmt"
+			message=" Les blocs while vides doivent être supprimés ."
+	  		ref="rulesets/basic.xml/EmptyWhileStmt">
+		   	<description>
+				<![CDATA[
+					Les blocs while vides doivent être supprimés. (S'il s'agit d'une boucle d'attente, il
+					faudra considérer l'utilisation de Thread.sleep() et il faudra alors veiller à
+					respecter les réglets définies plus loin dans ce document).
+				]]>
+	      	</description>
+	      	<priority>3</priority>
+			<properties>
+				<property name="xpath">
+		  			<value>
+						<![CDATA[
+						//WhileStatement/Statement[./Block[count(*) = 0]  or ./EmptyStatement]
+						]]>
+		              </value>
+				</property>
+			</properties>
+		   	<example>
+			  <![CDATA[
+				public class Foo
+				{
+						void bar(int a, int b)
+						{
+					  		while (a == b)
+					  		{
+					   			// empty!
+					  		}
+					  	}
+				}
+			 ]]>
+			</example>
+	</rule>
+
+    <rule name="EmptySwitchStatements"
+          message="Avoid empty switch statements"
+          ref="rulesets/basic.xml/EmptySwitchStatements">
+	      <description>
+				<![CDATA[
+			Avoid empty switch statements.
+				]]>
+      		</description>
+      		<priority>3</priority>
+	      <example>
+			  <![CDATA[
+			public class Foo {
+			 public void bar() {
+			  int x = 2;
+			  switch (x) {
+			   // once there was code here
+			   // but it's been commented out or something
+			  }
+			 }
+			}]]>
+      </example>
+	</rule>
+
+
+</ruleset>

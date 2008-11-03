@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de nommage - Variables">
+
+    <rule	name="AvoidEnumAsIdentifier"
+        	ref="rulesets/migrating.xml/AvoidEnumAsIdentifier"
+        	message="Interdiction d'utiliser l''identifiant enum.">
+        <description>
+            <![CDATA[
+                Pour éviter les confusions et augmenter la lisibilité du code, le nom enum est interdit comme identifiant.
+                       ]]>
+        </description>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+              /**
+              *     ATTENTION : CECI EST UN CONTRE EXEMPLE
+              */
+              public class ExcepSixTrois
+              {
+                  public void bar()
+                  {
+                        int enum = 0; // enum est un mot clé réservé de java5 !!!
+                  }
+              }
+                ]]>
+        </example>
+    </rule>
+    <rule	name="AvoidAssertAsIdentifier"
+        	ref="rulesets/migrating.xml/AvoidAssertAsIdentifier"
+        	message="Interdiction d''utiliser l'identifiant assert.">
+        <description>
+            <![CDATA[
+                Pour éviter les confusions et augmenter la lisibilité du code,
+                le nom assert est interdit comme identifiant.
+                       ]]>
+        </description>
+        <priority>3</priority>
+    </rule>
+
+    <rule	name="AvoidFieldNameMatchingTypeName"
+        	ref="rulesets/naming.xml/AvoidFieldNameMatchingTypeName"
+        	message="Éviter les nom de champs identiques aux noms des classes mères">
+        <description>
+            <![CDATA[
+                Il est interdit (car déconcertant) d'avoir un nom de champ identique à sa classe mère.
+                C'est souvent symptomatique d'un manque de précision du nom du type et/ou du nom du champ.
+                       ]]>
+        </description>
+        <priority>3</priority>
+    </rule>
+
+    <rule	name="AvoidFieldNameMatchingMethodName"
+        	ref="rulesets/naming.xml/AvoidFieldNameMatchingMethodName"
+        	message="Éviter les noms de champs identiques aux noms de méthodes.">
+        <description>
+            <![CDATA[
+            Il est interdit (car déconcertant) d'avoir un nom de champ identique à un nom de méthode.
+            C'est souvent symptomatique d'un manque de précision du nom du type et/ou du nom de la
+            méthode et d'un non respect des règles de nommage des méthodes (voir ci dessous [NOM-17]).
+                       ]]>
+        </description>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+                public float calculerMontant()
+                {
+                    ...
+                }
+                ]]>
+        </example>
+    </rule>
+
+
+</ruleset>

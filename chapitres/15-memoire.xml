@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de gestion de la mémoire : fuites mémoires et ramasse-miettes">
+	<description>
+		<![CDATA[
+			L'objectif des règles suivantes est l'amélioration de la
+			performance à travers la diminution de l'empreinte mémoire
+			des programmes, tout comme l'abandon de certaines instructions
+			couramment utilisées mais en réalité contre-productives.
+		]]>
+	</description>
+    <rule name="NullAssignment"
+          message="Assigning an Object to null is a code smell.  Consider refactoring."
+          ref="rulesets/controversial.xml/NullAssignment">
+      <description>
+      	<![CDATA[
+						Les fuites mémoires des langages à ramasse-miettes sont insidieuses. Si un objet est
+			mal-intentionnellement retenu, non seulement cet objet est exclu du ramassage de
+			miettes, mais tous les objets qu'il référence le sont aussi. Ainsi même si peu de
+			références d'objets sont malencontreusement retenus, nombreux peuvent être les objets
+			qui resteront encombrer la mémoire et détériorer les performances.
+			Une des façons de résoudre rapidement ce problème est de mettre les références des
+			objets à null quand ils deviennent obsolètes. Cependant, on constate alors souvent une
+			certaine propension à le surfaire, ce qui peut réduire la lisibilité, la maintenabilité, et
+			même la performance du code à terme.
+			Ainsi, mettre les références des objets à null devrait rester une exception plutôt que la
+			règle. La meilleure façon d'éliminer une référence obsolète est de réutiliser/recycler la
+			variable dans laquelle elle était contenue, ou de la laisser tomber en dehors du
+			périmètre. Cela se fera donc naturellement s'il on a pris soin de définir chaque variable
+			dans le plus petit périmètre possible. On rappelle en effet que les implémentations
+			modernes de JVM ont un mécanisme de ramasse-miettes hautement optimisé.
+      	]]>
+      </description>
+        <priority>3</priority>
+      <example>
+		 <![CDATA[
+			 public class Foo
+			 {
+			 	public void bar()
+			 	{
+				     Object x = null; // This is OK.
+				     x = new Object();
+				     // Big, complex piece of code here.
+				     x = null; // This is BAD.
+				     // Big, complex piece of code here.
+			   	}
+			 }
+		 ]]>
+      </example>
+    </rule>
+
+    <rule	name="DoNotCallSystemGC"
+        	message="Interdiction de forcer le ramasse-miettes."
+        	class="net.sourceforge.pmd.rules.XPathRule">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+//PrimaryExpression
+[
+	PrimaryPrefix/Name[starts-with(@Image,'Runtime.getRuntime')]
+	and
+	PrimarySuffix[ends-with(@Image,'gc')]
+	or
+	./PrimaryPrefix/Name
+	[
+		starts-with(@Image, 'System.gc')
+    		or
+    		starts-with(@Image, 'System.runFinalization')
+	]
+]
+]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+        <![CDATA[
+        Les appels aux méthodes System.gc, Runtime.getRuntime().gc, et System.runFinalization sont interdits. Ces méthodes peuvent augmenter les probabilités d'exécution du ramasse-miettes et des finaliseurs mais ne le garantissent pas. Les seules méthodes qui annonçaient une finalisation garantie (System.runFinalizersOnExit et Runtime.runFinalizersOnExit) sont dépréciées (deprecated, et donc interdites cf. [PROG-INTERDIT-4]).
+Le code doit avoir exactement le même comportement si les appels au ramasse-miettes sont désactivés (pour cela, l'option -Xdisableexplicitgc peut être utilisée pour désactiver les appels à System.gc()).
+]]>
+        </description>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+	            public class GCCall
+	            {
+				    public GCCall()
+					{
+				        // Explicit gc call !
+				        System.gc();
+					}
+					public void doSomething()
+					{
+						// Explicit gc call !
+						Runtime.getRuntime().gc();
+					}
+
+					public explicitGCcall()
+					{
+						// Explicit gc call !
+						System.gc();
+					}
+
+					public void doSomething()
+					{
+						// Explicit gc call !
+						Runtime.getRuntime().gc();
+					}
+				}
+			]]>
+		</example>
+	</rule>
+    <rule name="AvoidCallingFinalize"
+          message=" Interdiction d''implémenter et d'appeler finalize"
+          ref="rulesets/finalizers.xml/AvoidCallingFinalize">
+	     	<description>
+	      		<![CDATA[ 
+					Les finaliseurs sont imprévisibles et souvent dangereux, et rarement nécessaires. Leur
+					utilisation peut provoquer des comportements erratiques, des pertes de performance et
+					des problèmes de portabilité. Même si les finaliseurs ont quelques raisons valables
+					d'utilisation, abordées ci-après, il est interdit d'implémenter des méthodes finalize.
+					Il n'y a en effet aucune garantie que les finaliseurs soient exécutés rapidement. Cela
+					peut prendre un temps arbitrairement long entre le moment ou l'objet est devenu non-
+					atteignable et le moment ou la méthode finalize est exécutée. Cela implique que
+					rien de critique (comme la libération de ressources par exemple) ne doit être réalisé par
+					un finaliseur.
+					C'est par exemple une grave erreur que de dépendre d'un finaliseur pour fermer des
+					fichiers ouverts, car les descripteurs de fichiers ouverts constituent une ressource
+					limitée. Si de nombreux fichiers sont laissés ouverts parce que la JVM exécute
+					tardivement les finaliseurs, un programme peut échouer parce qu'il ne peut plus ouvrir
+					de fichiers. La promptitude d'exécution des finaliseurs est principalement fonction de
+					l'algorithme du ramasse-miettes, qui varie fortement d'une implémentation de JVM à
+					une autre.
+					Non seulement il n'existe aucune garantie sur la rapidité d'exécution des finaliseurs,
+					mais il n'existe pas non plus de garantie de leur exécution même. Il est en effet probable
+					qu'un programme subisse une interruption sans exécution des finaliseurs sur certains
+					objets qui ne sont plus atteignables. C'est pourquoi il ne faut pas dépendre d'un
+					finaliseur pour mettre à jour des états critiques (comme par exemple libérer un verrou
+					ou une ressource partagée).
+					De plus, si une exception est levée lors de la finalisation, elle est ignorée.
+	      		]]>
+	      	</description>
+			<priority>3</priority>
+      		<example>
+				<![CDATA[
+				public class Foo {
+				 void foo() {
+				  Bar b = new Bar();
+				  b.finalize();
+				 }
+				}
+				]]>
+	      </example>
+    </rule>
+
+<rule	name="AvoidThreadLocal"
+        message="Eviter l'utilisation de ThreadLocal"
+        class="net.sourceforge.pmd.rules.XPathRule">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                //ClassOrInterfaceType[
+                ends-with(@Image,'ThreadLocal')
+                ]
+					]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[
+					Chaque thread détient une référence implicite à sa copie de ThreadLocal aussi longtemps que le thread est en vie et que l'objet ThreadLocal
+					est accessible. Après la mort du thread, toutes les copies des variables du ThreadLocal sont sujettes au ramasse-miettes (à moins que d'autr
+					es références à ces copies subsistent ailleurs).
+					ThreadLocal peut ainsi comporter de sérieux risques (potentiellement des fuites mémoires), particulièrement quand il est utilisé dans un env
+					ironnement multi-threadé et avec de multiples ClassLoader. C'est pourquoi il est fortement déconseillé d'utiliser ThreadLocal. Toute excepti
+					on devra être commentée dans le code, validée et devra faire l'objet d'une note d'architecture préalable qui prendra notamment en compte les
+					 avertissements suivants.
+					Il faut en effet noter que les threads sont recyclés par les serveurs web Java, et par les serveurs d'applications J2EE. Ainsi par exemple p
+					our Tomcat, par défaut 25 threads sont toujours prêts à répondre aux requêtes rentrantes. Utiliser ThreadLocal peut donc entraîner par exemp
+					le :
+					des fuites mémoires : l'objet ThreadLocal doit absolument, quelques soient les exceptions en cours d'exécution, être nettoyé à la fin de cha
+					que requête pour s'assurer qu'il n'y aura pas de fuites entre les requêtes. Si l'implémentation ne peut le garantir, les fuites mémoires son
+					t inévitables.
+					un arrêt problématique de l'application : ces threads sont chargés par le ClassLoader de plus haut niveau, utiliser ThreadLocal liera les ob
+					jets créés par le contexte du ClassLoader de l'application web avec celui de plus haut niveau. Comme les threads sont sans-cesse recyclés pa
+					r le serveur, ils ne sont pas dé-référencés par le ramasse-miette, les variables du ThreadLocal ne sont pas nettoyées et cela pourrait empêc
+					her l'application web d'être correctement déréférencée et donc arrêtée.
+					Aussi ThreadLocal ne doit jamais être utilisé directement, et s'il doit l'être, il sera utilisé à travers un wrapper (couplé à ServletFilter
+					 par exemple dans le cas d'une application web) et on devra s'assurer des appels systématiques aux méthodes de libération de mémoires et res
+					sources locales au thread.
+				]]>
+		</description>
+		<priority>2</priority>
+		<example>
+			<![CDATA[
+				public class AvoidThreadLocal
+				{
+					public void useThreadLocal()
+					{
+						// Shouldn't use threadlocale !
+						ThreadLocal local = new ThreadLocal();
+						local.get();
+						local.remove();
+					}
+				}
+			]]>
+		</example>
+	</rule>
+
+</ruleset>

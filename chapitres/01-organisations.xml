@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles d'organisation des sources">
+   <description>
+   		<![CDATA[
+			Les règles d'organisation décrites ci-dessous sont depuis longtemps adoptées par la majeure partie des développeurs Java, elles sont cependant arbitraires.
+			Ces conventions ont pour but d'améliorer la lisibilité et l'uniformité du code.
+			Elles ont pour finalité de garantir aux développeurs une plus rapide et une meilleure compréhension du code source.
+		]]>
+    </description>
+</ruleset>

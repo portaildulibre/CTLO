@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Optimisation dans la manipulation de chaînes de caractères">
+	<description>
+		<![CDATA[
+			L'objectif des règles suivantes est le gain de performance dans la manipulation des chaînes de
+			caractères.
+		]]>
+	</description>
+    <rule 	name="StringInstantiation"
+        	message="Ne pas utiliser new String avec une chaîne de caractères constante, utiliser l'affectation."
+        	ref="rulesets/strings.xml/StringInstantiation">
+	    <description>
+			<![CDATA[
+				 La constante chaîne de caractère doit être directement affectée à la variable String,
+				 sans passer par new.
+			]]>
+	    </description>
+	       <priority>2</priority>
+	    <example>
+			<![CDATA[
+			public class Foo
+			{
+				 private String bar = new String("bar"); // just do a String bar = "bar";
+			}
+			]]>
+	    </example>
+    </rule>
+
+    <rule 	name="UseStringBufferForStringAppends"
+          	message="Ne pas utiliser String pour la concaténation de chaînes de caractères."
+         	ref="rulesets/optimizations.xml/UseStringBufferForStringAppends">
+           <description>
+				<![CDATA[
+					En Java, une instance de la classe String est immuable, c'est à dire qu'après avoir été
+					créée, la chaîne ne peut plus être modifiée. Cela s'avère très pratique dans beaucoup de
+					situations : inutile par exemple de dupliquer une instance de String pour s'assurer
+					qu'elle restera constante (comme c'est le cas en C++ par exemple). Mais cette propriété
+					se révèle désastreuse avec l'emploi de l'opérateur '+' pour la concaténation de chaîne,
+					car chaque étape de la concaténation implique la construction d'une nouvelle instance
+					de String.
+
+						Controle Exemple:
+
+						String result = "";    // création d'une chaine vide
+						for (int i = 0; i < 10; i++)
+						{
+						    result = result + i;
+						}
+						System.out.println(result);    //"0123456789"
+
+						Exemple :
+
+						StringBuffer result = new StringBuffer(10); // 10 = taille maximale de la chaîne
+						for (int i = 0; i < 10; i++)
+						{
+						    result.append(i);
+						}
+						System.out.println(result.toString());	    // "0123456789"
+
+
+					Lors de l'exécution de ce programme, chaque itération de la boucle construit une
+					nouvelle instance de String. Chaque itération oblige donc la JVM à trouver de la
+					place en mémoire, instancier l'objet, copier le contenu des deux chaînes dans la
+					nouvelle, libérer la mémoire, recommencer à l'itération suivante. Cela revient à créer
+					dix instances de String pour les résultats intermédiaires.
+					La classe java.lang.StringBuffer est une classe qui gère une chaîne
+					modifiable. Cette classe a été spécialement conçue pour manipuler des chaînes de
+					caractères.
+					Ce code produit exactement le même résultat que le précédent, sauf qu'il instancie un
+					seul objet là où dix étaient nécessaires.
+					Depuis J2SE 5.0 (également appelée Tiger), il est possible d'utiliser la classe
+					java.lang.StringBuilder. Son fonctionnement est identique à celui de
+					StringBuffer à la différence qu'il n'est pas thread-safe. S'il n'y a pas de besoin de
+					synchronisation (comme c'est souvent le cas), préférer StringBuilder car il sera
+					plus performant.
+					Il est donc fortement déconseillé d'utiliser String pour réaliser la concaténation de
+					chaînes de caractères, on utilisera StringBuffer ou (quand le contexte applicatif le
+					permet) StringBuilder.
+           		]]>
+
+           </description>
+            <priority>3</priority>
+           <example>
+		      <![CDATA[
+					public class Foo {
+					 void bar() {
+					  String a;
+					  a = "foo";
+					  a += " bar";
+					  // better would be:
+					  // StringBuffer a = new StringBuffer("foo");
+					  // a.append(" bar);
+					 }
+					}
+		      ]]>
+           </example>
+        </rule>
+
+    <rule 	name="InsufficientStringBufferDeclaration"
+        	message="Préciser la taille des StringBuffer de plus de 16 caractères."
+        	ref="rulesets/strings.xml/InsufficientStringBufferDeclaration">
+	    <description>
+			<![CDATA[
+				Par défaut, un StringBuffer est initialisé avec une taille de 16 caractères. A chaque
+				fois que celle-ci est dépassée, StringBuffer redimensionne automatiquement son
+				tableau de caractères pour pouvoir accueillir le texte. Mais cette option est aussi
+				coûteuse que la création d'une instance de String, et il convient donc de préciser
+				intelligemment cette valeur.
+			]]>
+	    </description>
+       <priority>3</priority>
+	    <example>
+			<![CDATA[
+			public class Foo {
+			    void bar() {
+			        StringBuffer bad = new StringBuffer();
+			        bad.append("This is a long string, will exceed the default 16 characters");//bad
+			        StringBuffer good = new StringBuffer(41);
+			        good.append("This is a long string, which is pre-sized");//good
+			    }
+			}
+			]]>
+	    </example>
+    </rule>
+
+    <rule 	name="InefficientStringBuffering"
+        	message="Ne pas concaténer dans un appel au constructeur de StringBuffer."
+        	ref="rulesets/strings.xml/InefficientStringBuffering">
+		    <description>
+		    	<![CDATA[
+					 Ne pas concaténer dans un appel au constructeur de StringBuffer, utiliser
+					 append().
+		    	]]>
+		    </description>
+	       <priority>3</priority>
+    		<example>
+			<![CDATA[
+			public class Foo {
+			 void bar() {
+			  // Avoid this
+			  StringBuffer sb=new StringBuffer("tmp = "+System.getProperty("java.io.tmpdir"));
+			  // use instead something like this
+			  StringBuffer sb = new StringBuffer("tmp = ");
+			  sb.append(System.getProperty("java.io.tmpdir"));
+			 }
+			}
+			]]>
+	    </example>
+    </rule>
+
+    <rule 	name="AppendCharacterWithChar"
+        	message="Ne pas concaténer des caractères en tant que String avec StringBuffer.append"
+        	ref="rulesets/strings.xml/AppendCharacterWithChar">
+	    <description>
+	    	<![CDATA[
+	 			Ne pas concaténer des caractères en tant que String avec String
+	 			StringBuffer.append, mais les concaténer en tant que caractères.
+	    	]]>
+	    </description>
+       <priority>3</priority>
+	    <example>
+			<![CDATA[
+			public class Foo {
+			 void bar() {
+			  StringBuffer sb=new StringBuffer();
+			  // Avoid this
+			  sb.append("a");
+
+			  // use instead something like this
+			  StringBuffer sb=new StringBuffer();
+			  sb.append('a');
+			 }
+			}
+			]]>
+	    </example>
+    </rule>
+
+
+    <rule 	name="ConsecutiveLiteralAppends"
+	        message="Ne pas réaliser sur la même ligne des appels successifs à StringBuffer.append"
+        	ref="rulesets/strings.xml/ConsecutiveLiteralAppends">
+		    <description>
+				<![CDATA[
+					Ne pas réaliser sur la même ligne des appels successifs à StringBuffer.append
+					avec des chaînes de caractères, tenter plutôt de les regrouper en une seule chaîne de
+					caractères.
+				]]>
+		    </description>
+	        <priority>3</priority>
+			<example>
+				<![CDATA[
+				public class Foo
+				{
+					private void bar()
+					{
+					   StringBuffer buf = new StringBuffer();
+					   buf.append("Hello").append(" ").append("World"); //bad
+					   buf.append("Hello World");//good
+					}
+				}
+				]]>
+		    </example>
+	  </rule>
+
+	<rule 	name="PositionLiteralsFirstInComparisons"
+  			message="Placer la chaîne de caractères (literal) en premier lors d'une comparaison de String avec equals."
+  			ref="rulesets/design.xml/PositionLiteralsFirstInComparisons">
+		  	<description>
+				<![CDATA[
+					Placer la chaîne de caractères (literal) en premier lors d'une comparaison de String
+					avec equals permet, si l'objet String est null, de ne pas obtenir de
+					NullPointerException, mais d'avoir un retour à false.
+
+				]]>
+		  	</description>
+			<priority>3</priority>
+			  <example>
+			<![CDATA[
+			class Foo {
+			 boolean bar(String x) {
+			  return x.equals("2"); // should be "2".equals(x)
+			 }
+			}
+
+			]]>
+			  </example>
+	</rule>
+
+	<rule 	name="UseIndexOfChar"
+        	message="Ne pas utiliser String.indexOf() avec des caractères en tant que String."
+        	ref="rulesets/strings.xml/UseIndexOfChar">
+		    <description>
+		    	<![CDATA[
+					Ne pas utiliser String.indexOf() avec comme paramètre des caractères en tant
+					que String. En effet, String.indexOf() est plus rapide avec un simple
+					caractère.
+		    	]]>
+		    </description>
+	       <priority>3</priority>
+		    <example>
+				<![CDATA[
+				public class Foo {
+				 void bar() {
+				  String s = "hello world";
+				  // avoid this
+				  if (s.indexOf("d") {}
+				  // instead do this
+				  if (s.indexOf('d') {}
+				 }
+				}
+				]]>
+		    </example>
+	</rule>
+
+    <rule 	name="UnnecessaryCaseChange"
+          	message="Pour les comparaisons non dépendantes de la casse, utiliser equalsIgnoreCase()"
+           	ref="rulesets/strings.xml/UnnecessaryCaseChange">
+	       	<description>
+		       	<![CDATA[
+					Utiliser equalsIgnoreCase() est plus rapide que toUpperCase / toLowerCase().equals().
+				]]>
+       		</description>
+       		<priority>3</priority>
+	       	<example>
+           		<![CDATA[
+					 public class Foo
+					 {
+					  public boolean bar(String buz) {
+					    // should be buz.equalsIgnoreCase("baz")
+					    return buz.toUpperCase().equals("baz");
+					    // another unnecessary toUpperCase()
+					    // return buz.toUpperCase().equalsIgnoreCase("baz");
+					  }
+					 }
+                ]]>
+	       </example>
+     </rule>
+
+</ruleset>

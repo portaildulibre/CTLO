@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Autres règles de programmation">
+	<description>
+		<![CDATA[
+			Les règles de programmation suivantes ont été regroupées ensemble car
+			n'appartiennent pour l'instant à aucune catégorie particulière.
+		]]>
+	</description>
+
+	<rule  name="CompareObjectsWithEquals"
+	  message="Comparer les objets avec equals()"
+	  ref="rulesets/design.xml/CompareObjectsWithEquals">
+	  <description>
+	 	<![CDATA[
+Utiliser la méthode equals() pour comparer deux objets, et non l'opérateur « == ».
+	 	]]>
+	  </description>
+	  <priority>3</priority>
+	  <example>
+		<![CDATA[
+				class Foo {
+				 boolean bar(String a, String b) {
+				  return a == b;
+				 }
+				}
+
+		]]>
+	  </example>
+	</rule>
+
+    <rule name="OverrideBothEqualsAndHashcode"
+          message="Surcharger equals() et hashCode(), ou aucune."
+          ref="rulesets/basic.xml/OverrideBothEqualsAndHashcode">
+	      <description>
+	      	<![CDATA[
+	      	Surcharger les deux méthodes public boolean Object.equals(Object other) et public int Object.hashCode(), ou aucune des deux.
+En effet, les deux méthodes sont fortement liées, sachant que hashCode() calcule le code de hachage d'un quelconque objet Java, et equals() vérifie l'égalité entre les codes de hachage de deux objets. Si equals() est redéfinie pour pouvoir comparer des objets personnalisés, alors hashcode() doit l'être également.
+	      	]]>
+	      </description>
+	      <priority>3</priority>
+	      <example>
+			  <![CDATA[
+			// this is bad
+			public class Bar {
+			  public boolean equals(Object o) {
+			      // do some comparison
+			  }
+			}
+
+			// and so is this
+			public class Baz {
+			  public int hashCode() {
+			      // return some hash value
+			  }
+			}
+
+			// this is OK
+			public class Foo {
+			  public boolean equals(Object other) {
+			      // do some comparison
+			  }
+			  public int hashCode() {
+			      // return some hash value
+			  }
+			}
+			 ]]>
+		</example>
+    </rule>
+
+
+    <rule name="MissingSerialVersionUID"
+          message="Classes implementing Serializable should set a serialVersionUID"
+          ref="rulesets/javabeans.xml/MissingSerialVersionUID">
+	      <description>
+	      	<![CDATA[
+				Chaque classe implémentant serializable est identifiée par un serial Version Unique IDentifier.
+				S'il n'est pas explicitement spécifié par la déclaration d'un champ private static final long  nommé
+				serialVersionUID, le système en générera automatiquement un de façon déterministe, à partir du nom
+				de la classe, du nom des interfaces qu'elle implémente, et de ses membres publics et protégés. Si ces valeurs
+				changent par la suite, par exemple en rajoutant une méthode, le serialVersionUID automatiquement généré change,
+				et la compatibilité avec les autres instances n'est plus assurée.
+				Ce serialVersionUID, peut être considéré comme un numéro de série, obligatoire garanti d'intégrité.
+	      	]]>
+	      </description>
+      <priority>3</priority>
+      <properties>
+          <property name="xpath">
+              <value>
+			    <![CDATA[
+			//ClassOrInterfaceDeclaration
+			 [
+			  count(ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration
+			   /FieldDeclaration/VariableDeclarator/VariableDeclaratorId[@Image='serialVersionUID']) = 0
+			and
+			  count(ImplementsList
+			   [ClassOrInterfaceType/@Image='Serializable'
+			   or ClassOrInterfaceType/@Image='java.io.Serializable']) =1
+			and
+			   @Abstract = 'false'
+			]
+			]]>
+              </value>
+          </property>
+      </properties>
+      <example>
+		<![CDATA[
+		public class Foo implements java.io.Serializable {
+		 String name;
+		 // Define serialization id to avoid serialization related bugs
+		 // i.e., public static final long serialVersionUID = 4328743;
+		}
+
+		]]>
+          </example>
+    </rule>
+
+    <rule name="IdempotentOperations"
+          message="Eviter les instructions tautologiques, elles sont inutiles!."
+          ref="rulesets/design.xml/IdempotentOperations">
+	      <description>
+	    		<![CDATA[
+					Eviter les instructions tautologiques, elles sont inutiles!
+				]]>
+	      </description>
+		  <priority>3</priority>
+	      <example>
+	     	<![CDATA[
+				public class Foo {
+				 public void bar() {
+				  int x = 2;
+				  x = x;
+				 }
+				}
+	      	]]>
+	      </example>
+    </rule>
+
+    <rule	name="SimpleDateFormatNeedsLocale"
+        	message="Locale obligatoire pour l'instanciation de SimpleDateFormat."
+        	ref="rulesets/design.xml/SimpleDateFormatNeedsLocale">
+        <description>
+			<![CDATA[
+L'objet locale doit être fourni pour l'instanciation de SimpleDateFormat
+S'assurer que la locale est spécifiée et fournie lors de la création d'une instance de SimpleDateFormat.
+			]]>
+        </description>
+        <priority>3</priority>
+        <example>
+	        <![CDATA[
+				public class Foo {
+				 // Should specify Locale.US (or whatever)
+				 private SimpleDateFormat sdf = new SimpleDateFormat("pattern");
+				}
+	        ]]>
+        </example>
+    </rule>
+	<rule  name="AvoidDecimalLiteralsInBigDecimalConstructor"
+    	   message="Utiliser un String pour créer une instance de  BigDecimal à partir d'un décimal "
+    	   ref="rulesets/basic.xml/AvoidDecimalLiteralsInBigDecimalConstructor">
+	  	<description>
+	  	<![CDATA[
+On pourrait penser que new BigDecimal(.1) est exactement égal à « 0,1 », alors qu'il retourne en réalité
+« .1000000000000000055511151231257827021181583404541015625 ». Ceci est dû au fait que « 0,1 » ne peut être
+représenté comme un double (c'est-à-dire, une fraction binaire d'une longueur finie).
+Le constructeur prenant un String est lui par contre complètement prévisible : new BigDecimal(".1") est
+exactement égal à « 0,1 ». Il est donc demandé d'utiliser un String pour créer une instance décimale de
+BigDecimal.
+	  	]]>
+	  	</description>
+		<priority>3</priority>
+  	  	<example>
+			<![CDATA[
+			import java.math.BigDecimal;
+			public class Test {
+
+			    public static void main(String[] args) {
+			      // this would trigger the rule
+			     BigDecimal bd=new BigDecimal(1.123);
+			      // this wouldn't trigger the rule
+			     BigDecimal bd=new BigDecimal("1.123");
+			      // this wouldn't trigger the rule
+			     BigDecimal bd=new BigDecimal(12);
+			    }
+			}
+			]]>
+  		</example>
+	</rule>
+
+    <rule  name="UselessOperationOnImmutable"
+           message="Opérations inutiles sur les objets immuables "
+           ref="rulesets/basic.xml/UselessOperationOnImmutable">
+	      <description>
+	   		<![CDATA[
+	   		Une opération sur un objet immuable (BigDecimal ou BigInteger) ne change pas l'objet lui-même, le résultat de l'opération est un nouvel objet. En conséquence, ignorer le résultat de l'opération est considéré comme une erreur.
+	   		]]>
+	      </description>
+      <priority>3</priority>
+      <example>
+    <![CDATA[
+			import java.math.*;
+			class Test {
+			 void method1() {
+			  BigDecimal bd=new BigDecimal(10);
+			  bd.add(new BigDecimal(5)); // this will trigger the rule
+			 }
+			 void method2() {
+			  BigDecimal bd=new BigDecimal(10);
+			  bd = bd.add(new BigDecimal(5)); // this won't trigger the rule
+			 }
+			}
+    ]]>
+      </example>
+    </rule>
+
+</ruleset>

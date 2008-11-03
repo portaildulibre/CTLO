@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Autres règles pour la performance ">
+	<description>
+		<![CDATA[
+			L'objectif des règles suivantes est toujours le gain de performance
+		]]>
+	</description>
+    <rule 	name="AvoidArrayLoops"
+      		message="Copier les tableaux avec System.arraycopy."
+      		ref="rulesets/optimizations.xml/AvoidArrayLoops">
+		    <description>
+		      	<![CDATA[
+		      		Certaines méthodes de l'API Java sont rédigées en C et
+		      		permettent une nette amélioration des performances. Par
+		      		exemple, la méthode System.arrayCopy() permet de copier un
+		      		tableau très rapidement.
+					Il est donc préférable de copier les tableaux avec la
+					méthode arrayCopy(), plutôt qu'avec la méthode clone()
+					ou une boucle for.
+		      	]]>
+	      	</description>
+		    <priority>3</priority>
+    	  	<example>
+		    <![CDATA[
+				public class Test
+				{
+					public void bar()
+					{
+					  	int[] a = new int[10];
+					  	int[] b = new int[10];
+					  	for (int i=0;i<10;i++)
+					  	{
+				   			b[i]=a[i];
+				   		}
+				 	}
+				}
+		    ]]>
+      </example>
+    </rule>
+
+       <rule 	name="OptimizableToArrayCall"
+          		message="Utiliser la taille de la collection lors des appels à  Collection.toArray."
+          		ref="rulesets/design.xml/OptimizableToArrayCall">
+			    <description>
+			    	<![CDATA[
+						Les appels à Collection.toArray doivent utiliser la taille de la
+						collection à la place d'un tableau vide.
+					]]>
+		      	</description>
+				<priority>3</priority>
+			    <example>
+				  	<![CDATA[
+						class Foo {
+						 void bar(Collection x) {
+						   // A bit inefficient
+						   x.toArray(new Foo[0]);
+						   // Much better; this one sizes the destination array, avoiding
+						   // a reflection call in some Collection implementations
+						   x.toArray(new Foo[x.size()]);
+						 }
+						}
+				  	]]>
+			    </example>
+	</rule>
+
+
+	<rule 	name="ReplaceVectorWithList"
+  			message="Préférer List à Vector."
+  			ref="rulesets/migrating.xml/ReplaceVectorWithList">
+			<description>
+				<![CDATA[
+					Si l'environnement multi-tâche le permet, java.util.List (non synchronisé)
+					sera préféré à Vector (synchronized par défaut).
+			 	]]>
+			</description>
+			<priority>3</priority>
+  			<example>
+				<![CDATA[
+					public class Foo
+					{
+					 	void bar()
+					 	{
+					    	Vector v = new Vector();
+					 	}
+					}
+					]]>
+  			</example>
+	</rule>
+
+	<rule 	name="ReplaceHashtableWithMap"
+      		message="Préférer Map à HashTable"
+      		ref="rulesets/migrating.xml/ReplaceHashtableWithMap">
+	      	<description>
+	     		<![CDATA[
+		     		Si l'environnement multi-tâche le permet, java.util.Map (non synchronisé))
+		     		sera préféré à HashTable (synchronized par défaut).
+	     		]]>
+	      	</description>
+			<priority>3</priority>
+           	<example>
+				<![CDATA[
+				    public class Foo
+				    {
+					     void bar()
+					     {
+					        Hashtable h = new Hashtable();
+					     }
+				    }
+    			]]>
+      		</example>
+    </rule>
+
+
+
+
+
+</ruleset>

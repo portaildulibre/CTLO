@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="APIs interdites">
+	<description>
+		<![CDATA[
+		Les règles suivantes interdisent certaines API,
+		dont l'utilisation enfreindrait les principes de
+		base d'une architecture multi-couches et
+		multi-plateformes.
+		]]>
+	</description>
+
+    <rule name="AvoidAccessibilityAlteration"
+        message="Interdiction d''utiliser getDeclaredConstructors(), getDeclaredConstructor(Class[]), setAccessible() et PrivilegedAction."
+        class="net.sourceforge.pmd.rules.XPathRule">
+        <description>
+            <![CDATA[
+            Les méthodes getDeclaredConstructors(), getDeclaredConstructor(Class[]) et setAccessible(), ainsi que l'interface PrivilegedAction, peuvent permettre de modifier à chaud le niveau de visibilité de variables et méthodes, même privées. Pour cette raison, elles sont interdites.
+            ]]>
+        </description>
+         <properties>
+            <property name="xpath">
+                <value>
+                   <![CDATA[
+                        //PrimaryExpression[
+                        (
+                        (PrimarySuffix[
+                                ends-with(@Image,'getDeclaredConstructors')
+                                        or
+                                ends-with(@Image,'getDeclaredConstructor')
+                                        or
+                                ends-with(@Image,'setAccessible')
+                                ])
+                        or
+                        (PrimaryPrefix/Name[
+                                ends-with(@Image,'getDeclaredConstructor')
+                                or
+                                ends-with(@Image,'getDeclaredConstructors')
+                                or
+                                starts-with(@Image,'AccessibleObject.setAccessible')
+                                ])
+                        )
+                        and
+                        (//ImportDeclaration/Name[
+                                contains(@Image,'java.security.PrivilegedAction')])
+                ]
+                ]]>
+                </value>
+            </property>
+        </properties>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+				public class AvoidAccessibilityAlteration
+				{
+					private ProgInterditDeux(){}
+
+					public void invalidCallsInMethod() throws SecurityException, NoSuchMethodException
+					{
+						// Possible call to forbidden getDeclaredConstructors
+						Class[] arrayOfClass = new Class[1];
+						this.getClass().getDeclaredConstructors();
+						this.getClass().getDeclaredConstructor(arrayOfClass);
+						Class clazz = this.getClass();
+						clazz.getDeclaredConstructor(arrayOfClass);
+						clazz.getDeclaredConstructors();
+
+						// Possible call to forbidden setAccessible
+						clazz.getMethod("", arrayOfClass).setAccessible(false);
+						AccessibleObject.setAccessible(null, false);
+						Method.setAccessible(null, false);
+						Method[] methodsArray = clazz.getMethods();
+						int nbMethod;
+						for ( nbMethod = 0; nbMethod < methodsArray.length; nbMethod++ )
+						{
+							methodsArray[nbMethod].setAccessible(false);
+						}
+						// Possible call to forbidden
+						PrivilegedAction PrivilegedAction priv = (PrivilegedAction) new Object();
+						priv.run(); // TODO: Hard to detect if the class is not implementing directly the interface
+					}
+				}
+				]]>
+		</example>
+	</rule>
+
+	<rule 	name="NativeCode"
+        	message="L'usage du code natif est interdit dans le cadre de la réalisation d'application J2EE"
+        class="net.sourceforge.pmd.rules.XPathRule">
+	        <description>
+	            <![CDATA[
+	                Le langage Java et son API [2f] standard sont suffisamment riches pour écrire des applications complètes. Il ne devrait donc pas être nécessaire d'appeler du code non-Java, et ce même à travers la Java Native Interface (JNI). Dans des cas très particuliers, cette règle pourra faire l'objet d'une demande de dérogation à travers une note d'architecture.
+	            ]]>
+	        </description>
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+	                        //PrimaryPrefix/Name[starts-with(@Image,'System.loadLibrary')]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <priority>2</priority>
+	        <example>
+	            <![CDATA[
+	                public class NativeCode
+	                {
+	                        public NativeCode()
+	                        {
+	                                System.loadLibrary("nativelib");
+	                        }
+
+							static { System.loadLibrary("nativelib"); }
+
+							public void invalidCallsInMethod() throws SecurityException, NoSuchMethodException
+							{
+								System.loadLibrary("nativelib");
+							}
+						}
+					}
+				]]>
+			</example>
+		</rule>
+
+	<rule  name="SystemCall"
+  message="Restriction dans l'utilisation de l'API System  "
+  class="net.sourceforge.pmd.rules.XPathRule">
+  <description>
+  L'utilisation des API System.in.*, System.out.*, System.err.*, System.getEnv() est interdite ;
+L'utilisation de System.exit est tolérée pour les applications standalone mais est interdite pour les applications Web et J2EE (gérée par un conteneur). En effet, la responsabilité d'arrêter une machine virtuelle Java revient au serveur Web ou au serveur d'application, et non aux applications hébergées par ces derniers ;
+A la place de System.out.* et System.err.*, il faudra utiliser un logger (Log4J par exemple) ;
+System.getenv() a été déprécié des versions 1.1 à 1.4 de Java. Malgré son retour en Java5, son utilisation reste interdite, car entièrement dépendante du système (et donc contradictoire avec le principe d'indépendance de la plateforme) ;
+Les appels aux méthodes System.gc, Runtime.getRuntime().gc(), et System.runFinalization sont interdits (cf. [DoNotCallSystemGC]).
+  </description>
+  <properties>
+    <property name="xpath">
+    <value>
+<![CDATA[
+//Name[
+	starts-with (@Image,'System.in')
+	or
+	ends-with(@Image,'System.getenv')
+	or
+	starts-with(@Image,'System.out')
+	or
+	starts-with(@Image,'System.err')
+]
+]]>
+    </value>
+    </property>
+  </properties>
+  <priority>3</priority>
+  <example>
+<![CDATA[
+public class SystemCall
+{
+	public void methode() throws IOException
+	{
+		System.in.read();
+		System.getenv();
+		System.out.println("Hello");
+		System.err.append("Erreur");
+	}
+}
+]]>
+  </example>
+</rule>
+
+
+</ruleset>

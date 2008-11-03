@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="D2I - Quality Tools">
+    <description>
+    	<![CDATA[
+	    	D2I Quality Tools ruleset
+	    ]]>
+    </description>
+ 	<rule ref="./chapitres/02-nommage.xml" />
+ 	<rule ref="./chapitres/03-formatage.xml" />
+ 	<rule ref="./chapitres/04-encapsulation.xml" />
+ 	<rule ref="./chapitres/05-variables.xml" />
+ 	<rule ref="./chapitres/06-constructeurs.xml" />
+ 	<rule ref="./chapitres/07-methodes.xml" />
+ 	<rule ref="./chapitres/08-if-while-switch.xml" />
+	<rule ref="./chapitres/09-null.xml" />
+	<rule ref="./chapitres/10-clone.xml" />
+	<rule ref="./chapitres/11-prog-interdit.xml" />
+	<rule ref="./chapitres/12-programmation.xml" />
+	<rule ref="./chapitres/13-metriques.xml" />
+	<rule ref="./chapitres/14-exceptions.xml" />
+	<rule ref="./chapitres/15-memoire.xml" />
+	<rule ref="./chapitres/16-threads.xml" />
+	<rule ref="./chapitres/17-strings.xml" />
+	<rule ref="./chapitres/18-perf.xml" />
+	<rule ref="./chapitres/19-micro-optim.xml" />
+	<rule ref="./chapitres/20-j2ee.xml" />
+</ruleset>

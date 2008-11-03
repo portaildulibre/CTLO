@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles d'utilisation de null">
+	<description>
+		<![CDATA[
+L'ensemble des règles et recommandations introduites dans ce sous chapitre ont pour objectif d'améliorer
+la lisibilité et la bonne et rapide compréhension du code (suppression du code mort,
+simplification des instructions).
+		]]>
+	</description>
+
+    <rule 	name="EqualsNull"
+            message="L'utilisation de equals(null) est interdite."
+            ref="rulesets/design.xml/EqualsNull">
+	        <description>
+	        	<![CDATA[
+		        	Utiliser la méthode equals() pour comparer quelque chose à null n'a pas de sens,
+					car en cas de réussite du test une NullPointerException sera générée. Cette
+					pratique est donc interdite.
+	        	]]>
+		    </description>
+        	<priority>1</priority>
+ 	   		<example>
+ 		      <![CDATA[
+					class Bar {
+					   void foo() {
+					       String x = "foo";
+					       if (x.equals(null)) { // bad!
+					        doSomething();
+					       }
+					   }
+					}
+    			]]>
+        </example>
+    </rule>
+
+    <rule 	name="SimplifyConditional"
+              	message="  Ne pas tester la nullité avant un appel à instanceof"
+              	ref="rulesets/design.xml/SimplifyConditional">
+	          <description>
+	          	<![CDATA[
+					Tester la nullité avant un appel à instanceof est inutile, car instanceof
+					retourne false si l'argument est null.
+	          	]]>
+	          </description>
+	          <priority>3</priority>
+	          <example>
+	      		<![CDATA[
+					class Foo {
+					 void bar(Object x) {
+					  if (x != null && x instanceof Bar) {
+					   // just drop the "x != null" check
+					  }
+					 }
+					}
+				]]>
+	           </example>
+		</rule>
+
+
+</ruleset>

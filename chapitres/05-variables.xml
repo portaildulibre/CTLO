@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de déclaration, initialisation et utilisation des variables">
+	<description>
+		<![CDATA[
+			Ce sous chapitre précise un ensemble de règles relatives à la déclaration, l'initialisation et l'utilisation des variables. Toutes ces règles tendent vers une amélioration de la lisibilité et de la maintenabilité du code, et à la réduction des erreurs.
+			On rappellera à ce sujet que :
+			- minimiser la portée des variables (et le fait de les déclarer quand elles sont utilisées pour
+				la première fois, dans le bloc le plus restreint possible, et de les initialiser explicitement)
+				et le nombre des variables (cf.[TooManyFields]) sont des bonnes pratiques qui participent à cet
+				aspect de qualité du code ;
+			- les règles de formatage et de nommage des variables introduites auparavant (cf. [VariableDeclSyntax],
+				[VariableAssignementSyntax], [VariableConventionNaming], [ConstantConventionNaming],
+				[AvoidEnumAsIdentifier], [AvoidAssertAsIdentifier], [AvoidFieldNameMatchingTypeName] et
+				[AvoidFieldNameMatchingMethodName]) s'inscrivent également dans cette recherche de qualité autour
+				de l'utilisation des variables.
+		]]>
+	</description>
+<!--
+The following rule has been disbaled as it was prone to error, and the appropriate control is already done by Eclipse
+	<rule	name="LocalVariableHiddingField"
+	        class="net.sourceforge.pmd.rules.XPathRule"
+	        message="L''utilsation de variables locales masquantes est prohibée.">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+//FieldDeclaration/VariableDeclarator/VariableDeclaratorId[
+starts-with(@Image,//LocalVariableDeclaration/VariableDeclarator/VariableDeclaratorId/attribute::Image)
+and
+ends-with(@Image,//LocalVariableDeclaration/VariableDeclarator/VariableDeclaratorId/attribute::Image)
+]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <description>
+	            <![CDATA[
+				L'utilsation de variables locales masquant est prohibée.
+	            ]]>
+	        </description>
+	        <priority>3</priority>
+	        <example>
+	            <![CDATA[
+	            // This code will trigger the rule.
+	            int size;
+	            // ...
+	            void method()
+	            {
+	                int size;
+	            }
+	            ]]>
+	        </example>
+	</rule>
+-->
+  <rule name="UnusedPrivateField"
+        message="Les variables inutilisées privés, tel que ''{0}'', doivent être supprimées."
+        ref="rulesets/unusedcode.xml/UnusedPrivateField">
+    <description>
+    <![CDATA[
+		Les variables privés inutilisées doivent être supprimées
+		]]>
+    </description>
+    <priority>3</priority>
+    <example>
+			<![CDATA[
+			public class Something {
+			  private static int FOO = 2; // Unused
+			  private int i = 5; // Unused
+			  private int j = 6;
+			  public int addOne() {
+			    return j++;
+			  }
+			}
+			]]>
+    </example>
+  </rule>
+
+	<rule 	name="UnusedLocalVariable"
+	        message="Les variables locales inutilisées, tel que ''{0}'', doivent être supprimmées."
+	        ref="rulesets/unusedcode.xml/UnusedLocalVariable">
+	    <description>
+	    <![CDATA[
+			Les variables locales inutilisées doivent être supprimmées
+		]]>
+	    </description>
+	    <priority>3</priority>
+	    <example>
+			<![CDATA[
+			public class Foo {
+			 public void doSomething() {
+			  int i = 5; // Unused
+			 }
+			}
+		]]>
+	    </example>
+  </rule>
+
+
+
+
+   <rule name="UnnecessaryLocalBeforeReturn"
+          message="La variable locale ''{0}'' est inutile. Retournez directement sa valeur."
+          ref="rulesets/design.xml/UnnecessaryLocalBeforeReturn">
+      <description>
+      <![CDATA[
+			La variable locale est inutile. Retournez directement sa valeur.
+		]]>
+      </description>
+      <priority>3</priority>
+      <example>
+			<![CDATA[
+				public class Foo {
+			    public int foo() {
+			      int x = doSomething();
+			      return x;  // instead, just 'return doSomething();'
+			    }
+			  }
+			]]>
+      </example>
+    </rule>
+
+	<rule	name="AvoidFinalLocalVariable"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message=" Il est déconseillé de déclarer des variables locales comme « final ».">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+	//LocalVariableDeclaration[@Final = 'true']
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <description>
+	        <![CDATA[
+	        Il est déconseillé de déclarer des variables locales comme « final ». Si il s'agit d'une
+	constante, elle devrait être placer comme membre de classe.
+	                       ]]>
+	        </description>
+	        <priority>3</priority>
+	    </rule>
+
+        <rule name="ImmutableField"
+	          message="Le champs privé ''{0}'' peut être final; il est seulement initialisé une seule fois."
+	          ref="rulesets/design.xml/ImmutableField">
+		      <description>
+		      <![CDATA[
+					Il est recommandé de transformer en champs immuables (en ajoutant le modificateur
+					final) tous les champs private qui ne changent jamais. Cela facilite alors une
+					conversion éventuelle de classe vers une classe immuable (cf. Favoriser les classes
+					immuables).
+				]]>
+		      </description>
+		      <priority>3</priority>
+		      <example>
+		  		<![CDATA[
+					public class Foo {
+					  private int x; // could be final
+					  public Foo() {
+					      x = 7;
+					  }
+					  public void foo() {
+					     int a = x + 2;
+					  }
+					}
+		  		]]>
+		      </example>
+	    </rule>
+
+
+	<rule  	name="ForbiddenNumericalValue"
+	 		message="Il est fortement déconseillé d'utiliser des constantes numériques « en dur » dans le code."
+  			class="net.sourceforge.pmd.rules.XPathRule">
+		  	<description>
+			<![CDATA[
+				Il est fortement déconseillé d'utiliser des constantes numériques « en dur » dans le
+				code, celles ci devraient faire l'objet de déclarations de constantes, avec des noms
+				explicites. Une exception concerne les valeurs -1, 0, 1 et 2 dans les boucles for.
+				On rappelle à ce sujet que ces constantes pourront éventuellement faire l'objet de typage
+				à travers l'utilisation des types énumérés (cf.« Quand utiliser les types énumérés
+				(enum)? »), mais ne doivent pas faire l'objet d'interface dédiées (cf.
+				[AvoidConstantsInterface] ).
+				]]>
+		  	</description>
+		  	<properties>
+			<property name="xpath">
+					<value>
+		<![CDATA[
+		//BlockStatement[
+		        (
+		        (./LocalVariableDeclaration/VariableDeclarator/VariableInitializer/Expression/PrimaryExpression/PrimaryPrefix/Literal
+		        [not (./BooleanLiteral)]
+		        [not (./NullLiteral)]
+		        [
+		                                        not (starts-with(@Image,'"'))
+		                                            and
+		                                        not (ends-with(@Image,'"'))
+		                                        and
+		                                        not (starts-with(@Image,"'"))
+		                                        and
+		                                        not (ends-with(@Image,"'"))
+		                                        and
+		                                        @Image != 1
+		                                        and
+		                                        @Image != 0
+		                                        and
+		                                        @Image != -1
+		                                   and
+		                                   @Image != '2'
+		                                ])
+		        )
+		        or
+		                    (./descendant::UnaryExpression/PrimaryExpression/PrimaryPrefix/Literal
+		                        [not (../../../../../../../../FieldDeclaration)]
+		                        [not (./BooleanLiteral)]
+		                        [not (./NullLiteral)]
+		                        [
+		                                not (starts-with(@Image,'"'))
+		                                and
+		                                not (ends-with(@Image,'"'))
+		                                and
+		                                not (starts-with(@Image,"'"))
+		                                and
+		                                not (ends-with(@Image,"'"))
+		                                and
+		                                @Image != '1'
+		                                and
+		                                @Image != '0'
+		                                and
+		                                @Image != '-1'
+		                                and
+		                                @Image != '2'
+		                        ] )
+		        or
+		        (./descendant::AdditiveExpression/PrimaryExpression/PrimaryPrefix/Literal
+		                        [not (./BooleanLiteral)]
+		                        [not (./NullLiteral)]
+		                        [
+		                                not (starts-with(@Image,'"'))
+		                                and
+		                                not (ends-with(@Image,'"'))
+		                                and
+		                                not (starts-with(@Image,"'"))
+		                                and
+		                                not (ends-with(@Image,"'"))
+		                                and
+		                                @Image != '1'
+		                                and
+		                                @Image != '0'
+		                                and
+		                                @Image != '-1'
+		                                and
+		                                @Image != '2'
+		                        ])
+		        or
+		        (./descendant::MultiplicativeExpression/PrimaryExpression/PrimaryPrefix/Literal
+		                    [not (./BooleanLiteral)]
+		                    [not (./NullLiteral)]
+		                    [
+		                                not (starts-with(@Image,'"'))
+		                                and
+		                                not (ends-with(@Image,'"'))
+		                                and
+		                                not (starts-with(@Image,"'"))
+		                                and
+		                                not (ends-with(@Image,"'"))
+		                                and
+		                                @Image != '1'
+		                                and
+		                                @Image != '0'
+		                                and
+		                                @Image != '-1'
+		                                and
+		                                @Image != '2'
+		                    ])
+		        or
+		        (./descendant::RelationalExpression/PrimaryExpression/PrimaryPrefix/Literal
+		                        [not (./BooleanLiteral)]
+		                        [not (./NullLiteral)]
+		                        [
+		                                not (starts-with(@Image,'"'))
+		                                and
+		                                not (ends-with(@Image,'"'))
+		                                and
+		                                not (starts-with(@Image,"'"))
+		                                and
+		                                not (ends-with(@Image,"'"))
+		                                and
+		                                @Image != '1'
+		                                and
+		                                @Image != '0'
+		                                and
+		                                @Image != '-1'
+		                                and
+		                                @Image != '2'
+		                        ]
+		        )
+		]
+
+		]]>
+				</value>
+			</property>
+		</properties>
+		<priority>3</priority>
+		<example>
+		<![CDATA[
+		public class Test
+		{
+			// Ceci sont des exemples corrects d'utilisation des constantes numériques
+			private int CONSTANT = 4;
+
+			public int goodBehavior()
+			{
+				int autoriseValue = 1;
+				autoriseValue = 0;
+				autoriseValue = -1;
+				return autoriseValue;
+			}
+
+			// Quelques contre exemple.
+			public int nonAutorizeBehavior()
+			{
+				int var = 666;
+				return ++var;
+			}
+
+			public int nonAutorizeBehaviorTricky()
+			{
+				String name = "12"; // This is correct.
+				return 85 + new Integer(name).intValue(); // this is not !
+			}
+
+			public int nonAutorizeBehaviorAsTricky()
+			{
+				String name = "12"; // This is correct.
+				return 85 * new Integer(name).intValue(); // this is not !
+			}
+
+			public int otherNonAutorizeBehavior()
+			{
+				String name = "12"; // This is correct.
+				return -34 + new Integer(name).intValue();
+			}
+		}
+	]]>
+		</example>
+	</rule>
+
+</ruleset>

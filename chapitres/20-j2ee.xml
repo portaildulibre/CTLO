@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles J2EE">
+	<description>
+		<![CDATA[
+De la spécification J2EE [5], n'ont été retenu pour cette charte que les chapitres relatifs à JDBC (version 2.0), aux JSP (version 1.2) et aux Servlets (version 2.3),
+ aux EJB Session et Message-Driven Beans (version 2.0) [5b].
+		]]>
+	</description>
+  	<rule 	name="CloseResource"
+        	message="Assurez vous que les resources comme cette object {0} sont libérée après utilisation."
+        	ref="rulesets/design.xml/CloseResource">
+		    <description>
+		    	<![CDATA[
+					Toutes les ressources JDBC (ResultSet, Statement, Connection) doivent être
+					fermées quand elles ne sont plus utilisées. Cela permet d'éviter des fuites
+					de ressources, même si une exception se produit, et de gêner le bon fonctionnement
+					de la base de données.
+					Les ressources JDBC doivent être fermées dans un bloc finally.
+				]]>
+		    </description>
+	    	<priority>3</priority>
+      		<properties>
+          		<property name="types" value="Connection,Statement,ResultSet"/>
+      		</properties>
+		    <example>
+				<![CDATA[
+				public class Bar
+				{
+					public void foo()
+					{
+				  		Connection c = pool.getConnection();
+				  		try
+				  		{
+				    		// do stuff
+				  		}
+				  		catch (SQLException ex)
+				  		{
+				    		// handle exception
+				  		}
+				  		finally
+				  		{
+						    // oops, should close the connection using 'close'!
+						    // c.close();
+				  		}
+				 	}
+				}
+				]]>
+		    </example>
+  		</rule>
+
+		<rule  	name="CheckResultSet"
+  				message="Toujours vérifier la valeur de retour de  ResultSet."
+  				class="net.sourceforge.pmd.rules.XPathRule">
+				<description>
+					<![CDATA[
+						Toujours vérifier la valeur de retour après avoir appelé l'une des méthodes de navigation de
+						ResultSet ; ne jamais assumer qu'un résultat sera présent.
+						Pour information, les méthodes de navigation de ResultSet incluent : next, first, last et previous.
+					]]>
+  				</description>
+			 	<properties>
+			    	<property name="xpath">
+			    		<value>
+							<![CDATA[
+							//PrimaryExpression/PrimaryPrefix/Name
+							[
+							        ends-with(@Image,"next")
+							        or
+							        ends-with(@Image,"first")
+							        or
+							        ends-with(@Image,"last")
+							        or
+							        ends-with(@Image,"previous")
+							]
+							[
+							        (//ClassOrInterfaceType[ends-with(@Image,"ResultSet")])
+							        and
+							        (
+							                (//PrimaryPrefix/Name[contains(@Image,'executeQuery')] )
+							                or
+							                (//PrimarySuffix[contains(@Image,'executeQuery')])
+							        )
+							        and
+							        (
+							                (//PrimaryExpression[
+							                        (./PrimaryPrefix/Name[
+							                ends-with(@Image,"next")
+							                or
+							                ends-with(@Image,"first")
+							                or
+							                ends-with(@Image,"last")
+							                or
+							                ends-with(@Image,"previous")
+							                ] )
+							                        and
+							                        (./PrimarySuffix/Arguments[@ArgumentCount = 0])
+							                        and
+							                        (
+							                not (../../Expression )
+							                and
+							                not (../../../Expression )
+							                )
+							                ] )
+							        )
+							]
+						]]>
+					</value>
+				</property>
+			</properties>
+			<priority>1</priority>
+			<example>
+				<![CDATA[
+					Statement stat = conn.createStatement();
+					ResultSet rst = stat.executeQuery("SELECT name FROM person");
+					if (rst.next())
+					{
+					    String firstName = rst.getString(1);
+					}
+					else
+					{
+					    // traitement de l'erreur
+					}
+				]]>
+			</example>
+		</rule>
+
+
+    <rule	name="MDBAndSessionBeanNamingConvention"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Les noms des EJB contiennent le suffixe  Bean ou le suffixe EJB.">
+	        <description>
+	        	<![CDATA[
+			        Une classe qui étend SessionBean ou MessageDrivenBean doit avoir un nom suffixé par Bean ou EJB.
+La spécification EJB [5b] impose l'utilisation du suffixe Bean, mais cette règle peut porter à confusion, et
+notamment laisser penser qu'il se traite d'un JavaBean, et non d'un Enterprise JavaBean.
+Chaque projet devra choisir l'un ou (exclusif) l'autre des suffixes, et s'y tenir pour tous les noms de ses EJB.
+		        ]]>
+	        </description>
+	        <priority>2</priority>
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                	<![CDATA[
+							//TypeDeclaration/ClassOrInterfaceDeclaration
+							[
+							    (
+							        (./ImplementsList/ClassOrInterfaceType[ends-with(@Image,'SessionBean')])
+							        or
+							        (./ImplementsList/ClassOrInterfaceType[ends-with(@Image,'MessageDrivenBean')])
+							    )
+							    and
+							    not
+							    (
+							        ends-with(@Image,'Bean')
+							    )
+							]
+						]]>
+					</value>
+	            </property>
+	        </properties>
+	        <example>
+	            <![CDATA[
+	            /* Proper name */
+	            public class SomeBean implements SessionBean{}
+	            ]]>
+	        </example>
+	        <example>
+	            <![CDATA[
+	            /* Bad name */
+	            public class MissingTheProperSuffix implements SessionBean {}
+	            ]]>
+	        </example>
+    </rule>
+
+    <rule	name="RemoteSessionInterfaceNamingConvention"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Le nom de l'interface Remote Home d'un EJB Session doit être suffixé par Home.">
+	        <description>
+	        	<![CDATA[
+					Le nom de l'interface Remote Home d'un EJB Session doit être suffixé par Home.
+	        	]]>
+	        </description>
+        	<priority>4</priority>
+        	<properties>
+            	<property name="xpath">
+            	    <value>
+                	    <![CDATA[
+							//ClassOrInterfaceDeclaration
+							[
+							    (
+							        (./ExtendsList/ClassOrInterfaceType[ends-with(@Image,'EJBHome')])
+							    )
+							    and
+							    not
+							    (
+							        ends-with(@Image,'Home')
+							    )
+							]
+						]]>
+                	</value>
+            	</property>
+        	</properties>
+        	<example>
+	            <![CDATA[
+	            /* Proper name */
+	            public interface MyBeautifulHome extends javax.ejb.EJBHome {}
+	            ]]>
+	        </example>
+	        <example>
+	            <![CDATA[
+	            /* Bad name */
+	            public interface MissingProperSuffix extends javax.ejb.EJBHome {}
+	            ]]>
+	        </example>
+    </rule>
+
+    <rule	name="LocalInterfaceSessionNamingConvention"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Le nom de l'interface locale d'un EJB Session doit être suffixé par Local.">
+	        <description>
+	        	<![CDATA[
+    		    	Le nom de l'interface locale d'un EJB Session doit être suffixé par Local.
+    		    ]]>
+        	</description>
+        	<priority>4</priority>
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+							//ClassOrInterfaceDeclaration
+							[
+							    (
+							        (./ExtendsList/ClassOrInterfaceType[ends-with(@Image,'EJBLocalObject')])
+							    )
+							    and
+							    not
+							    (
+							        ends-with(@Image,'Local')
+							    )
+							]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <example>
+	            <![CDATA[
+	            /* Proper name */
+	            public interface MyLocal extends javax.ejb.EJBLocalObject {}
+	            ]]>
+	        </example>
+	        <example>
+	            <![CDATA[
+	            /* Bad name */
+	            public interface MissingProperSuffix extends javax.ejb.EJBLocalObject {}
+	            ]]>
+	        </example>
+    </rule>
+
+    <rule	name="LocalHomeNamingConvention"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Le nom de l'interface locale Home d'un EJB Session doit être suffixé par LocalHome">
+        <description>
+        	<![CDATA[
+		        Le nom de l'interface locale Home d'un EJB Session doit être suffixé par LocalHome.
+		       ]]>
+        </description>
+        <priority>4</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+						//ClassOrInterfaceDeclaration
+						[
+						    (
+						        (./ExtendsList/ClassOrInterfaceType[ends-with(@Image,'EJBLocalHome')])
+						    )
+						    and
+						    not
+						    (
+						        ends-with(@Image,'LocalHome')
+						    )
+						]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            /* Proper name */
+            public interface MyBeautifulLocalHome extends javax.ejb.EJBLocalHome {}
+            ]]>
+        </example>
+        <example>
+            <![CDATA[
+            /* Bad name */
+            public interface MissingProperSuffix extends javax.ejb.EJBLocalHome {}
+            ]]>
+        </example>
+    </rule>
+
+    <rule	name="RemoteInterfaceNamingConvention"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Le nom de l'interface Remote d'un EJB Session ne doit pas être suffixé.">
+	        <description>
+	        	<![CDATA[
+					Le nom de l'interface Remote d'un EJB Session ne doit pas être suffixé.
+	        	]]>
+	        </description>
+	        <priority>4</priority>
+    	    <properties>
+        	    <property name="xpath">
+            	    <value>
+                	    <![CDATA[
+						//ClassOrInterfaceDeclaration
+						[
+    						(
+        						(./ExtendsList/ClassOrInterfaceType[ends-with(@Image,'EJBObject')])
+    						)
+						    and
+    						(
+						        ends-with(@Image,'Session')
+        						or
+       							ends-with(@Image,'EJB')
+        						or
+						        ends-with(@Image,'Bean')
+    						)
+						]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            /* Bad Session suffix */
+            public interface BadSuffixSession extends javax.ejb.EJBObject {}
+            ]]>
+        </example>
+        <example>
+            <![CDATA[
+            /* Bad EJB suffix */
+            public interface BadSuffixEJB extends javax.ejb.EJBObject {}
+            ]]>
+        </example>
+        <example>
+            <![CDATA[
+            /* Bad Bean suffix */
+            public interface BadSuffixBean extends javax.ejb.EJBObject {}
+            ]]>
+        </example>
+    </rule>
+
+
+
+</ruleset>

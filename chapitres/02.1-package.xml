@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de nommage - paquetage">
+
+	<rule	name="NoPackage"
+			message="Toute classe d'un projet doit appartenir à un package."
+        	ref="rulesets/naming.xml/NoPackage">
+        <description>
+			Toute classe d'un projet doit appartenir à un package.
+        </description>
+        <priority>3</priority>
+    </rule>
+	<rule	name="PackageName"
+			message="Toute classe d'un projet doit appartenir à un package ( com.atosorigin par exemple)."
+        	class="net.sourceforge.pmd.rules.XPathRule">
+        <description>
+			Toute classe d'un projet doit appartenir à un package ( com.atosorigin. ...)
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+							//PackageDeclaration/Name[not (starts-with(@Image,'org.linagora.clients.minefi.dpma.terminologie') )]
+	                   ]]>
+                </value>
+            </property>
+        </properties>
+        <priority>3</priority>
+    </rule>
+
+</ruleset>

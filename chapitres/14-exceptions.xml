@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de gestion des exceptions">
+	<description>
+		<![CDATA[
+			Ce chapitre regroupent toutes les règles relatives à l'implémentation et à
+			l'utilisation des exceptions. Elles complètent les règles précédemment introduites
+			sur leur formatage (cf. [TryCatchSyntax]), leur nommage (cf. [ExceptionSuffix]), et
+			 leur documentation (cf. [JDocException-1] et [JDocException-2]).
+
+			Ce chapitre débute sur un ensemble de règle qui tendent à éviter la perte ou la
+			corruption des exceptions ou des informations sur leur origine.
+			Suivent des règles sur le bon usage des exceptions. Un bonne pratique qui ne pouvait
+			pas être transposée en règle peut être résumée en ces quelques mots : «n'utiliser une
+			exception que dans des situations exceptionnelles ».
+		]]>
+	</description>
+
+    <rule name="EmptyCatchBlock"
+          message="Les blocs Catch vides sont interdits."
+          ref="rulesets/basic.xml/EmptyCatchBlock">
+	      <description>
+			<![CDATA[
+					Un bloc catch vide va à l'encontre du but des exceptions. Ignorer une exception c'est
+					« arrêter une alarme qui vient de se déclencher pour que personne n'ait une chance de
+					voir s'il y a vraiment le feu ».
+			]]>
+	      </description>
+	      <priority>3</priority>
+	      <example>
+		 	 <![CDATA[
+				public void doSomething() {
+				  try {
+				    FileInputStream fis = new FileInputStream("/tmp/bugger");
+				  } catch (IOException ioe) {
+				      // not good
+				  }
+				}
+	 		]]>
+	      </example>
+    </rule>
+
+    <rule name="EmptyTryBlock"
+          message="Les blocs Try vides sont interdits."
+          ref="rulesets/basic.xml/EmptyTryBlock">
+	      <description>
+	      	<![CDATA[
+				Les blocs Catch vides sont interdits.
+			]]>
+	      </description>
+	      <priority>3</priority>
+		      <properties>
+		          <property name="xpath">
+    		          <value>
+						<![CDATA[
+						//TryStatement/Block[1][count(*) = 0]
+						]]>
+		              </value>
+    	      </property>
+    	  </properties>
+    	  <example>
+			<![CDATA[
+				public class Foo {
+				 public void bar() {
+				  try {
+				  } catch (Exception e) {
+				    e.printStackTrace();
+				  }
+				 }
+				}
+			]]>
+      </example>
+    </rule>
+
+
+    <rule name="EmptyFinallyBlock"
+          message="Avoid empty finally blocks"
+          ref="rulesets/basic.xml/EmptyFinallyBlock">
+          <description>
+	      </description>
+	      <priority>3</priority>
+		      <properties>
+		         <property name="xpath">
+		              <value>
+						<![CDATA[
+							//FinallyStatement[count(Block/BlockStatement) = 0]
+						]]>
+		              </value>
+         		</property>
+      		</properties>
+		      <example>
+		  <![CDATA[
+		public class Foo {
+		 public void bar() {
+		  try {
+		    int x=2;
+		   } finally {
+		    // empty!
+		   }
+		 }
+		}
+		 ]]>
+		      </example>
+	    </rule>
+
+	    <rule name="AvoidInstanceofChecksInCatchClause"
+	          message="Un test sur une instance est effectué dans l'exception interceptée. Créer une clause 'catch' sépararée pour cette exception."
+	          ref="rulesets/design.xml/AvoidInstanceofChecksInCatchClause">
+	    	  <description>
+		      	<![CDATA[
+					Chaque exception traitée doit posséder son propre bloc catch.
+		      	]]>
+	      	</description>
+	      	<priority>3</priority>
+	      	<example>
+				<![CDATA[
+					try { // Avoid this
+					 // do something
+					} catch (Exception ee) {
+					 if (ee instanceof IOException) {
+					  cleanup();
+					 }
+					}
+					try {  // Prefer this:
+					 // do something
+					} catch (IOException ee) {
+					 cleanup();
+					}
+				]]>
+	      </example>
+	    </rule>
+
+
+  		<rule 	name="PreserveStackTrace"
+      			message="Préserver la stacktrace"
+      			ref="rulesets/design.xml/PreserveStackTrace">
+		      <description>
+					<![CDATA[
+					Générer une exception depuis un bloc catch sans passer la première exception à la
+					nouvelle exception entraîne la perte de la stacktrace, ce qui pourra poser des problèmes
+					lors du débuggage de l'application.
+					]]>
+		      </description>
+		      <priority>3</priority>
+		      <example>
+			    <![CDATA[
+					public class Foo {
+					    void good() {
+					        try{
+					            Integer.parseInt("a");
+					        } catch(Exception e){
+					            throw new Exception(e);
+					        }
+					    }
+					    void bad() {
+					        try{
+					            Integer.parseInt("a");
+					        } catch(Exception e){
+					            throw new Exception(e.getMessage());
+					        }
+					    }
+					}
+			    ]]>
+		      </example>
+    </rule>
+
+	<rule 	name="SignatureDeclareThrowsException"
+         	message="Une methode/constructeur ne devrait pas explicitement lever une java.lang.Exception"
+          	ref="rulesets/strictexception.xml/SignatureDeclareThrowsException">
+	      <description>
+	It is unclear which exceptions that can be thrown from the methods.
+	It might be difficult to document and understand the vague interfaces.
+	Use either a class derived from RuntimeException or a checked exception.
+	      </description>
+      <priority>3</priority>
+      <example>
+                <![CDATA[
+public void methodThrowingException() throws Exception {
+}
+                ]]>
+      </example>
+    </rule>
+
+  <rule	name="AvoidThrowingRawExceptionTypes"
+      	message="Interdiction de déclarer des méthodes générant Exception, Throwable ou Error."
+      	ref="rulesets/strictexception.xml/AvoidThrowingRawExceptionTypes">
+	    <description>
+	    	<![CDATA[
+				Il est rappelé qu'il faut indiquer dans chaque méthode la liste exhaustive des types
+				d'exceptions pouvant remonter.
+				Cependant, au même titre qu'il faut importer spécifiquement les classes utilisées dans
+				les imports et éviter les imports avec une étoile (cf. [TryCatchSyntax]), il faut indiquer
+				précisément et uniquement les types d'exceptions pouvant être émis par une classe. Il
+				est donc interdit de déclarer qu'une méthode « throws Exception », « throws Throwable » ou
+				« throws Error ». Il est aussi également interdit de déclarer des clauses throws inutilisées.
+	    	]]>
+	    </description>
+	    <priority>1</priority>
+	    <properties>
+	      <property name="xpath">
+	        <value>
+	            <![CDATA[
+				//AllocationExpression
+				 /ClassOrInterfaceType[
+				 @Image='Throwable' or
+				 @Image='Exception' or
+				 @Image='Error' or
+				 @Image='RuntimeException']
+				 ]]>
+	        </value>
+	      </property>
+	    </properties>
+	    <example>
+	      <![CDATA[
+	public class Foo {
+	public void bar() throws Exception {
+	  throw new Exception();
+	 }
+	}
+	]]>
+	    </example>
+  </rule>
+
+  	<rule 	name="AvoidThrowingRawExceptionTypes"
+	      	message="Interdiction de générer RunTimeException,Throwable, Exception ou Error"
+	      	ref="rulesets/strictexception.xml/AvoidThrowingRawExceptionTypes">
+		    <description>
+		    	<![CDATA[
+Plutôt que de générer ces exceptions, il faudra utiliser les sous-classes de celles-ci, de
+façon à produire des exceptions plus précises.
+		    	]]>
+		    </description>
+		    <priority>1</priority>
+		    <example>
+		      <![CDATA[
+		public class Foo {
+		public void bar() throws Exception {
+		  throw new Exception();
+		 }
+		}
+		]]>
+			</example>
+	</rule>
+
+  <rule 	name="AvoidCatchingThrowable"
+         	message="catch Throwable, catch Exception, catch Error et catch RuntimeException sont interdits"
+          	ref="rulesets/strictexception.xml/AvoidCatchingThrowable">
+      		<description>
+		<![CDATA[
+       L'exception Throwable est la mère de toutes les exceptions. Capturer la catégorie
+       Throwable est interdit, car tout y passe :
+           - les erreurs de format des fichiers .class ;
+           - la saturation de la mémoire de l'application ;
+           - l'utilisation malheureuse de pointeur null (NullPointerException) ;
+           - les débordements dans l'utilisation des tableaux ;
+           - les récursivités infinies et les erreurs applicatives.
+       Si une fuite mémoire entraîne l'invocation de l'exception OutOfMemoryError,
+       l'application va capturer le problème et continuer son traitement. La cause réelle du
+       problème sera masquée, entraînant des erreurs en cascades qu'il sera difficile
+       d'analyser.
+       De même, attraper une RuntimeException empêche la propagation des exceptions
+       Runtime vers le container pour la libération des ressources.
+       Les exceptions Exception, Error et RuntimeException, qui héritent en
+       premier ou deuxième niveau de Throwable, et sont encore trop génériques pour
+       apporter une réponse particulière à l'exception, il est par conséquent également interdit
+       de les rattraper..
+		]]>
+    		</description>
+      		<priority>3</priority>
+ 		    <example>
+                <![CDATA[
+					public class Foo {
+					 public void bar() {
+					  try {
+					   // do something
+					  } catch (Throwable th) {  //Should not catch throwable
+					   th.printStackTrace();
+					  }
+					 }
+					}
+                ]]>
+     		 </example>
+    	</rule>
+
+	<rule 	name="AvoidCatchingNPE"
+    		message="catch NullPointerException est à éviter"
+    		ref="rulesets/strictexception.xml/AvoidCatchingNPE">
+		    <description>
+		    	<![CDATA[
+					Il faut éviter de rattraper des exceptions de NullPointer.
+				]]>
+		    </description>
+		    <priority>3</priority>
+		    <example>
+		    	<![CDATA[
+					public class Foo {
+					 void bar() {
+					  try {
+					   // do something
+					   }  catch (NullPointerException npe) {
+					  }
+					 }
+					}
+				]]>
+		    </example>
+  	</rule>
+
+	<rule	name="ReturnFromFinallyBlock"
+          	message="Ne pas utiliser l'instruction return dans un bloc finally"
+          	ref="rulesets/basic.xml/ReturnFromFinallyBlock">
+	      	<description>
+	      		<![CDATA[
+Un bloc finally ne doit pas contenir d'instruction return, puisqu'il est appelé en cas d'exception ou
+de return dans le bloc try correspondant, ce qui fait que l'instruction return éventuelle du bloc try
+sera ignorée.
+Pour information, l'utilisation de l'instruction return dans un bloc finally donne lieu au warning
+suivant dans la plupart des IDEs : finally clause cannot complete normally.
+
+	      		]]>
+	      	</description>
+      		<priority>3</priority>
+		    <example>
+				  <![CDATA[
+				public class Bar {
+				 public String foo() {
+				  try {
+				   throw new Exception( "My Exception" );
+				  } catch (Exception e) {
+				   throw e;
+				  } finally {
+				   return "A. O. K."; // Very bad.
+				  }
+				 }
+				}
+				]]>
+		    	</example>
+		</rule>
+
+
+	    <rule name="ExceptionAsFlowControl"
+	          message="Ne pas utiliser les exceptions comme des contrôleurs de flux."
+	          ref="rulesets/strictexception.xml/ExceptionAsFlowControl">
+		      <description>
+		      		<![CDATA[
+		Ne pas utiliser les exceptions comme des contrôleurs de flux.
+		Utiliser les exceptions comme des contrôleurs de flux revient à écrire des « GOTO ».
+					]]>
+		      </description>
+		      <priority>3</priority>
+		      <example>
+				  <![CDATA[
+					public class Foo {
+					 void bar() {
+					  try {
+					   try {
+					   } catch (Exception e) {
+					    throw new WrapperException(e);
+					    // this is essentially a GOTO to the WrapperException catch block
+					   }
+					  } catch (WrapperException e) {
+					   // do some more stuff
+					  }
+					 }
+					}
+				  ]]>
+		      </example>
+	    </rule>
+
+		<rule	name="DoNotExtendJavaLangError"
+		    	message="Les exceptions ne doivent pas hériter de java.lang.Error"
+		    	class="net.sourceforge.pmd.rules.XPathRule">
+		    <description>
+		      <![CDATA[
+					Error doit être réservé aux erreurs systèmes et les exceptions de votre système ne
+					doivent pas en hériter.
+		      ]]>
+		    </description>
+		    <priority>3</priority>
+		    <properties>
+		      <property name="xpath">
+		        <value>
+		          <![CDATA[
+						//ClassOrInterfaceDeclaration/ExtendsList/ClassOrInterfaceType
+  						[@Image="Error" or @Image="java.lang.Error"]
+		          ]]>
+		        </value>
+		      </property>
+		    </properties>
+		    <example><![CDATA[
+		        public class Foo extends Error { }
+		    ]]></example>
+		  </rule>
+</ruleset>

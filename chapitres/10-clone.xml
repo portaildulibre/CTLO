@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles d'implémentation de clone()">
+	<description>
+		<![CDATA[
+			Les règles suivantes ont pour objectif d'empêcher des implémentations
+			litigieuses de la méthode clone().
+		]]>
+	</description>
+
+    <rule name="ProperCloneImplementation"
+         message="Si implémenté, clone() doit invoquer super.clone()."
+         ref="rulesets/clone.xml/ProperCloneImplementation">
+	     <description>
+	     	<![CDATA[
+				Comme l'accessibilité de clone est « protected », l'invocation ne peut figurer
+				qu'à l'intérieur de la classe de l'objet à dupliquer ; sinon, le message d'erreur
+				« clone() has protected access in java.lang.Object » est émis par le compilateur.
+				Afin de pouvoir dupliquer un objet utilisé dans une classe quelconque, il faut
+				redéfinir la méthode clone dans sa classe, en invoquant super.clone()
+				et en la rendant public.
+			]]>
+	     </description>
+	     <priority>3</priority>
+	     <example>
+			 <![CDATA[
+				class Foo{
+				    public Object clone(){
+				        return new Foo(); // This is bad
+				    }
+				}
+			]]>
+	     </example>
+     </rule>
+
+    <rule name="CloneThrowsCloneNotSupportedException"
+         message="La méthode clone() doit déclarer CloneNotSupportedException"
+         ref="rulesets/clone.xml/CloneThrowsCloneNotSupportedException">
+         <description>
+			<![CDATA[
+Pour dupliquer un objet, la méthode clone commence par tester si la classe de l'objet
+				réalise l'interface Cloneable ; si ce n'est pas le cas, elle déclenche l'exception
+				CloneNotSupportedException.
+				Pour cela,la méthode doit contenir clone() throws CloneNotSupportedException
+				dans sa déclaration.
+			]]>
+         </description>
+         <priority>3</priority>
+         <example>
+             <![CDATA[
+				 public class MyClass implements Cloneable{
+				     public Object clone() { // will cause an error
+				          MyClass clone = (MyClass)super.clone();
+				          return clone;
+				     }
+				 }
+    		]]>
+         </example>
+	</rule>
+
+   <rule name="CloneMethodMustImplementCloneable"
+        message="Toute classe redéfinissant clone() doit implémenter l'interface Clonable"
+        ref="rulesets/clone.xml/CloneMethodMustImplementCloneable">
+        <description>
+        	<![CDATA[
+			Toute classe redéfinissant clone() doit implémenter l'interface Clonable
+			]]>
+        </description>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+			public class MyClass
+			{
+			 	public Object clone() throws CloneNotSupportedException
+			 	{
+			 	 	return foo;
+			 	}
+			}
+   			]]>
+        </example>
+    </rule>
+
+
+</ruleset>

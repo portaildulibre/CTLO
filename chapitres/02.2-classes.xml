@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de nommage - Classes">
+
+
+	<rule	name="ClassNamingConventions"
+			ref="rulesets/naming.xml/ClassNamingConventions"
+			message="Infractions aux règles de nommage des classes.">
+        <description>
+<![CDATA[
+        Chaque fichier source doit contenir une et une seule classe publique ou interface, dont le nom
+doit débuter par une majuscule et être suivi de minuscules et majuscules.
+Ainsi, pour une meilleure lisibilité des noms, les caractères minuscules et majuscules sont
+alternés : la première lettre de chaque champ sémantique le composant doit être en majuscule,
+et le reste en minuscules. L'usage de caractères non alphanumériques est interdit. L'usage de
+chiffres est toléré quand il s'agit d'un besoin métier. Aucun chiffre ne pourra cependant être utilisé
+comme préfixe, mais plutôt comme suffixe. A moins que la classe désigne une abréviation très
+courante (ex. URL), on évitera les acronymes.
+
+			Il en sera de même pour le nommage des fichiers de configuration et autres fichiers de
+déploiement non assujettis à une norme tierce, inhérente à la technologie ou au standard
+employé (fichier de configuration spécifique au serveur d'application par exemple).
+On notera que le caractère underscore '_' est interdit dans les noms de fichiers, tout comme les
+caractères accentués et les caractères spéciaux (cf. [SpecialCharacter]). Les noms des classes
+sont ainsi des instances de l'expression régulière suivante : ^[A-Z][a-zA-Z]*[0-9]*$
+Exception : Les noms de fichiers JSP commencent par une minuscule, les majuscules servant
+toujours à délimiter les substantifs.
+]]>
+        </description>
+        <priority>3</priority>
+    </rule>
+	<rule	name="ExceptionSuffix"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+			message="Le nom d''une classe d''exception doit se terminer par le suffixe Exception.">
+        <description>
+                   <![CDATA[
+			Le nom d'une classe d'exception doit se terminer par le suffixe Exception.
+        	]]>
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //ClassOrInterfaceDeclaration
+                    [
+                        not (ends-with(@Image,"Exception") )
+                        and
+                        (
+                        (./ExtendsList/ClassOrInterfaceType[contains(@Image,"Exception")])
+                        or
+                        (./ImplementsList/ClassOrInterfaceType[contains(@Image,"Throwable")])
+                        )
+                    ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+            // Voici quelques contres exemples
+            public class Erreur extends Exception
+            {
+                //...
+            }
+
+            public interface Erreur implements Throwable
+            {
+                //...
+            }
+
+
+            public class Erreur extends IllegalArgumentException
+            {
+                //...
+            }
+            // Un exemple correct
+            public class ErreurException extends Exception
+            {
+                //...
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <rule	name="AbstractNaming"
+        	ref="rulesets/naming.xml/AbstractNaming"
+        	message="Les classes abstraites devraient être facilement repérables. Il est recommandé de les préfixer par 'Abstract'.">
+        <description>
+            <![CDATA[
+                Les classes abstraites devraient être facilement repérables. Il est recommandé de les préfixer par 'Abstract'.
+                ]]>
+        </description>
+        <priority>1</priority>
+    </rule>
+
+
+	<rule	name="InterfaceNaming"
+        class="net.sourceforge.pmd.rules.XPathRule"
+        message="Il est déconseillé de préfixer le nom de l''interface par I.">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //ClassOrInterfaceDeclaration
+                            [@Interface="true"]
+                            [starts-with(@Image,'I')]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[
+            Le nom d'une interface doit décrire un comportement.
+            Le nom peut être un adjectif caractérisant le comportement attendu d'une implémentation de cette interface.
+            Il est déconseillé de préfixer le nom de l'interface par I.
+            ]]>
+        </description>
+        <priority>1</priority>
+        <example>
+            <![CDATA[
+            // Ceci est un contre exemple
+            public interface IMonInterface
+            {
+                public void uneMéthode();
+            }
+            // Ceci est un exemple de bonne pratique
+            public interface List
+            ]]>
+        </example>
+    </rule>
+</ruleset>

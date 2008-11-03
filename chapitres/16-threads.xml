@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles sur l'utilisation des threads et sur la synchronisation">
+	<description>
+		<![CDATA[
+			L'objectif des règles suivantes est de gagner en performance, ou plutôt d'éviter de perdre en performance,
+			dans la manipulation de threads et blocs critiques. Cela se traduira
+			notamment par l'abandon de certaines formulations couramment utilisées, mais en réalité contre-productives.
+		]]>
+	</description>
+
+
+	<rule name="AvoidSynchronizedAtMethodLevel"
+          message="Use block level rather than method level synchronization"
+          ref="rulesets/design.xml/AvoidSynchronizedAtMethodLevel">
+      <description>
+		<![CDATA[
+
+		]]>
+      </description>
+      <priority>3</priority>
+      <example>
+		<![CDATA[
+			public class AvoidSynchronizedAtMethodLevel {
+			 // Try to avoid this
+			 synchronized void foo() {
+			 }
+			 // Prefer this:
+			 void bar() {
+			  synchronized(this) {
+			  }
+			 }
+			}
+		]]>
+      </example>
+    </rule>
+
+    <rule	name="AvoidSynchronised"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Motiver et documenter l''utilisation de synchronized par une note d''architecture préalable.">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                    //SynchronizedStatement
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[
+C'est pourquoi, il est également demandé de motiver et documenter l'utilisation de synchronized dans le code et par une note d'architecture
+préalable, qui explicitera la politique de gestion en multi-tâches exigée par le contexte applicatif.
+       		]]>
+        </description>
+        <priority>3</priority>
+	</rule>
+
+
+    <rule name="EmptySynchronizedBlock"
+          message="Avoid empty synchronized blocks"
+          ref="rulesets/basic.xml/EmptySynchronizedBlock">
+      	<description>
+
+      	</description>
+      	<priority>3</priority>
+		<example>
+			<![CDATA[
+			public class Foo {
+			 public void bar() {
+			  synchronized (this) {
+			   // empty!
+			  }
+			 }
+			}
+			]]>
+		</example>
+    </rule>
+
+	<rule	name="AvoidVolatileModifier"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Utilisation du modificateur volatile interdite.">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //FieldDeclaration[
+                                contains(@Volatile,'true')
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[
+				L'utilisation du mot-clef, du modificateur volatile peut constituer une alternative viable à une
+				synchronisation ordinaire. En effet, les variables précédées par le modificateur volatile obligent
+				la machine virtuelle Java à relire la valeur des variables au sein de la mémoire partagée à chaque
+				fois qu'elles sont accédées. Les compilateurs Java s'autorisent à mettre en cache les variables membres
+				 dans les registres mémoires. Autrement dit, les threads utilisant une variable membre partagée,
+				 n'accèdent qu'à des copies de cette variable dont les modifications ne peuvent être visibles pour ces
+				 threads concurrents. Une incohérence de la variable a de fortes probabilités de déclencher un fonctionnement
+				 inattendu du programme. Les variables possédant le modificateur volatile sont chargées (load) à partir de
+				 la mémoire centrale avant chaque utilisation. Suite à leur exploitation (read ou write), les variables volatiles
+				 sont stockées (stored) en mémoire centrale. Par ce moyen, la valeur réelle d'une telle variable est assurée
+				 d'être cohérente à l'intérieur de chaque thread. Ainsi, si plusieurs threads sont susceptibles d'accéder à une
+				 variable partagée mutable, on peut alors choisir : de faire en sorte que ces threads n'utilisent que des méthodes
+				 ou des blocs synchronisés pour lire et écrire cette donnée ; ou déclarer cette variable volatile afin de s'assurer
+				 que tous les threads puissent voir ses modifications de valeur. Mais c'est une technique particulièrement avancée.
+				 Son utilisation requière une expertise forte du JMM (Java Memory Model), de plus son applicabilité est en général
+				 peu connue. C'est pourquoi, principalement pour des raison de maintenabilité et de portabilité, l'utilisation du
+				 modificateur volatile est interdite. Toute dérogation ou exception devra être documentée et validée, et devra faire
+				 l'objet d'une note d'architecture préalable.
+			]]>
+		</description>
+		<priority>2</priority>
+		<example>
+			<![CDATA[
+				// Ceci est un contre exemple
+				public class AvoidVolatileModifier
+				{
+					// Usage de volatile interdit !
+					private volatile String var;
+
+					public AvoidVolatileModifier(){}
+
+					public String getVar() { return var; }
+
+					public void setVar(String var) { this.var = var; }
+				}
+			]]>
+		</example>
+	</rule>
+
+
+	<rule 	name="NonThreadSafeSingleton"
+	    	message="Le double check locking est interdit."
+	    	ref="rulesets/design.xml/NonThreadSafeSingleton">
+        <description>
+        	<![CDATA[
+		  Le double check locking (DCL) a vu le jour suite à la volonté d'optimiser
+		  l'implémentation du pattern singleton. Avec le DCL, l'implémentation de la méthode
+		  getInstance() est la suivante :
+		   Contre-exemple :
+		    public static Singleton getInstance()
+		    {
+		        if (instance == null)
+		        {
+		             synchronized (Singleton.class)            //1
+		             {
+		                  if (instance == null)                 //2
+		                  {
+		                      instance = new Singleton();      //3
+		                  }
+		             }
+		        }
+		        return instance;
+		    }
+		  La théorie derrière le DCL est que la seconde vérification en ligne 2 rend impossible la
+		  création de deux Singleton comme vu précédemment. Cette théorie semble parfaite.
+		  Malheureusement la réalité est complètement différente. Le DCL n'apporte aucune
+		  garantie de fonctionnement. L'échec du DCL n'est pas dû à un défaut d'implémentation
+		  de la JVM, mais au modèle de mémoire de la JVM. Ce modèle de mémoire autorise ce
+		  qui est connu comme le "out of order writes", ou écriture dans le désordre. Pour plus
+		  d'informations sur la gestion de la mémoire en Java, se référer aux spécifications de la
+		  JVM [5c]. Tout code de type DCL est donc évidemment complètement interdit.
+        	]]>
+        </description>
+        <priority>3</priority>
+        <example>
+        <![CDATA[
+				private static Foo foo = null;
+
+				//multiple simultaneous callers may see partially initialized objects
+				public static Foo getFoo()
+				{
+				    if (foo==null)
+				        foo = new Foo();
+				    return foo;
+				}
+        	]]>
+        </example>
+    </rule>
+
+	<rule   name="JustifyThreadUsage"
+    	    class="net.sourceforge.pmd.rules.XPathRule"
+    	    message="Justifier l'utilisation de Thread par une note d'architecture préalable.">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+	                        //ClassOrInterfaceType
+	                        [
+	                                (starts-with(@Image,'Thread')
+	                                and
+	                                ends-with(@Image,'Thread')
+	                                ) or
+	                                (starts-with(@Image,'Runnable')
+	                                and
+	                                ends-with(@Image,'Runnable') )
+	                        ]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <description>
+	            <![CDATA[
+	     Les problématiques exposées précédemment montrent que la gestion multi-tâches est complexe.
+	     C'est pourquoi il est également demandé de motiver et documenter l'utilisation de thread par
+	     une note d'architecture préalable, qui explicitera toute création de thread de traitement
+	     spécifique qui ne soit pas géré par le container/serveur d'application.
+	       ]]>
+	        </description>
+	        <priority>3</priority>
+	        <example>
+	            <![CDATA[
+	             // Ces classes sont des contre-exemples
+	            public class MonThread extends Thread
+	            {
+	            	...
+	            }
+
+				public class MonThread implements Runnable
+				{
+					// Ou encore
+					public void methode()
+					{
+						Runnable thread = new Thread();
+						thread.run();
+					}
+				}
+					]]>
+			</example>
+		</rule>
+
+    <rule	name="UseNotifyAllInsteadOfNotify"
+        	ref="rulesets/design.xml/UseNotifyAllInsteadOfNotify"
+        	message="Utiliser NotifyAll() plutôt que Notify().">
+        <description>
+			<![CDATA[
+				Thread.notify() notifie un thread contrôlant un objet (objet « verrou », verrouillé
+				par l'utilisation de synchronized). Si plus d'un thread contrôle cet objet, alors un
+				seul est arbitrairement choisi pour être notifié.
+				Pour cette raison il est recommandé d'appeler notifyAll() plutôt que notify().
+				Exception : L'appel de notifyAll() réveille tous les threads. Cela ne pose aucun
+				problème s'il n'est pas nécessaire de contrôler l'ordre d'exécution de leur « réveil ».
+				Cependant, si l'ordre dans lequel ces threads se réveillent doit être contrôlé, la même
+				problématique que celle inhérente à l'appel de notify() se pose.
+				On conseille alors deux solutions d'implémentation : si chaque thread possède son
+				propre objet « verrou », utilisez notify(), sinon utilisez notifyAll() (cf.
+				« Apply the specific notification pattern to control the order of thread execution » [28] ).
+			]]>
+        </description>
+              <example>
+			<![CDATA[
+			public class Foo {
+			 void bar() {
+			  x.notify();
+			  // If many threads are monitoring x, only one (and you won't know which) will be notified.
+			  // use instead:
+			  x.notifyAll();
+			 }
+			}
+			]]>
+			</example>
+            <priority>1</priority>
+    </rule>
+    <rule	name="AvoidThreadGroup"
+        	ref="rulesets/basic.xml/AvoidThreadGroup"
+        	message="Éviter les groupes de threads.">
+        <description>
+            <![CDATA[
+                Ne pas utiliser ThreadGroup : bien qu'il soit destiné à des environnements multi-threadés,
+                il contient certaines méthodes qui ne sont pas thread safe.
+            ]]>
+        </description>
+        <priority>2</priority>
+        <example>
+            <![CDATA[
+                public class AvoidThreadGroup
+                {
+                    void buz()
+                    {
+                        ThreadGroup tgp = new ThreadGroup("Mon threadgroup");
+                        tgp = new ThreadGroup(tgp, "mon thread group");
+                        tgp = Thread.currentThread().getThreadGroup();
+                        tgp = System.getSecurityManager().getThreadGroup();
+                    }
+                }
+            ]]>
+        </example>
+    </rule>
+
+
+</ruleset>

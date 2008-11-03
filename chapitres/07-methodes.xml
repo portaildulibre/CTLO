@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles générales sur les méthodes">
+	<description>
+		<![CDATA[
+Ce sous chapitre précise un ensemble de règles relatives à la programmation des méthodes.
+Toutes ces règles tendent vers une amélioration de la lisibilité et de la maintenabilité du
+code et à la réduction des erreurs.
+On rappellera à ce sujet que les règles précédentes associées aux méthodes s'inscrivent également dans ce cadre:
+- règles de formatage:.[ArrayDeclSyntax],
+- règles de nommage : [MethodConventionNaming], [AvoidNonConstructorMethodsWithClassName] et [SuspiciousMethodName],
+- règles de documentation: [JDocMethod]
+- règles métriques: [ExcessiveMethodLength], , [CyclomaticComplexity], [SwitchDensity] et [AvoidDeeplyNestedIfStmts].
+		]]>
+	</description>
+
+  <rule 	name="UncommentedEmptyMethod"
+          	message="Les méthodes vides et non commentées sont interdites ."
+          	ref="rulesets/design.xml/UncommentedEmptyMethod">
+	      	<description>
+	      		<![CDATA[
+  Commenter explicitement les méthodes vides facilite la distinction entre les méthodes
+  intentionnellement et non intentionnellement vides.
+	      		]]>
+			</description>
+			<priority>3</priority>
+      		<example>
+				  <![CDATA[
+				public void doSomething()
+				{
+				}
+				 ]]>
+	      </example>
+    </rule>
+    <rule 	name="UselessOverridingMethod"
+		    message="Les méthodes surchargeantes inutiles sont interdites."
+		    ref="rulesets/basic.xml/UselessOverridingMethod">
+			<description>
+				<![CDATA[
+					Les méthodes surchargeantes se contentant d'appeler
+					la méthode définie dans la classe mère sont interdites
+					car inutiles.
+				]]>
+        </description>
+        <priority>3</priority>
+        <example>
+        <![CDATA[
+				public void foo(String bar) {
+				    super.foo(bar);      //Why bother overriding?
+				}
+        ]]>
+        </example>
+        <example>
+        <![CDATA[
+			public String foo() {
+			    return super.foo();  //Why bother overriding?
+			}
+        ]]>
+        </example>
+    </rule>
+
+	<rule name="UnusedPrivateMethod"
+        message="Les méthodes privées tel que ''{0}'' devraient être supprimmées."
+        ref="rulesets/unusedcode.xml/UnusedPrivateMethod">
+    	<description>
+    	<![CDATA[
+	    	Les méthodes privées devraient être supprimmées
+    		]]>
+    	</description>
+    	<priority>3</priority>
+    	<example>
+		<![CDATA[
+		public class Something {
+		 private void foo() {} // unused
+		}
+		]]>
+    	</example>
+	</rule>
+
+	<rule 	name="UnusedFormalParameter"
+    	    message="Les paramètres non utilisés doivent être supprimés ."
+        	ref="rulesets/unusedcode.xml/UnusedFormalParameter">
+    	<description>
+    		<![CDATA[
+			 Les paramètres non utilisés doivent être supprimés .
+			]]>
+    	</description>
+    	<priority>3</priority>
+	    <example>
+			<![CDATA[
+				public class Foo
+				{
+ 					private void bar(String howdy) {
+				  // howdy is not used
+ 				}
+			]]>
+    	</example>
+  	</rule>
+
+	<rule 	name="AvoidReassigningParameters"
+        	message="Éviter de réassigner des paramètres tel que ''{0}''"
+        	ref="rulesets/design.xml/AvoidReassigningParameters">
+		    <description>
+			    <![CDATA[
+Réassigner des paramètres est fortement déconseillé, il s'agit d'une pratique discutable.
+Par ailleurs, il est conseillé de déclarer final les paramètres qui ne sont pas
+réassignés.
+				]]>
+    		</description>
+        	<priority>2</priority>
+	    	<example>
+				<![CDATA[
+				public class Foo {
+				 private void foo(String bar) {
+				  bar = "something else";
+				 }
+				}
+				]]>
+	    </example>
+    </rule>
+
+	<rule name="UnnecessaryReturn"
+          message=" Éviter les instructions return dans les méthodes void."
+          ref="rulesets/basic.xml/UnnecessaryReturn">
+	    <description>
+			<![CDATA[
+				 Éviter les instructions return dans les méthodes void
+			]]>
+	    </description>
+	    <priority>3</priority>
+	    <example>
+		  	<![CDATA[
+			public class Foo {
+			 public void bar() {
+			  int x = 42;
+			  return;
+			 }
+			}
+			]]>
+		</example>
+    </rule>
+
+	<rule	name="ReturnEmptyArrayRatherThanNull"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Retourner un tableau de taille zéro plutôt que null.">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+	                        //MethodDeclaration
+	                        [
+	                        (./ResultType/Type[@Array='true'])
+	                        and
+	                        (./Block/BlockStatement/Statement/ReturnStatement/Expression/PrimaryExpression/PrimaryPrefix/Literal/NullLiteral)
+	                        ]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <description>
+	            <![CDATA[
+	            Pour toute méthode renvoyant un tableau, il est recommandé de retourner un tableau de taille zéro plutôt que null et de documenter ce cas limite dans la Javadoc.
+	            De plus, on préférera l'utilisation d'exception au renvoi de null dans le cas d'erreur de traitement.
+	            ]]>
+	        </description>
+	        <priority>1</priority>
+	        <example>
+	            <![CDATA[
+	            public class Exemple
+	            {
+	                // Ceci est un contre exemple
+	                public int []mauvaisUsage()
+	                {
+	                    // ...
+	                    return null;
+	                }
+					// Ceci est un exemple
+					public String[] bonnePratique()
+					{
+						// ...
+						return new String[0];
+					}
+				}
+				]]>
+			</example>
+		</rule>
+
+
+	    <rule	name="OnlyOneReturn"
+         		message="Il est recommandé de n'avoir qu'un seul point de sortie, qui devrait être la dernière instruction de la méthode."
+         		ref="rulesets/controversial.xml/OnlyOneReturn">
+			    <description>
+			    	<![CDATA[
+						Il est également préférable de minimiser de façon systématique le nombre d'instructions
+						return dans un bloc de code (sauf quand ces instructions facilitent la lisibilité du
+						code. En effet, en aucun cas cette règle tout comme les autres ne peut se substituer aux
+						efforts de qualité exigés du développement. Elle est là pour assurer l'uniformité,
+						accroître la lisibilité et la maintenabilité).
+					]]>
+			    </description>
+			    <priority>3</priority>
+			    <example>
+				 <![CDATA[
+				 public class OneReturnOnly1 {
+				  public void foo(int x) {
+				   if (x > 0) {
+				    return "hey";   // oops, multiple exit points!
+				   }
+				   return "hi";
+				  }
+				 }
+				 ]]>
+				</example>
+		</rule>
+
+		<rule	name="SimplifyBooleanReturns"
+        		message="Il est fortement recommandé d'éviter les instructions if...then...else inutiles pour retourner un booléen."
+        		ref="rulesets/design.xml/SimplifyBooleanReturns">
+			    <description>
+					<![CDATA[
+					Il est fortement recommandé d'éviter les instructions if...then...else inutiles pour retourner un booléen.
+					]]>
+			    </description>
+		      	<priority>2</priority>
+    			<example>
+					<![CDATA[
+						public class Foo {
+						  private int bar =2;
+						  public boolean isBarEqualsTo(int x) {
+						    // this bit of code
+						    if (bar == x) {
+						     return true;
+						    } else {
+						     return false;
+						    }
+						    // can be replaced with a simple
+						    // return bar == x;
+						  }
+						}
+						]]>
+				</example>
+		</rule>
+
+
+
+</ruleset>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles d'encapsulation, d'accessibilité et d'utilisation des modificateurs">
+	<description>
+		<![CDATA[
+			L'ensemble des remarques, règles et recommandations introduites dans ce sous chapitre ont pour objectif :
+				- d'améliorer la pertinence des niveaux d'accessibilité ;
+				- de permettre une meilleure encapsulation ;
+				- de garantir une bonne utilisation des modificateurs, pour une meilleure conception objet.
+		]]>
+	</description>
+
+        <rule	name="AbstractClassWithoutAbstractMethod"
+        		ref="rulesets/design.xml/AbstractClassWithoutAbstractMethod"
+        		message="Toute classe abstraite doit contenir au moins une méthode abstraite.">
+        <priority>3</priority>
+        <description>
+            <![CDATA[
+            Règles d'utilisation du modificateur abstract
+
+            Une classe abstraite suggère une implémentation incomplète qui doit être complétée par
+            des sous classes implémentant les méthodes abstraites. Si une classe est prévue pour être
+            utilisée comme classe de base uniquement (et ne doit pas être instanciée directement), on
+            préférera l'utilisation d'un constructeur protected (qui empêchera toute instanciation directe)
+            à la spécification abstract de la classe. C'est pourquoi cette charte interdit qu'une classe
+            abstraite ne contienne aucune méthode abstraite.
+            ]]>
+        </description>
+    </rule>
+	<rule	name="ShouldNotHaveTooManyStaticImport"
+        	class="net.sourceforge.pmd.rules.XPathRule"
+        	message="L''utilisation trop fréquente de l''import statique peut rendre le code illisible et difficilement maintenable.">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+							//TypeDeclaration[count(//ImportDeclaration[@Static = 'true']) > 5]
+	                    ]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[)
+			Comme introduit avec de la règle de formatage des imports statiques (cf.
+[StaticImportOrder]), l'utilisation trop fréquente de l'import statique peut rendre le code
+illisible et difficilement maintenable, polluant son espace de nommage (namespace).
+Il est donc recommandé d'utiliser les imports statiques de façon parcimonieuse : il est
+recommandé d'utiliser cette fonctionnalité lorsque vous êtes tentés :
+- de déclarer des copies locales de constantes ;
+- d'utiliser abusivement l'héritage et de mettre des membres statiques dans une interface,
+pour ensuite hériter de cette interface. Il s'agit d'un anti-pattern appelé
+« Constant Interface Anti-pattern » (cf. [AvoidConstantsInterface] )
+
+C'est pourquoi il est fortement recommandé de justifier et donc documenter (à minima
+par des commentaires de traitement dans le code) l'utilisation de ces imports statiques.
+]]>
+        </description>
+        <priority>2</priority>
+    </rule>
+
+    <rule	name="AvoidConstantsInterface"
+        	ref="rulesets/design.xml/AvoidConstantsInterface"
+        	message="Éviter les 'interfaces constantes'.">
+	        <priority>1</priority>
+	        <description>
+	            <![CDATA[
+	            Comme introduit ci-dessus, un des anti-pattern fréquemment retrouvé avant l'apparition des imports statiques
+	            est l' « interface constante » (« Constant Interface Anti-pattern ») : c'est à dire la création d'une interface
+	            non pas pour décrire un modèle de comportement mais comme conteneur de constantes. Un tel usage des interfaces est
+	            déconseillé.
+	            En effet, cet usage entre en conflit avec l'orientation objet et expose souvent des détails d'implémentation qui
+	            se retrouvent publiés dans l'API [2f].
+	            ]]>
+	        </description>
+	        <example>
+	            <![CDATA[
+	                public interface ConstantInterfaceAntiPattern
+	                {
+	                    public static final double PI = Math.PI;
+
+	                    public static final int JANVIER = Calendar.JANUARY;
+	                    public static final int FEVRIER = Calendar.FEBRUARY;
+	                    // ...
+	                }
+	            ]]>
+	        </example>
+    </rule>
+
+   <rule	name="NoConstructorForUtilClasses"
+			class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Une classe ne contenant que des méthodes statiques ne devraient pas présenter de constructeurs.">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+							//ClassOrInterfaceBody
+							[
+								( count(//MethodDeclaration[@Static = 'true'] ) > 0 )
+								and
+								( count (//MethodDeclaration[@Static = 'false']) = 0 )
+								and
+								( (count(//ConstructorDeclaration[@Public = 'true']) > 0)
+								        or
+								(count(//ConstructorDeclaration) = 0)
+								 )
+							]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+	        <description>
+	        <![CDATA[
+				Une classe ne contenant que des méthodes statiques ne devraient pas présenter de constructeurs, car
+				elle ne peut, et ne doit, en aucun cas être instancier.
+			]]>
+            </description>
+            <example>
+            <![CDATA[
+				public class NoConstructorForUtilClasses
+				{
+					public NoConstructorForUtilClasses(){}
+
+					public static void m(){}
+				}
+            ]]>
+            </example>
+	        <priority>3</priority>
+    </rule>
+
+     <rule	name="AvoidInnerClass"
+			class="net.sourceforge.pmd.rules.XPathRule"
+        	message="Eviter l'utilisation des Inner Class.">
+        	<properties>
+            	<property name="xpath">
+            	    <value>
+		    	         <![CDATA[
+//ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration/ClassOrInterfaceDeclaration/ClassOrInterfaceBody
+						]]>
+					</value>
+				</property>
+			</properties>
+			<description>
+				<![CDATA[
+						Les inner classes sont implique une bonne maitrise du langage Java et sont souvent complexe dans leur mainteance.
+						Leur utilisation est donc déconseillé, sans accord préalable de l'architecte du projet.
+                ]]>
+            </description>
+        	<priority>2</priority>
+	</rule>
+</ruleset>

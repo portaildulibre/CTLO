@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles métriques">
+	<description>
+		<![CDATA[
+Les métriques appliquées au code Java fournissent des indicateurs de qualité
+des développements.
+S'agissant d'indicateurs, la plupart des règles ne seront que recommandées, voir fortement recommandées.
+Les métriques ci-dessous ont été sélectionnées quand elles permettaient de mesurer et vérifier la lisibilité
+et clarté du code source, ainsi que sa maintenabilité, évolutivité, modularité et réutilisabilité.
+		]]>
+	</description>
+
+	<rule  name="CompareObjectsWithEquals"
+	  message="Comparer les objets avec equals()"
+	  ref="rulesets/design.xml/CompareObjectsWithEquals">
+	  <description>
+	 	<![CDATA[
+Utiliser la méthode equals() pour comparer deux objets, et non l'opérateur « == ».
+	 	]]>
+	  </description>
+	  <priority>3</priority>
+	  <example>
+		<![CDATA[
+				class Foo {
+				 boolean bar(String a, String b) {
+				  return a == b;
+				 }
+				}
+
+		]]>
+	  </example>
+	</rule>
+
+    <rule name="OverrideBothEqualsAndHashcode"
+          message="Surcharger equals() et hashCode(), ou aucune."
+          ref="rulesets/basic.xml/OverrideBothEqualsAndHashcode">
+	      <description>
+	      	<![CDATA[
+	      	Surcharger les deux méthodes public boolean Object.equals(Object other) et public int Object.hashCode(), ou aucune des deux.
+En effet, les deux méthodes sont fortement liées, sachant que hashCode() calcule le code de hachage d'un quelconque objet Java, et equals() vérifie l'égalité entre les codes de hachage de deux objets. Si equals() est redéfinie pour pouvoir comparer des objets personnalisés, alors hashcode() doit l'être également.
+	      	]]>
+	      </description>
+	      <priority>3</priority>
+	      <example>
+			  <![CDATA[
+			// this is bad
+			public class Bar {
+			  public boolean equals(Object o) {
+			      // do some comparison
+			  }
+			}
+
+			// and so is this
+			public class Baz {
+			  public int hashCode() {
+			      // return some hash value
+			  }
+			}
+
+			// this is OK
+			public class Foo {
+			  public boolean equals(Object other) {
+			      // do some comparison
+			  }
+			  public int hashCode() {
+			      // return some hash value
+			  }
+			}
+			 ]]>
+		</example>
+    </rule>
+
+    <rule name="MissingSerialVersionUID"
+          message="Classes implementing Serializable should set a serialVersionUID"
+          ref="rulesets/javabeans.xml/MissingSerialVersionUID">
+	      <description>
+	      	<![CDATA[
+				Chaque classe implémentant serializable est identifiée par un serial Version Unique IDentifier.
+				S'il n'est pas explicitement spécifié par la déclaration d'un champ private static final long  nommé
+				serialVersionUID, le système en générera automatiquement un de façon déterministe, à partir du nom
+				de la classe, du nom des interfaces qu'elle implémente, et de ses membres publics et protégés. Si ces valeurs
+				changent par la suite, par exemple en rajoutant une méthode, le serialVersionUID automatiquement généré change,
+				et la compatibilité avec les autres instances n'est plus assurée.
+				Ce serialVersionUID, peut être considéré comme un numéro de série, obligatoire garanti d'intégrité.
+	      	]]>
+	      </description>
+      <priority>3</priority>
+      <properties>
+          <property name="xpath">
+              <value>
+			    <![CDATA[
+			//ClassOrInterfaceDeclaration
+			 [
+			  count(ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration
+			   /FieldDeclaration/VariableDeclarator/VariableDeclaratorId[@Image='serialVersionUID']) = 0
+			and
+			  count(ImplementsList
+			   [ClassOrInterfaceType/@Image='Serializable'
+			   or ClassOrInterfaceType/@Image='java.io.Serializable']) =1
+			and
+			   @Abstract = 'false'
+			]
+			]]>
+              </value>
+          </property>
+      </properties>
+      <example>
+		<![CDATA[
+		public class Foo implements java.io.Serializable {
+		 String name;
+		 // Define serialization id to avoid serialization related bugs
+		 // i.e., public static final long serialVersionUID = 4328743;
+		}
+
+		]]>
+          </example>
+    </rule>
+
+    <rule name="IdempotentOperations"
+          message="Eviter les instructions tautologiques, elles sont inutiles!."
+          ref="rulesets/design.xml/IdempotentOperations">
+	      <description>
+	    		<![CDATA[
+					Eviter les instructions tautologiques, elles sont inutiles!
+				]]>
+	      </description>
+		  <priority>3</priority>
+	      <example>
+	     	<![CDATA[
+				public class Foo {
+				 public void bar() {
+				  int x = 2;
+				  x = x;
+				 }
+				}
+	      	]]>
+	      </example>
+    </rule>
+
+    <rule	name="SimpleDateFormatNeedsLocale"
+        	message="Locale obligatoire pour l'instanciation de SimpleDateFormat."
+        	ref="rulesets/design.xml/SimpleDateFormatNeedsLocale">
+        <description>
+			<![CDATA[
+L'objet locale doit être fourni pour l'instanciation de SimpleDateFormat
+S'assurer que la locale est spécifiée et fournie lors de la création d'une instance de SimpleDateFormat.
+			]]>
+        </description>
+        <priority>3</priority>
+        <example>
+	        <![CDATA[
+				public class Foo {
+				 // Should specify Locale.US (or whatever)
+				 private SimpleDateFormat sdf = new SimpleDateFormat("pattern");
+				}
+	        ]]>
+        </example>
+    </rule>
+
+	<rule  name="AvoidDecimalLiteralsInBigDecimalConstructor"
+    	   message="Utiliser un String pour créer une instance de  BigDecimal à partir d'un décimal "
+    	   ref="rulesets/basic.xml/AvoidDecimalLiteralsInBigDecimalConstructor">
+	  	<description>
+	  	<![CDATA[
+On pourrait penser que new BigDecimal(.1) est exactement égal à « 0,1 », alors qu'il retourne en réalité
+« .1000000000000000055511151231257827021181583404541015625 ». Ceci est dû au fait que « 0,1 » ne peut être
+représenté comme un double (c'est-à-dire, une fraction binaire d'une longueur finie).
+Le constructeur prenant un String est lui par contre complètement prévisible : new BigDecimal(".1") est
+exactement égal à « 0,1 ». Il est donc demandé d'utiliser un String pour créer une instance décimale de
+BigDecimal.
+	  	]]>
+	  	</description>
+		<priority>3</priority>
+  	  	<example>
+			<![CDATA[
+			import java.math.BigDecimal;
+			public class Test {
+
+			    public static void main(String[] args) {
+			      // this would trigger the rule
+			     BigDecimal bd=new BigDecimal(1.123);
+			      // this wouldn't trigger the rule
+			     BigDecimal bd=new BigDecimal("1.123");
+			      // this wouldn't trigger the rule
+			     BigDecimal bd=new BigDecimal(12);
+			    }
+			}
+			]]>
+  		</example>
+	</rule>
+
+	 <rule name="ExcessiveClassLength"
+	       message="400 lignes de code effectif est un maximum pour une classe Java."
+	       ref="rulesets/codesize.xml/ExcessiveClassLength">
+		   <description>
+		   	<![CDATA[
+		   	Est considéré comme code effectif tout code visible sur l'arbre syntaxique abstrait
+		   	 (ou en anglais Abstract Syntax Tree, AST) généré par le compilateur javacc. Pour une
+		   	 définition de l'AST, se référer à http://fr.wikipedia.org/wiki/Arbre_syntaxique_abstrait.
+		   	 Le code effectif correspond donc à l'ensemble des lignes  du fichier contenant le code source,
+		   	 moins les lignes de commentaires et les lignes blanches.
+			Une violation de cette règle indique généralement que la classe « en fait trop ». Essayer de
+			réduire la taille de la méthode en la décomposant en plusieurs, ou en supprimant les éventuels
+			« copier-coller ».
+		   	]]>
+		   </description>
+		   <priority>3</priority>
+	       <properties>
+		       	<property name="minimum" description="The class size reporting threshold"  value="400"/>
+	       </properties>
+		   <example>
+			<![CDATA[
+				public class Foo {
+				  public void bar() {
+				    // 400 lines of code
+				  }
+				}
+			]]>
+		   </example>
+	</rule>
+
+	<rule   name="ExcessiveLineLength"
+	        message="Une ligne ne doit pas dépasser 120 caractères."
+	        class="net.sourceforge.pmd.rules.XPathRule">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //Expression
+                        [(@EndColumn - @BeginColumn ) > 120]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[
+                La longueur des lignes doit en effet être raisonnable, et permettre une lecture aisée des fichiers dans l'environnement de développement standard, sur un écran de résolution standard.
+                Il est pour cela préférable d'éviter les lignes trop longues (plus de 120 caractères) qui rendraient difficile la relecture du code.
+            ]]>
+        </description>
+        <priority>2</priority>
+    </rule>
+
+  	<rule 	name="ExcessiveImports"
+     		message="Un grand nombre d'imports peut indiquer un fort degré de couplage pour certains objets."
+	     	ref="rulesets/coupling.xml/ExcessiveImports">
+		    <description>
+				<![CDATA[
+					Un grand nombre d'imports peut indiquer un fort degré de couplage pour certains objets.
+				]]>
+		  	</description>
+		  	<priority>3</priority>
+			<properties>
+      			<property name="minimum" description="The import count reporting threshold" value="30"/>
+			</properties>
+			<example>
+		      <![CDATA[
+		import blah.blah.Baz;
+		import blah.blah.Bif;
+		// 18 others from the same package elided
+		public class Foo {
+		 public void doWork() {}
+		}
+		      ]]>
+		  </example>
+   </rule>
+
+	<rule name="TooManyFields"
+          message="Une classe ne doit pas avoir plus de 15 variables d'instances."
+          ref="rulesets/codesize.xml/TooManyFields">
+	      <description>
+			<![CDATA[
+				Les classes ayant trop de champs devraient être sujettes à refactoring,
+				en regroupant si possible certains champs en objets.
+			]]>
+	      </description>
+	      <priority>3</priority>
+	      <properties>
+	       <property name="maxfields"  description="The field count reporting threshold " value="15"/>
+	      </properties>
+	      <example>
+	   <![CDATA[
+	public class Person {
+	   String one;
+	   int two;
+	   int three;
+	   [... many more public fields ...]
+	}
+	   ]]>
+	      </example>
+    </rule>
+
+	<rule	name="TooManyMethods"
+		  	message="Une classe ne doit pas avoir plus de 25 méthodes  ."
+		  	class="net.sourceforge.pmd.rules.XPathRule">
+	  		<description>
+	  			<![CDATA[
+		  Un nombre important de méthodes peut indiquer que la classe nécessite d'être découpée en plusieurs, afin notamment de diminuer la difficulté de réalisation des tests.
+		Exception : les classes de données ne sont pas soumises à la règle.
+				]]>
+		  	</description>
+		  	<properties>
+	    	<property name="xpath">
+	    	<value>
+				<![CDATA[
+				//ClassOrInterfaceBody
+				[
+					count(//MethodDeclaration)  > 25
+				]
+				]]>
+		    </value>
+		    </property>
+	  	</properties>
+	  	<priority>3</priority>
+	  	<example>
+		<![CDATA[
+			public class Fuck
+			{
+			// .. here more than 25 methods.
+			}
+		]]>
+	  </example>
+	</rule>
+
+
+ 	<rule name="ExcessiveMethodLength"
+       message="Une méthode ne doit pas dépasser 50 lignes de code effectif."
+       ref="rulesets/codesize.xml/ExcessiveMethodLength">
+	   <description>
+			<![CDATA[
+
+				Pour rappel, est considéré comme code effectif tout code visible sur l'arbre syntaxique
+				abstrait (ou en anglais Abstract Syntax Tree, AST) généré par le compilateur javacc.
+				Pour         une        définition      de       l'AST,       se         référer      à
+				http://fr.wikipedia.org/wiki/Arbre_syntaxique_abstrait. Le code effectif correspond
+				donc à l'ensemble des lignes du fichier contenant le code source, moins les lignes de
+				commentaires et les lignes blanches.
+				Une violation de cette règle indique généralement que la méthode « en fait trop ».
+				Essayer de réduire la taille de la méthode en la décomposant en plusieurs, ou en
+				supprimant les éventuels « copier-coller ».
+			]]>
+	   	</description>
+     	<priority>3</priority>
+   		<properties>
+			<property name="minimum" description="The method size reporting threshold" value="50"/>
+   		</properties>
+	   	<example>
+			<![CDATA[
+			public class Foo {
+			 public void doSomething() {
+			  System.out.println("Hello world!");
+			  System.out.println("Hello world!");
+			  // 98 copies omitted for brevity.
+			 }
+			}
+			]]>
+		</example>
+	</rule>
+
+ 	<rule 	name="ExcessiveParameterList"
+       		message="Une méthode ne doit pas avoir plus de 6 paramètres."
+       		ref="rulesets/codesize.xml/ExcessiveParameterList">
+		   	<description>
+				<![CDATA[
+					Une longue liste de paramètres peut indiquer la nécessité de créer un nouvel objet
+					regroupant ces paramètres.
+				]]>
+		   	</description>
+			<priority>3</priority>
+   			<properties>
+    			<property name="minimum" description="The parameter count reporting threshold" value="7"/>
+   			</properties>
+		   <example>
+				<![CDATA[
+					public class Foo {
+					 public void addData(
+					  int p0, int p1, int p2, int p3, int p4, int p5,
+					  int p5, int p6, int p7, int p8, int p9, int p10) {
+					  }
+					 }
+					}
+				]]>
+		   </example>
+	 	</rule>
+
+
+ 	  <rule name="CyclomaticComplexity"
+	      	message = "Le/La {0} ''{1}'' a une complexité cyclomatic de {2}."
+	      	ref="rulesets/codesize.xml/CyclomaticComplexity">
+		   <description>
+				<![CDATA[
+					La complexité cyclomatique (de McCabe) est déterminée par le nombre de points de
+					décision dans une méthode. Un point de décision correspond à l'occurrence d'un
+					opérateur if, while, do, for, case, catch, ?:, &&, ||. Généralement, une
+					méthode à complexité cyclomatique de 1 à 4 est considérée comme peu complexe, de 5
+					à 7 moyennement complexe, de 8 à 10 complexe, et de plus de 10 très complexe.
+					Ainsi, une méthode à complexité cyclomatique supérieure à 11 devrait être
+					décomposée en plusieurs méthodes, afin de facilité la compréhension de l'algorithme.
+				]]>
+		   </description>
+		   <priority>3</priority>
+		   <properties>
+	      		<property name="reportLevel" description="The Cyclomatic Complexity reporting threshold"  value="10"/>
+	   		</properties>
+	   		<example>
+			<![CDATA[
+			// Cyclomatic Complexity = 12
+			public class Foo {
+			1   public void example()  {
+			2       if (a == b)  {
+			3           if (a1 == b1) {
+			                fiddle();
+			4           } else if a2 == b2) {
+			                fiddle();
+			            }  else {
+			                fiddle();
+			            }
+			5       } else if (c == d) {
+			6           while (c == d) {
+			                fiddle();
+			            }
+			7        } else if (e == f) {
+			8           for (int n = 0; n < h; n++) {
+			                fiddle();
+			            }
+			        } else{
+			            switch (z) {
+			9               case 1:
+			                    fiddle();
+			                    break;
+			10              case 2:
+			                    fiddle();
+			                    break;
+			11              case 3:
+			                    fiddle();
+			                    break;
+			12              default:
+			                    fiddle();
+			                    break;
+			            }
+			        }
+			    }
+			}
+			]]>
+	   </example>
+	</rule>
+
+	 <rule 	name="SwitchDensity"
+	        message="La densité des intructions switch doit être inférieure à 10."
+	        ref="rulesets/design.xml/SwitchDensity">
+	      <description>
+			<![CDATA[
+				Un nombre moyen de lignes de code par case supérieur révèle que l'instruction switch
+				« en fait trop ».
+				Il faudra alors considérer la création de nouvelles méthodes, qui pourront être appelées
+				depuis les case pour en diminuer le nombre de lignes.
+			]]>
+	      </description>
+	      <priority>3</priority>
+        	<properties>
+         <property name="minimum" description="The switch statement ratio reporting threshold" value="10"/>
+        </properties>
+      <example>
+ <![CDATA[
+public class Foo {
+ public void bar(int x) {
+   switch (x) {
+     case 1: {
+       // lots of statements
+       break;
+     } case 2: {
+       // lots of statements
+       break;
+     }
+   }
+ }
+}
+ ]]>
+      </example>
+    </rule>
+
+	<rule 	name="AvoidDeeplyNestedIfStmts"
+        	message="Les instructions if imbriquées sont un maximum."
+        	ref="rulesets/design.xml/AvoidDeeplyNestedIfStmts">
+		    <description>
+		    	<![CDATA[
+				  Cette règle a pour objectif d'améliorer la lisibilité et la bonne et compréhension du code source.
+		    	]]>
+		    </description>
+			<priority>3</priority>
+   			<properties>
+    			<property name="problemDepth" description="The if statement depth reporting threshold" value="3"/>
+   			</properties>
+			<example>
+				<![CDATA[
+				public class Foo {
+				 public void bar(int x, int y, int z) {
+				  if (x>y) {
+				   if (y>z) {
+				    if (z==x) {
+				     // whew, too deep
+				    }
+				   }
+				  }
+				 }
+				}
+				]]>
+		</example>
+    </rule>
+</ruleset>

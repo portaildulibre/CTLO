@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de formatage de code ">
+   	<description>
+		<![CDATA[
+			La finalité des règles relatives au formatage de code est de faciliter la lisibilité et donc la maintenabilité du code en participant à l'uniformité de code.
+			On retrouvera ainsi dans ce chapitre toutes les règles d'usage des séparateurs et règles de pur formatage tels que les retours à la ligne, les lignes blanches, les espaces, les indentations.
+			Elles tendent à rendre le code moins « dense », plus uniforme et donc plus lisible.
+		]]>
+    </description>
+
+    <rule	name="IfStatementSyntax-1"
+        	ref="rulesets/braces.xml/IfElseStmtsMustUseBraces"
+        	message="Mauvais formattage de l''instruction 'if'.">
+
+        <description>
+            <![CDATA[
+           Elle doit avoir une des formes suivantes :
+                       ]]>
+        </description>
+        <priority>3</priority>
+        <example>
+            <![CDATA[
+                if (condition)
+                {
+                    traitements;
+                }
+
+                if (condition)
+                {
+                    traitements;
+                }
+                else
+                {
+                    traitements;
+                }
+
+                if (condition)
+                {
+                    traitements;
+                }
+                else
+                {
+                    if (condition)
+                    {
+                        traitements;
+                    }
+                    else
+                    {
+                        traitements;
+                    }
+
+                }
+                       ]]>
+        </example>
+    </rule>
+
+    <rule   name="IfStatementSyntax-2"
+        	ref="rulesets/braces.xml/IfElseStmtsMustUseBraces"
+       		message="Mauvais formattage de l'instruction 'if'.">
+        <description>
+            <![CDATA[
+                Il est préférable d'utiliser les parenthèses lors de l'usage de plusieurs opérateurs pour éviter des
+                problèmes liés à la priorité des opérateurs.
+                Contre-exemple :
+                Exemple correct :
+                if (i == j && m == n)    // à éviter
+
+                if ((i == j) && (m == n ))    // à utiliser
+
+                De même si la condition dans un opérateur ternaire ? : contient un opérateur binaire, cette condition
+                devrait être mise entre parenthèses.
+                Exemple :( i >= 0 ) ? i : -i;
+                       ]]>
+        </description>
+        <priority>1</priority>
+    </rule>
+    <rule	name="StaticImportOrder"
+        	message="Placer en premier les imports statiques dans la liste des paquetages importés."
+        	class="net.sourceforge.pmd.rules.XPathRule">
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+						//ImportDeclaration
+						[
+							(@Static = 'false')
+							and
+							(position() = 1)
+							and
+							(//ImportDeclaration
+							[
+								(@Static = 'true')
+								and
+								(position() = last())
+							]/attribute::EndLine > @BeginLine)
+						]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <description>
+            <![CDATA[
+Java5 propose une solution pour réduire le code à écrire concernant les membres de classe, en offrant une nouvelle fonctionnalité d'importation de paquetage : l'import statique (static import).
+Cette nouvelle fonctionnalité est développée dans la JSR 201. L'utilisation de l'importation statique s'applique à tous les membres de classe : constantes et méthodes static de la classe/interface importée.
+
+Contre-exemple (en masse) :
+import static java.lang.Math.*;
+
+Exemple correct (de façon fine) :
+import static java.lang.Math.PI;
+
+Une fois ces membres de classe importés ils peuvent être utilisés sans qualification :
+
+double r = cos(PI * theta);
+
+// remplace :
+// double r = Math.cos(Math.PI * theta);
+
+
+L'utilisation systématique de cette fonctionnalité d'import statique peut rendre le code illisible et difficilement maintenable, polluant son espace de nommage (namespace) avec tous les membres de classe importés. Les lecteurs du code (même l'auteur, quelques mois après l'avoir écrit) ne sauront plus de quelles classes un membre statique est originaire. (cf. [TooManyStaticImport])
+Importer tous les membres statiques d'une classe peut être particulièrement dommageable à la lisibilité, il est donc fortement recommandé d'importer chaque membre individuellement et d'éviter le caractère étoile, comme pour l'import classique.
+]]>
+        </description>
+        <priority>2</priority>
+    </rule>
+</ruleset>

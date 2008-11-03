@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de programmation des constructeurs">
+	<description>
+		<![CDATA[
+			Ce sous chapitre précise un ensemble de règles relatives à la programmation des constructeurs.
+			Toutes ces règles tendent vers une amélioration de la lisibilité et de la maintenabilité du code
+			et à la réduction des erreurs. On rappellera à ce sujet que les règles de formatage (cf.[ArrayDeclSyntax])
+			 et de documentation (cf. [JDocMethod])  s'inscrivent  également dans cette recherche de lisibilité et
+			 d'uniformité autour de la programmation des constructeurs.
+		]]>
+	</description>
+
+    <rule name="AtLeastOneConstructor"
+	      message="Toute classe non utilitaire devrait avoir au moins un constructeur"
+	      class="net.sourceforge.pmd.rules.XPathRule">
+		  <description>
+		  <![CDATA[
+				Toute classe non utilitaire devrait avoir au moins un constructeur
+			]]>
+		  </description>
+		  <priority>3</priority>
+		  <properties>
+		      <property name="xpath">
+		          <value>
+		              <![CDATA[
+						//ClassOrInterfaceDeclaration
+							[
+							not(ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration/ConstructorDeclaration)
+							and
+							(@Static = 'false')
+							and
+							( not (count(./descendant::MethodDeclaration[@Static = 'true']) > 0) )
+						]
+						[@Interface='false']
+					]]>
+		          </value>
+		      </property>
+		</properties>
+		<example>
+			  <![CDATA[
+				public class Foo {
+				 // no constructor!  not good!
+				}
+			  ]]>
+	  	</example>
+	</rule>
+
+	<rule name="ConstructorCallsOverridableMethod"
+          message="Pas d'appel à des méthodes surchargeables dans les constructeurs"
+          ref="rulesets/design.xml/ConstructorCallsOverridableMethod">
+    	<description>
+			<![CDATA[
+				Il est recommandé de toujours appeler explicitement le constructeur hérité lors de la
+				redéfinition d'un constructeur dans une classe fille, grâce à l'utilisation du mot clé
+				super.
+			]]>
+		</description>
+		<priority>1</priority>
+		<example>
+			  <![CDATA[
+				public class SeniorClass {
+				  public SeniorClass(){
+				      toString(); //may throw NullPointerException if overridden
+				  }
+				  public String toString(){
+				    return "IAmSeniorClass";
+				  }
+				}
+				public class JuniorClass extends SeniorClass {
+				  private String name;
+				  public JuniorClass(){
+				    super(); //Automatic call leads to NullPointerException
+				    name = "JuniorClass";
+				  }
+				  public String toString(){
+				    return name.toUpperCase();
+				  }
+				}
+				]]>
+		</example>
+    </rule>
+
+	<rule name="NonStaticInitializer"
+    	  message="Les blocs d'initialisation d'instance (non static) sont interdits"
+          class="net.sourceforge.pmd.rules.XPathRule">
+	      <description>
+			<![CDATA[
+				Bien que Java offre cette syntaxe pour initialiser les variables non static pour chaque
+				objet, les initialisations d'instance (non static) sont interdites, car rarement utilisées
+				et peu claires.
+			]]>
+       	</description>
+      	<priority>3</priority>
+        	<properties>
+            	<property name="xpath">
+                	<value>
+						<![CDATA[
+						//Initializer[@Static='false']
+						]]>
+                 </value>
+             </property>
+         </properties>
+       <example>
+   			<![CDATA[
+			public class MyClass
+			{
+			 // this block gets run before any call to a constructor
+			 {
+			  System.out.println("I am about to construct myself");
+			 }
+			}
+	   		]]>
+       </example>
+     </rule>
+
+	<rule	name="ClassWithOnlyPrivateConstructorsShouldBeFinal"
+    	    class="net.sourceforge.pmd.rules.XPathRule"
+    	    message="Une classe qui ne possède que des constructeurs private devrait être final.">
+	        <properties>
+	            <property name="xpath">
+	                <value>
+	                    <![CDATA[
+	                      //ClassOrInterfaceBody[
+							( count(./ClassOrInterfaceBodyDeclaration/ConstructorDeclaration[@Private = 'true']) > 1 )
+							and
+							( count (./ClassOrInterfaceBodyDeclaration/ConstructorDeclaration[@Public = 'true'])  = 0 )
+							]
+	                    ]]>
+	                </value>
+	            </property>
+	        </properties>
+        <description>
+            <![CDATA[
+				Une classe qui ne possède que des constructeurs private devrait être final
+			]]>
+		</description>
+		<priority>2</priority>
+	</rule>
+
+
+    <rule name="MissingStaticMethodInNonInstantiatableClass"
+          message=" Une classe qui ne possède que des constructeurs private et aucune méthode statique est interdite car inutilisable."
+          class="net.sourceforge.pmd.rules.XPathRule">
+	      <description>
+	      	<![CDATA[
+ Une classe qui ne possède que des
+constructeurs private et aucune méthode statique est interdite car
+inutilisable .
+				]]>
+	      </description>
+      <priority>3</priority>
+      <properties>
+          <property name="xpath">
+              <value>
+			    <![CDATA[
+					//ClassOrInterfaceDeclaration[@Nested='false'][
+					( count(./ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration/ConstructorDeclaration)>0
+					  and count(./ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration/ConstructorDeclaration) = count(./ClassOrInterfaceBody/ClassOrInterfaceBodyDeclaration/ConstructorDeclaration[@Private='true']) )
+					and
+					count(.//MethodDeclaration[@Static='true'])=0
+					and
+					count(.//FieldDeclaration[@Private='false'][@Static='true'])=0
+					]
+ 				   ]]>
+              </value>
+          </property>
+      </properties>
+      <example>
+<![CDATA[
+/* This class is unusable, since it cannot be
+ instantiated (private constructor),
+ and no static method can be called.
+ */
+public class Foo {
+ private Foo() {}
+ void foo() {}
+}
+
+]]>
+      </example>
+    </rule>
+
+
+</ruleset>

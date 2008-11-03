@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Règles de nommage des sources">
+   <description>
+		<![CDATA[
+		Ces conventions ont pour but d'améliorer la portabilité, compatibilité, lisibilité, et compréhension du code source.
+		]]>
+    </description>
+    <rule ref="chapitres/02.1-package.xml" />
+    <rule ref="chapitres/02.2-classes.xml" />
+    <rule ref="chapitres/02.3-variables.xml" />
+</ruleset>

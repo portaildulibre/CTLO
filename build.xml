@@ -19,8 +19,70 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 -->
 <project name="terminologie" default="total">
 	<description>This ant file is only to package the AnglicismeThesaurus component</description>
-	<property name="out.path" value="bin/ant" />
-	<property name="version" value="0.0.1" />
+	
+	<property name="out.path" 	value="bin/ant" 		/>
+	<property name="version" 	value="0.0.1" 			/>
+	<property name="src"		value="source"			/>
+	<property name="target"		value="target"			/>
+	
+	<property name="REPO"		value="/home/rpelisse/.m2/repository"	/>
+	<property name="rulesets"	value="pmd.xml"	/>
+	
+	<target name="init">
+		<mkdir dir="${basedir}/${target}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${target}" />
+	</target>
+
+	<target name="quality" depends="pmd"  description="Java Code Quality Control"/>
+		
+	<target name="pmd" depends="init">
+		<path id="pmd.classpath">
+			<pathelement location="${REPO}/pmd/pmd/4.2.4/pmd-4.2.4.jar" />
+			<pathelement location="${REPO}/asm/asm/3.1/asm-3.1.jar" />
+			<pathelement location="${REPO}/backport-util-concurrent/backport-util-concurrent/3.1/backport-util-concurrent-3.1.jar"/>
+			<pathelement location="${REPO}/jaxen/jaxen/1.1.1/jaxen-1.1.1.jar" />
+			<pathelement location="${rulesets}"/>
+		</path>
+		
+		<taskdef 	name="pmd"
+				classname="net.sourceforge.pmd.ant.PMDTask">
+			<classpath refid="pmd.classpath" />
+		</taskdef>
+		
+		<!-- Mise ne place de PMD -->
+		<pmd 	targetjdk="1.5"
+			shortFilenames="true"
+			rulesetfiles="${rulesets}">
+			<formatter 	type="xml"
+					toFile="${target}/pmd.xml"
+					linePrefix=".line" />
+			<formatter 	type="html"
+					toFile="${target}/pmd.html"/>
+			<fileset 	dir="${src}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+		
+		<xslt 	in="${target}/pmd.xml" 
+			style="/perso/workspace/pmd-4.2.4/etc/pmd-nicerhtml.xsl" 
+			out="${target}/pmd.html" />
+		<!-- Mise en place de CPD
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+			<classpath refid="pmd.classpath" />
+		</taskdef>
+		
+		<cpd 	minimumTokenCount="250"
+			outputFile="${report.cpd}">
+			<fileset 	dir="${src}">
+				<include name="**/*.java" />
+			</fileset>
+		</cpd>  -->
+	</target>
+	
+	
 	<target name="package" depends="purge">
 		<mkdir dir="${out.path}" />
 		<copy todir="${out.path}">

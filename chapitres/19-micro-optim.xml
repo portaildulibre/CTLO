@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ruleset name="Micro optimisations">
+	<description>
+		<![CDATA[
+L'objectif des règles suivantes est toujours le gain de performance, même si dans ce chapitre celui-ci
+ sera moins flagrant que pour les règles précédentes.
+		]]>
+	</description>
+
+<rule	name="AvoidUseOfShortType"
+        message="Ne pas utiliser le type short."
+        class="net.sourceforge.pmd.rules.XPathRule">
+        <description>
+            <![CDATA[
+            Java utilise le type short pour réduire l'espace mémoire occupé par les instances, et non pour
+            optimiser le calcul. Au contraire, La JVM ne possède pas d'arithmétique en short.
+
+            Le P-code doit convertir les short en int, faire le calcul et convertir le résultat en short.
+            Il est donc déconseillé d'utiliser short en Java, sauf si l'impact mémoire est très important.
+            ]]>
+        </description>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+			            //PrimitiveType[
+			            starts-with(@Image,'short')
+			            and
+			            ends-with(@Image,'short')
+			            ]
+					]]>
+                </value>
+            </property>
+        </properties>
+        <priority>1</priority>
+        <example>
+            <![CDATA[
+	            public class AvoidUseOfShortType
+				{
+				    private short doNotUseShort = 0;
+
+				    public AvoidUseOfShortType()
+				    {
+				    	short shouldNotBeUsed = 1; doNotUseShort += shouldNotBeUsed;
+					}
+
+				    public void avoirCommonMisinterpretation()
+				    {
+				    	// ... is not an infraction !
+				    	int shortName = 0;
+				    	TypeNameWithshort legal = new TypeNameWithshort(shortName);
+				    }
+
+				    private class TypeNameWithshort
+				    {
+				    	public TypeNameWithshort(int integer)
+					    {
+
+						}
+					}
+				}
+			]]>
+		</example>
+	</rule>
+<!--
+	Won't work in Eclipse D2I as PMD plugin does NOT include pmd-3.9.jar
+	<rule 	name="BigIntegerInstantiation"
+	  		message="Préférer Integer.valueOf() à new Integer()"
+	  		ref="rulesets/basic.xml/BigIntegerInstantiation">
+	  		<description>
+				<![CDATA[
+					Depuis Java5, appeler new Integer() provoque une allocation
+					mémoire. Il est donc préférable d'utiliser Integer.valueOf().
+				]]>
+	  		</description>
+	  		<priority>3</priority>
+	  		<example>
+			<![CDATA[
+				public class BigIntegerInstantiation
+				{
+
+				 public static void main(String[] args) {
+				   BigInteger bi=new BigInteger(1);
+				   BigInteger bi2=new BigInteger("0");
+				   BigInteger bi3=new BigInteger(0.0);
+				   BigInteger bi4;
+				   bi4=new BigInteger(0);
+				 }
+				}
+			]]>
+	  </example>
+	</rule>
+-->
+
+</ruleset>
