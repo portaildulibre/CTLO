@@ -1,0 +1,15 @@
+Outils de conversion de la base CRITER vers un document utilisable dans
+l'extension du correcteur terminologique.
+
+1) Re-mise en forme syntaxiquement correcte de CRITER
+
+Lancer correction_xml.sh
+# correction_xml.sh CRITER.xml CRITER_ok.xml
+
+2) Conversion du XML vers un fichier plat
+
+Lancer correction_xml.php
+# php -f correction_xml.php CRITER_ok.xml > terminologie_fr_FR.dat
+
+Ce dernier fichier terminologie_fr_FR.dat peut maintenant être utilisé
+pour être embarqué dans le correcteur.

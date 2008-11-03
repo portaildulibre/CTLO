@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Correcteur terminologique - éradication des anglicismes.
+Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="dialogues" dlg:left="149" dlg:top="114" dlg:width="204" dlg:height="157" dlg:closeable="true" dlg:moveable="true">
+ <dlg:bulletinboard>
+  <dlg:menulist dlg:id="Domaines" dlg:tab-index="1" dlg:left="2" dlg:top="57" dlg:width="80" dlg:height="98">
+   <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" script:language="Script"/>
+   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:menulist>
+  <dlg:text dlg:id="Label1" dlg:tab-index="4" dlg:left="2" dlg:top="5" dlg:width="140" dlg:height="17" dlg:value="Plus d&apos;informations sur&#x0a;http://www.criter.dglf.culture.gouv.fr/"/>
+  <dlg:menulist dlg:id="Termes" dlg:tab-index="2" dlg:left="86" dlg:top="57" dlg:width="117" dlg:height="98">
+   <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application" script:language="Script"/>
+   <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:menulist>
+  <dlg:button dlg:id="CommandButton2" dlg:tab-index="5" dlg:left="164" dlg:top="28" dlg:width="39" dlg:height="16" dlg:value="Ignorer">
+   <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.DialogClose?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:id="Label2" dlg:tab-index="6" dlg:left="2" dlg:top="25" dlg:width="31" dlg:height="12" dlg:value="Anglicisme :"/>
+  <dlg:textfield dlg:id="anglicisme" dlg:tab-index="7" dlg:left="2" dlg:top="41" dlg:width="63" dlg:height="12" dlg:tabstop="false" dlg:readonly="true"/>
+  <dlg:text dlg:id="Label3" dlg:tab-index="8" dlg:left="86" dlg:top="25" dlg:width="39" dlg:height="12" dlg:value="Remplacer par :"/>
+  <dlg:textfield dlg:id="remplacement" dlg:tab-index="3" dlg:left="86" dlg:top="41" dlg:width="74" dlg:height="12"/>
+  <dlg:button dlg:id="ReplaceButton" dlg:tab-index="0" dlg:left="164" dlg:top="7" dlg:width="39" dlg:height="16" dlg:value="Remplacer" dlg:button-type="ok">
+   <script:event script:event-name="on-keydown" script:macro-name="vnd.sun.star.script:Terminologie.libs.KeyPressedInDialog?language=Basic&amp;location=application" script:language="Script"/>
+   <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.ReplaceAnglicisme?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+ </dlg:bulletinboard>
+</dlg:window>

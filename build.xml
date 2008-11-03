@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+Correcteur terminologique - éradication des anglicismes.
+Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+<project name="terminologie" default="total">
+	<description>This ant file is only to package the AnglicismeThesaurus component</description>
+	<property name="out.path" value="bin/ant" />
+	<property name="version" value="0.0.1" />
+	<target name="package" depends="purge">
+		<mkdir dir="${out.path}" />
+		<copy todir="${out.path}">
+			<fileset dir="bin">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="build">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+		<jar basedir="${out.path}" includes="**/*" destfile="${out.path}/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="RegistrationClassName" value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
+			</manifest>
+			<fileset dir="data"/>
+		</jar>
+		<mkdir dir="${out.path}/META-INF" />
+		<copy todir="${out.path}/META-INF" file="manifest.xml" />
+		<mkdir dir="${out.path}/starBasicLib" />
+		<copy todir="${out.path}/starBasicLib">
+			<fileset dir="starBasicLib">
+				<include name="**/*.xlb" />
+				<include name="**/*.xba" />
+			</fileset>
+		</copy>
+		<mkdir dir="${out.path}/dialogLib" />
+		<copy todir="${out.path}/dialogLib">
+			<fileset dir="dialogLib">
+				<include name="**/*.xlb" />
+				<include name="**/*.xdl" />
+			</fileset>
+		</copy>
+		<copy todir="${out.path}">
+			<fileset dir=".">
+				<include name="**/*.xcu" />
+			</fileset>
+		</copy>
+		<copy todir="${out.path}" file="README" />
+		<copy todir="${out.path}" file="COPYING" />
+		<zip destfile="${out.path}/${ant.project.name}-${version}.uno.pkg"
+			basedir="${out.path}"
+			includes="${ant.project.name}.jar,META-INF/manifest.xml,*.xcu,starBasicLib/*.xlb,starBasicLib/*.xba,dialogLib/*.xlb,dialogLib/*.xdl,README,COPYING" />
+	</target>
+	<target name="purge">
+		<delete failonerror="false" dir="${out.path}" />
+	</target>
+	<target name="deployer">
+		<exec executable="C:\Program Files\OpenOffice.org 2.0\program\unopkg.exe">
+			<arg value="add"/>
+			<arg value="-v"/>
+			<arg file="${out.path}/${ant.project.name}.uno.pkg"/>
+		</exec>
+	</target>
+	<target name="retirer">
+		<exec executable="C:\Program Files\OpenOffice.org 2.0\program\unopkg.exe">
+			<arg value="remove"/>
+			<arg value="-v"/>
+			<arg file="${out.path}/${ant.project.name}.uno.pkg"/>
+		</exec>
+	</target>
+	<target name="total" depends="retirer,package,deployer">
+	</target>
+</project>

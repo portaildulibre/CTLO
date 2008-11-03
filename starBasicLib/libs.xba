@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Correcteur terminologique - éradication des anglicismes.
+Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="libs" script:language="StarBasic">
+&apos; avec du code de :
+&apos; * http://www.kalitech.fr/clients/doc/VB_APIOOo_en.html
+&apos; * http://www.oooforum.org/forum/viewtopic.phtml?t=9356
+&apos; * http://api.openoffice.org/docs/common/ref/com/sun/star/linguistic2/XThesaurus.html 
+&apos; * http://api.openoffice.org/servlets/ReadMsg?list=dev&amp;msgId=683711
+&apos; * http://www.pitonyak.org/oo.php
+
+
+Option Explicit
+
+Global motChoisiPourRemplacement As String
+Global listeDeCandidats As Object
+&apos; oDialog doit être une variable globale : elle est utilisée de l&apos;exécution de procédure lancées
+&apos; depuis la boîte de dialogue.
+Global oDialog As Object
+Global oHelpDialog As Object
+&apos; le curseur sur le texte à remplacer.
+Global xModelCursor As Object
+&apos; l&apos;objet qui va intercepter les frappes de touches
+Global TerminologieKeyHandler As Object
+Global Casse As Integer
+
+Global Const CasseUnknown = 0
+Global Const CasseUCFirst = 1
+Global Const CasseUpper = 2
+Global Const CasseLower = 3
+
+Sub test
+	MsgBox(&quot;coucou&quot;)
+End Sub
+
+&apos;======================================================================
+&apos;======================================================================
+
+&apos; Active le correcteur terminologique en cours de frappe
+Sub SetupKeyHandler
+	keyMutex(&quot;set&quot;,True)
+	addHook
+	keyMutex(&quot;set&quot;,False)
+End sub
+
+&apos; Désactive le correcteur terminologique
+Sub RemoveKeyHandler
+	removeHook
+End Sub
+
+Sub addHook
+	Dim oDoc As Object, oController As Object
+	oDoc =  StarDesktop.CurrentComponent   &apos;ne pas utiliser thisComponent car l&apos;opération 
+								&apos; serait appelée pour tous les fichiers ouverts, y compris les librairies,
+                              	&apos; et ce n&apos;est pas ce qu&apos;on veut
+	If HasUnoInterfaces(oDoc, &quot;com.sun.star.frame.XModel&quot;) Then
+		If oDoc.supportsService(&quot;com.sun.star.text.TextDocument&quot;) Then
+			oController = oDoc.currentController
+			TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
+			oController.addKeyHandler(TerminologieKeyHandler) &apos; Enregistre l&apos;écouteur
+		End If
+	End If
+End Sub
+
+Sub removeHook
+	thisComponent.currentController.removeKeyHandler(TerminologieKeyHandler)
+End Sub
+
+&apos; se lance à la fermeture de l&apos;application
+&apos; Il ne faut pas modifier le nom de cette méthode.
+Sub KeyHandler_disposing
+	RemoveKeyHandler
+End Sub
+
+&apos; se lance quand on relache la touche
+&apos; Il ne faut pas modifier le nom de cette méthode.
+&apos; @return boolean
+Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	KeyHandler_keyReleased = False
+End Sub
+
+&apos; se lance quand on appuie sur la touche
+&apos; Il ne faut pas modifier le nom de cette méthode.
+&apos; @return boolean
+Function KeyHandler_keyPressed(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	KeyHandler_keyPressed = appuiSurUneTouche(oKeyEvent)
+End Function
+
+Function keyMutex(op As String, Optional etat As Boolean)
+	Static mutex As Boolean
+	If op = &quot;get&quot; Then
+		keyMutex = mutex
+	End If
+	If op = &quot;set&quot; Then
+		mutex = etat
+		keyMutex = True
+	End If
+End Function
+
+&apos; @return boolean
+&apos; @author Manuel Odesser modesser@linagora.com
+Function appuiSurUneTouche(oKeyEvent As Object) As Boolean
+	If keyMutex(&quot;get&quot;) Then
+		While keyMutex(&quot;get&quot;)
+			Wait 50
+		Wend
+	End If
+	keyMutex(&quot;set&quot;,True)
+	If isWordBoundary(oKeyEvent.KeyChar) Then
+		&apos; c&apos;est une limite de mot,
+		&apos; maintenant on peut traiter
+		Dim oCurs As Object, xDocumentText As Object
+		Set oCurs = ThisComponent.getCurrentController().getViewCursor()
+		xDocumentText = oCurs.getText()
+		xModelCursor = xDocumentText.createTextCursorByRange(oCurs.getStart())
+		rechercheTerminologique()
+		&apos; on remet les variables globales à leur état d&apos;origine
+		motChoisiPourRemplacement = &quot;&quot;
+		Casse = CasseUnknown
+		Set listeDeCandidats = Nothing
+		Set oDialog = Nothing
+		Set oHelpDialog = Nothing
+		Set xModelCursor = Nothing
+	Else
+		&apos;pas une limite de mot
+	Endif
+	keyMutex(&quot;set&quot;,False)
+	appuiSurUneTouche = False &apos;on laisse se propager l&apos;événement &apos;appui sur la touche&apos;
+End Function
+
+Sub rechercheTerminologique()
+	motChoisiPourRemplacement = trim(getPreviousWord(False,1))
+	If Len(motChoisiPourRemplacement) &gt; 0 Then
+		Casse = GetCasse(motChoisiPourRemplacement)
+		motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
+		listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
+		If UBound(listeDeCandidats) &lt; 0 Then
+			&apos; on n&apos;a rien trouvé pour le mot en cours
+			&apos; alors on cherche une locution de deux mots
+			motChoisiPourRemplacement = trim(getPreviousWord(True,2))
+			Casse = GetCasse(motChoisiPourRemplacement)
+			motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
+			listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
+			If UBound(listeDeCandidats) &lt; 0 Then
+				&apos; on n&apos;a rien trouvé pour la locution en cours
+				&apos; on pourrait continuer ici pour chercher les locutions de trois mots.
+			Else
+				showDialog()
+			End If
+		Else
+			showDialog()
+		End If
+	End If
+End Sub
+
+&apos; @param Integer
+&apos; @return String
+Function getPreviousWord(skipLeftmostSpace As Boolean, wordCount As Integer) As String
+	Dim currentWord As String, previousWord As String, out As String
+	Dim currentWordCount As Integer, res As Variant
+	out = &quot;&quot;
+	previousWord = &quot;&quot;
+	currentWordCount = 0
+	Do
+		res = xModelCursor.goLeft(1,true)
+		If Not res Then
+			&apos; on n&apos;arrive pas à aller plus en arrière
+			out = currentWord
+			Exit Do
+		End If
+		currentWord = xModelCursor.getString()
+		If xModelCursor.isStartOfParagraph() Then
+			&apos; début de §
+			out = currentWord
+			Exit Do
+		end if
+		If isWordBoundary(Mid(currentWord,1,1)) Then
+			currentWordCount = currentWordCount + 1
+			If currentWordCount = wordCount Then
+				&apos; on arrête
+				xModelCursor.goRight(1,true)
+				out = previousWord
+				Exit Do
+			End If
+			If skipLeftmostSpace Then
+				&apos;on continue
+				previousWord = currentWord
+			Else
+				&apos; on arrête
+				Exit Do
+			End If
+		Else
+			&apos;on continue
+			previousWord = currentWord
+		End If
+	Loop
+	getPreviousWord = out
+End Function
+
+&apos; Est-ce que le caractère en cours peut être considéré comme une limite entre mots
+&apos; @return boolean
+&apos; @author Manuel Odesser modesser@linagora.com
+Function isWordBoundary(sKeyChar as String) as Boolean
+	dim oCharacterClassification as Object, nUnicodeType as integer
+	Set oCharacterClassification = CreateUnoService(&quot;com.sun.star.i18n.CharacterClassification&quot;)
+	nUnicodeType = oCharacterClassification.getType(sKeyChar,0)
+	If _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.SPACE_SEPARATOR Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.LINE_SEPARATOR Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.PARAGRAPH_SEPARATOR Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.INITIAL_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.FINAL_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.CONNECTOR_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.START_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.END_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.MATH_SYMBOL Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.CURRENCY_SYMBOL Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.MODIFIER_SYMBOL Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_SYMBOL Then
+		isWordBoundary = true
+	Else
+		isWordBoundary = false
+	Endif
+End Function
+
+Function GetCasse(s As String) As Integer
+	GetCasse = CasseUnknown
+	&apos; test tout en majuscule
+	If UCase(s) = s Then
+		GetCasse = CasseUpper
+	EndIf
+	&apos; test tout en minuscule
+	If LCase(s) = s Then
+		GetCasse = CasseLower
+	EndIf
+	&apos; test pour première lettre en majuscule
+	Dim a As String, b As String
+	a = Left(UCase(s),1)
+	b = Mid(LCase(s),2,Len(s)-1)
+	If a + b = s Then
+		GetCasse = CasseUCFirst
+	EndIf
+End Function
+
+Function SetCasse(casse As Integer, s As String) As String
+	Dim out As String
+	Select Case casse
+		Case CasseUpper
+			out = UCase(s)
+		Case CasseLower
+			out = LCase(s)
+		Case CasseUCFirst
+			out = Left(UCase(s),1) + Mid(LCase(s),2,Len(s)-1)
+		Case CasseUnknown
+			out = s
+	End Select
+	SetCasse = out
+End Function
+&apos;======================================================================
+&apos;======================================================================
+&apos; Fonctions propres à la linguistique
+
+&apos; La fonction qui fait le boulot de recherche dans la base terminologique
+&apos; @return XMeaning[]
+&apos; @author Manuel Odesser modesser@linagora.com
+Function GetThesaurusCandidates(s as String)
+	Dim oAnglicismeThesaurus as Object
+	Dim vReturn As Variant
+	Dim emptyArgs(0) As New com.sun.star.beans.PropertyValue
+	Dim aLocale As New com.sun.star.lang.Locale
+	aLocale.Language = &quot;fr&quot;
+	aLocale.Country = &quot;FR&quot;
+	Set oAnglicismeThesaurus = createUnoService(&quot;org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus&quot;)
+	Set vReturn = oAnglicismeThesaurus.queryMeanings(s, aLocale, emptyArgs())
+	GetThesaurusCandidates = vReturn
+End Function
+
+Sub CheckEachWord()
+	Dim oCursors(), i%
+	If Not CreateFullTextIterator(ThisComponent, oCursors()) Then Exit Sub
+	For i% = LBound(oCursors()) To UBound(oCursors())
+		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
+	Next
+	MsgBox &quot;La vérification terminologique est terminée.&quot;
+End Sub
+
+Sub CheckSelection()
+	Dim oCursors(), i%
+	If Not CreateSelectedTextIterator(ThisComponent, oCursors()) Then Exit Sub
+	For i% = LBound(oCursors()) To UBound(oCursors())
+		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
+	Next
+End Sub
+
+Function CheckWord(vLCursor, vRCursor, oText)
+	Dim tmpCursor As Object, res As Boolean
+	If IsNull(vLCursor) Or IsNull(vRCursor) Or IsNull(oText) Then Exit Function
+	If oText.compareRegionEnds(vLCursor, vRCursor) &lt;= 0 Then Exit Function
+	vLCursor.goLeft(1, False)
+	vRCursor.goRight(1, False)
+	Do
+		If oText.compareRegionStarts(vLCursor, vRCursor) &gt; 0 Then
+			xModelCursor = vRCursor
+			&apos; on tourne pour passer les caractères ne faisant pas partie d&apos;un mot
+			res = xModelCursor.goLeft(1,True)
+			If Not res Then
+				Exit Do
+			End If
+			&apos; on prend un nouveau départ avec une sélection vide
+			xModelCursor.goLeft(0,False)
+			&apos; on y va
+			rechercheTerminologique()
+		Else
+			Exit Function
+		End If
+	Loop
+End Function
+
+&apos;======================================================================
+&apos;======================================================================
+&apos; Fonctions propres à l&apos;interface graphique
+
+&apos; Affiche la boîte de dialogue des anglicismes
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub ShowDialog()
+    Dim oDialogModel As Object, oControlModel As Object
+	Dim sTemp As String
+	Dim j As Integer, k As Integer
+	&apos; on créé la boîte ...
+	DialogConstructor()
+    &apos; ... et on peut la remplir avec les valeurs données par le moteur terminologique.
+    oDialogModel = oDialog.getModel()
+    oControlModel = oDialogModel.getByName(&quot;anglicisme&quot;)
+    oControlModel.setPropertyValue(&quot;Text&quot;, motChoisiPourRemplacement)
+    oControlModel = oDialogModel.getByName(&quot;Domaines&quot;)
+	Dim list(0) As String, x as integer
+	x = 0
+	For j = LBound(listeDeCandidats) To UBound(listeDeCandidats)
+		list(x) = listeDeCandidats(j).getMeaning()
+		x = x+1
+		ReDim Preserve list (x) 
+	Next
+	ReDim Preserve list (x-1)
+	oControlModel.StringItemList=list()
+	&apos; S&apos;il n&apos;y a qu&apos;un domaine, on active directement la colonne des synonymes
+	If UBound(list()) = 0 Then
+		Dim tmp(1) As Integer
+		tmp(0) = 0
+		oControlModel.SelectedItems = tmp()
+		UpdateTermsList
+	EndIf
+	&apos; affiche la boîte de dialogue
+    oDialog.execute()
+End Sub
+
+&apos; Construit la boîte de dialogue
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub DialogConstructor
+    Dim oLibContainer As Object, oInputStreamProvider As Object, oLib As Object
+    Const sLibName = &quot;Terminologie&quot;
+    Const sDialogName = &quot;dialogues&quot;
+    &apos; récupération de la librairie dans laquelle est définie la boîte
+    oLibContainer = DialogLibraries
+    oLibContainer.loadLibrary(sLibName)
+    oLib = oLibContainer.getByName(sLibName)
+    &apos; crée la boîte proprement dite
+    oInputStreamProvider = oLib.getByName(sDialogName)
+    oDialog = CreateUnoDialog(oInputStreamProvider)
+End Sub
+
+&apos; Ferme la boîte de dialogue
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub DialogClose
+	oDialog.endExecute()
+End Sub
+
+&apos; Met à jour la liste des synonymes à partir du sens sélectionné
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub UpdateTermsList()
+    Dim oDialogModel As Object, oControlModel As Object
+    Dim sens as String, j As Integer, k As Integer, l As Integer
+	Dim tmp
+	Dim vSyns As Variant
+    oDialogModel = oDialog.getModel()
+    &apos; on récupère le sens cliqué
+    oControlModel = oDialogModel.getByName(&quot;Domaines&quot;)
+    on error goto noSelectedMeaning
+    sens = oControlModel.StringItemList(oControlModel.SelectedItems(0))
+noSelectedMeaningNext:
+    on error resume next
+    &apos; et on met à jour la liste des synonymes
+    oControlModel = oDialogModel.getByName(&quot;Termes&quot;)
+	For j = LBound(listeDeCandidats) To UBound(listeDeCandidats)
+		tmp = listeDeCandidats(j).getMeaning()
+		If sens = listeDeCandidats(j).getMeaning() Then
+			vSyns = listeDeCandidats(j).querySynonyms()
+			&apos; on ajoute une ligne blanche entre chaque entrée
+			Dim vSyns2(2*UBound(vSyns)) As Variant
+			l = 0
+			For k = LBound(vSyns) To UBound(vSyns)
+				vSyns2(l) = vSyns(k)
+				vSyns2(l+1) = &quot;&quot;
+				l = l + 2
+			Next k
+			oControlModel.StringItemList=vSyns2()
+			Exit For
+		EndIf
+	Next
+	&apos; S&apos;il n&apos;y a qu&apos;un terme, on active directement la colonne des synonymes
+	&apos;  et le bouton &apos;remplacer&apos;
+&apos;	If UBound(vSyns()) = 0 Then
+&apos;		Dim temp(1) As Integer
+&apos;		temp(0) = 0
+&apos;		oControlModel.SelectedItems = temp()
+&apos;		UpdateSelectedTerm
+&apos;		ActivateReplaceButton
+&apos;	EndIf
+	Exit Sub
+
+noSelectedMeaning:
+	sens = 0
+	goto noSelectedMeaningNext
+
+End Sub
+
+&apos; Met à jour la locution remplaçante à partir du terme sélectionné
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub UpdateSelectedTerm()
+    Dim oDialogModel As Object, oControlModel As Object
+    Dim terme as String&apos;, j As Integer
+    dim tmp
+    oDialogModel = oDialog.getModel()
+    &apos; on récupère le terme cliqué
+    oControlModel = oDialogModel.getByName(&quot;Termes&quot;)
+    tmp = oControlModel.SelectedItems
+    tmp = oControlModel.StringItemList
+    on error goto noSelectedWord
+    terme = oControlModel.StringItemList(oControlModel.SelectedItems(0))
+noSelectedWordNext:
+    on error resume next
+    &apos; et on met à jour la liste des synonymes
+    oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
+	oControlModel.setPropertyValue(&quot;Text&quot;,terme)
+	Exit Sub
+
+noSelectedWord:
+	terme = &quot;&quot;
+	goto noSelectedWordNext
+
+End Sub
+
+&apos; Met le focus sur le bouton &apos;Remplacer&apos;
+Sub ActivateReplaceButton()
+    Dim oDialogModel As Object, oControlModel As Object
+    oDialogModel = oDialog.getModel()
+    oControlModel = oDialogModel.getByName(&quot;ReplaceButton&quot;)
+    oControlModel.getFocus()
+End Sub
+
+Sub KeyPressedInDialog(Event As Object)
+	Dim widget As String
+	Dim control As Object
+	widget = Event.Source.Model.Name
+	Select Case widget
+		Case &quot;Domaines&quot;
+			Select Case Event.KeyCode
+				Case com.sun.star.awt.Key.RIGHT
+					UpdateSelectedTerm
+					Set control = oDialog.getControl(&quot;Termes&quot;)
+					control.setFocus()
+				Case com.sun.star.awt.Key.DOWN
+				Case com.sun.star.awt.Key.UP
+					UpdateTermsList
+			End Select
+		Case &quot;Termes&quot;
+			Select Case Event.KeyCode
+				Case com.sun.star.awt.Key.LEFT
+					Set control = oDialog.getControl(&quot;Domaines&quot;)
+					control.setFocus()
+				Case com.sun.star.awt.Key.DOWN
+				Case com.sun.star.awt.Key.UP
+					UpdateSelectedTerm
+			End Select
+		Case &quot;remplacement&quot;
+			Select Case Event.KeyCode
+				Case com.sun.star.awt.Key.RETURN
+					ReplaceAnglicisme
+			End Select
+	End Select
+End Sub
+
+&apos; Remplace le mot en cours par son équivalent français
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub ReplaceAnglicisme()
+    Dim oDialogModel As Object, oControlModel As Object
+    Dim motARemplacer As String
+    oDialogModel = oDialog.getModel()
+    &apos; on récupère le terme cliqué
+    oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
+	motARemplacer = oControlModel.getPropertyValue(&quot;Text&quot;)
+	If motARemplacer &lt;&gt; &quot;&quot; Then
+		&apos; on remplace
+		xModelCursor.setString(SetCasse(Casse,motARemplacer))
+		DialogClose
+	End If
+End Sub
+
+&apos;======================================================================
+
+Sub Aide
+	ShowHelpDialog
+End Sub
+
+&apos; Affiche la boîte de dialogue des anglicismes
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub ShowHelpDialog()
+	&apos; on créé la boîte
+	HelpDialogConstructor()
+	&apos; affiche la boîte de dialogue
+    oHelpDialog.execute()
+End Sub
+
+&apos; Construit la boîte de dialogue de l&apos;aide
+&apos; @author Manuel Odesser modesser@linagora.com
+Sub HelpDialogConstructor()
+    Dim oLibContainer As Object, oInputStreamProvider As Object, oLib As Object
+    Const sLibName = &quot;Terminologie&quot;
+    Const sDialogName = &quot;help_dialog&quot;
+    &apos; récupération de la librairie dans laquelle est définie la boîte
+    oLibContainer = DialogLibraries
+    oLibContainer.loadLibrary(sLibName)
+    oLib = oLibContainer.getByName(sLibName)
+    &apos; crée la boîte proprement dite
+    oInputStreamProvider = oLib.getByName(sDialogName)
+    oHelpDialog = CreateUnoDialog(oInputStreamProvider)
+End Sub
+
+&apos;======================================================================
+&apos;======================================================================
+&apos; Framework texte
+
+&apos; @author Andrew Pitonyak andrew@pitonyak.org
+&apos; @param oDoc is a writer object
+&apos; @parma oCursors() : Has the return cursors
+&apos; @return true if should iterate and false if should not
+Function CreateSelectedTextIterator(oDoc As Object, oCursors()) As Boolean
+	Dim lSelCount As Long &apos;Number of selected sections.
+	Dim lWhichSelection As Long &apos;Current selection item.
+	Dim oSelections &apos;All of the selections
+	Dim oSel &apos;A single selection.
+	Dim oLCurs &apos;Cursor to the left of the current selection.
+	Dim oRCurs &apos;Cursor to the right of the current selection.
+	CreateSelectedTextIterator = True
+	If Not IsAnythingSelected(ThisComponent) Then
+		Dim i%
+	 	i% = MsgBox(&quot;Aucun texte sélectionné !&quot; + Chr(13) + &quot;Vérifier tout le document ?&quot;, _
+			1 OR 32 OR 256, &quot;Terminologie&quot;)
+		If i% = 1 Then
+			oLCurs = oDoc.getText().createTextCursor()
+			oLCurs.gotoStart(False)
+			oRCurs = oDoc.getText().createTextCursor()
+			oRCurs.gotoEnd(False)
+			oCursors = DimArray(0, 1)
+			oCursors(0, 0) = oLCurs
+			oCursors(0, 1) = oRCurs
+		Else
+			oCursors = DimArray()
+			CreateSelectedTextIterator = False
+		End If
+	Else
+		oSelections = ThisComponent.getCurrentSelection()
+		lSelCount = oSelections.getCount()
+		oCursors = DimArray(lSelCount - 1, 1)
+		For lWhichSelection = 0 To lSelCount - 1
+			oSel = oSelections.getByIndex(lWhichSelection)
+			REM If I want to know if NO text is selected, I could
+			REM do the following:
+			REM oLCurs = oSel.getText().CreateTextCursorByRange(oSel)
+			REM If oLCurs.isCollapsed() Then ...
+			oLCurs = GetLeftMostCursor(oSel)
+			oRCurs = GetRightMostCursor(oSel)
+			oCursors(lWhichSelection, 0) = oLCurs
+			oCursors(lWhichSelection, 1) = oRCurs
+		Next
+	End If
+End Function
+
+&apos; @author Andrew Pitonyak andrew@pitonyak.org
+&apos; @param oDoc is a writer object
+&apos; @parma oCursors() : Has the return cursors
+&apos; @return true if should iterate and false if should not
+Function CreateFullTextIterator(oDoc As Object, oCursors()) As Boolean
+	Dim oLCurs &apos;Cursor to the left of the current selection.
+	Dim oRCurs &apos;Cursor to the right of the current selection.
+	CreateFullTextIterator = True
+	oLCurs = oDoc.getText().createTextCursor()
+	oLCurs.gotoStart(False)
+	oRCurs = oDoc.getText().createTextCursor()
+	oRCurs.gotoEnd(False)
+	oCursors = DimArray(0, 1)
+	oCursors(0, 0) = oLCurs
+	oCursors(0, 1) = oRCurs
+End Function
+
+&apos; @author Andrew Pitonyak andrew@pitonyak.org
+&apos; @param oDoc is a writer object
+&apos; @return true if should iterate and false if should not
+Function IsAnythingSelected(oDoc As Object) As Boolean
+	Dim oSelections &apos;All of the selections
+	Dim oSel &apos;A single selection
+	Dim oCursor &apos;A temporary cursor
+	IsAnythingSelected = False
+	If IsNull(oDoc) Then Exit Function
+	&apos; The current selection in the current controller.
+	&apos;If there is no current controller, it returns NULL.
+	oSelections = oDoc.getCurrentSelection()
+	If IsNull(oSelections) Then Exit Function
+	REM I have never seen a selection count of zero
+	If oSelections.getCount() = 0 Then Exit Function
+	REM If there are multiple selections, then certainly
+	REM something is selected
+	If oSelections.getCount() &gt; 1 Then
+		IsAnythingSelected = True
+	Else
+	REM If only one thing is selected, however, then check to see
+	REM if the selection is collapsed. In other words, see if the
+	REM end location is the same as the starting location.
+	REM Notice that I use the text object from the selection object
+	REM because it is safer than assuming that it is the same as the
+	REM documents text object.
+	oSel = oSelections.getByIndex(0)
+	oCursor = oSel.getText().CreateTextCursorByRange(oSel)
+	If Not oCursor.IsCollapsed() Then IsAnythingSelected = True
+	End If
+End Function
+
+&apos; @author Andrew Pitonyak andrew@pitonyak.org
+&apos; @param oSel is a text selection or cursor range
+&apos; @return Object a text cursor
+Function GetLeftMostCursor(oSel As Object) As Object
+	Dim oRange &apos;Left most range.
+	Dim oCursor &apos;Cursor at the left most range.
+	If oSel.getText().compareRegionStarts(oSel.getEnd(), oSel) &gt;= 0 Then
+		oRange = oSel.getEnd()
+	Else
+		oRange = oSel.getStart()
+	End If
+	oCursor = oSel.getText().CreateTextCursorByRange(oRange)
+	oCursor.goRight(0, False)
+	GetLeftMostCursor = oCursor
+End Function
+
+&apos; @author Andrew Pitonyak andrew@pitonyak.org
+&apos; @param oSel is a text selection or cursor range
+&apos; @return Object a text cursor
+Function GetRightMostCursor(oSel As Object) As Object
+	Dim oRange &apos;Right most range.
+	Dim oCursor &apos;Cursor at the right most range.
+	If oSel.getText().compareRegionStarts(oSel.getEnd(), oSel) &gt;= 0 Then
+		oRange = oSel.getStart()
+	Else
+		oRange = oSel.getEnd()
+	End If
+	oCursor = oSel.getText().CreateTextCursorByRange(oRange)
+	oCursor.goLeft(0, False)
+	GetRightMostCursor = oCursor
+End Function
+&apos;======================================================================
+&apos;======================================================================
+&apos; Fonctions de debug
+
+&apos; @author DannyB sur http://www.oooforum.org/
+Sub DescribeWithMsgBox(oObj)
+	Dim cMethods, cProperties
+	cMethods = GetMethods(oObj)
+	MsgBox(cMethods)
+	cProperties = GetProperties(oObj)
+	MsgBox(cProperties)
+End Sub 
+
+&apos; @author DannyB sur http://www.oooforum.org/
+&apos; @return String
+Function GetMethods(oObj)
+	Dim i, oIntrospection, oObjInfo, oMethod, oMethods, nNumMethods, cDscrpt, cMethodName, cInterfaceName
+	oIntrospection = createUnoService(&quot;com.sun.star.beans.Introspection&quot;)
+	oObjInfo = oIntrospection.inspect(oObj)
+	oMethods = oObjInfo.getMethods(com.sun.star.beans.MethodConcept.ALL)
+	nNumMethods = UBound(oMethods) - LBound(oMethods) + 1
+	cDscrpt = CSTR(nNumMethods) + &quot; methods&quot;
+	If nNumMethods &gt; 0 Then
+		cDscrpt = cDscrpt + &quot;...&quot;
+	EndIf
+	For i = LBound(oMethods) To UBound(oMethods)
+		oMethod = oMethods(i)
+		cMethodName = oMethod.getName()
+		cInterfaceName = oMethod.getDeclaringClass().getName()
+		If Len(cDscrpt) &gt; 0 Then
+			cDscrpt = cDscrpt + Chr(13)
+		EndIf
+		cDscrpt = cDscrpt + cInterfaceName + &quot; --&gt; &quot; + cMethodName
+	Next
+	GetMethods() = cDscrpt
+End Function
+
+&apos; @author DannyB sur http://www.oooforum.org/
+&apos; @return String
+Function GetProperties(oObj)
+	Dim i, oIntrospection, oObjInfo, oProperties, nNumProperties, cDscrpt, oProperty, cPropertyName
+	oIntrospection = createUnoService(&quot;com.sun.star.beans.Introspection&quot;)
+	oObjInfo = oIntrospection.inspect(oObj)
+	oProperties = oObjInfo.getProperties(com.sun.star.beans.PropertyConcept.ALL)
+	nNumProperties = UBound(oProperties) - LBound(oProperties) + 1
+	cDscrpt = CSTR(nNumProperties) + &quot; properties&quot;
+	If nNumProperties &gt; 0 Then
+		cDscrpt = cDscrpt + &quot;...&quot;
+	EndIf
+	For i = LBound(oProperties) To UBound(oProperties)
+		oProperty = oProperties(i)
+		cPropertyName = oProperty.Name
+		If Len(cDscrpt) &gt; 0 Then
+			cDscrpt = cDscrpt + Chr(13)
+		EndIf
+		cDscrpt = cDscrpt + cPropertyName
+	Next
+	GetProperties() = cDscrpt
+End Function
+
+</script:module>
