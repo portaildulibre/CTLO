@@ -21,20 +21,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<description>This ant file is only to package the AnglicismeThesaurus component</description>
 	
 	<property name="out.path" 	value="bin/ant" 		/>
-	<property name="version" 	value="0.0.1" 			/>
-	<property name="src"		value="source"			/>
-	<property name="target"		value="target"			/>
+	<property name="version" 	value="0.2" 			/>
+	<property name="src"		value="src"			/>
 	
+	
+	<property name="target"		value="target"			/>
+	<property name="classes"	value="${target}/classes"	/>
+	
+	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"/>
+
 	<property name="REPO"		value="/home/rpelisse/.m2/repository"	/>
 	<property name="rulesets"	value="pmd.xml"	/>
 	
-	<target name="init">
-		<mkdir dir="${basedir}/${target}"/>
-	</target>
+	<path id="project.classpath">
+		<fileset dir="${project.lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
 
 	<target name="clean">
 		<delete dir="${target}" />
+	</target>	
+	
+	<target name="init" depends="clean">
+		<mkdir dir="${basedir}/${target}"/>
 	</target>
+
+	<target name="compile" depends="init">
+		<mkdir dir="${classes}"/>
+		<javac srcdir="${src}"
+		       destdir="${classes}"
+		       debug="true"> <!-- FIXME: should not be debug for release-->
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+	
 
 	<target name="quality" depends="pmd"  description="Java Code Quality Control"/>
 		
@@ -122,13 +143,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</copy>
 		<copy todir="${out.path}" file="README" />
 		<copy todir="${out.path}" file="COPYING" />
+		
 		<zip destfile="${out.path}/${ant.project.name}-${version}.uno.pkg"
 			basedir="${out.path}"
 			includes="${ant.project.name}.jar,META-INF/manifest.xml,*.xcu,starBasicLib/*.xlb,starBasicLib/*.xba,dialogLib/*.xlb,dialogLib/*.xdl,README,COPYING" />
 	</target>
+	
 	<target name="purge">
 		<delete failonerror="false" dir="${out.path}" />
 	</target>
+	
+	
 	<target name="deployer">
 		<exec executable="C:\Program Files\OpenOffice.org 2.0\program\unopkg.exe">
 			<arg value="add"/>
@@ -136,6 +161,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<arg file="${out.path}/${ant.project.name}.uno.pkg"/>
 		</exec>
 	</target>
+	
 	<target name="retirer">
 		<exec executable="C:\Program Files\OpenOffice.org 2.0\program\unopkg.exe">
 			<arg value="remove"/>
@@ -143,6 +169,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<arg file="${out.path}/${ant.project.name}.uno.pkg"/>
 		</exec>
 	</target>
-	<target name="total" depends="retirer,package,deployer">
-	</target>
+	
+	<target name="total" depends="retirer,package,deployer"/>
+
 </project>
