@@ -1,5 +1,5 @@
 /*
-Correcteur terminologique - éradication des anglicismes.
+Correcteur terminologique - Ã©radication des anglicismes.
 Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
 
 This library is free software; you can redistribute it and/or
@@ -19,33 +19,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 package org.linagora.clients.minefi.dpma.terminologie;
 
-//import java.util.Properties;
-import junit.framework.TestCase;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import org.junit.Test;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.Locale;
 import com.sun.star.linguistic2.XMeaning;
 
-public class AnglicismeThesaurusTest extends TestCase {
+public class AnglicismeThesaurusTest extends AnglicismeThesaurus {
 
-	public AnglicismeThesaurusTest(String arg0) {
-		super(arg0);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+	@Test
 	public void testGetLocales() {
-//		Properties truc = System.getProperties();
-		Locale[] ls = new AnglicismeThesaurus().getLocales();
+
+		Locale[] ls = super.getLocales();
 		assertTrue(ls != null && ls.length > 0);
 	}
+	
+	@Test
 	public void testGetSynonyme1() throws IllegalArgumentException, RuntimeException {
 		AnglicismeThesaurus aT = new AnglicismeThesaurus();
 		Locale[] ls = aT.getLocales();
@@ -53,18 +46,23 @@ public class AnglicismeThesaurusTest extends TestCase {
 		XMeaning[] res = aT.queryMeanings("hit-and-run",ls[0],emptyArgs);
 		assertTrue(res != null && res.length > 0);
 	}
+	
+	@Test
 	public void testGetSynonyme2() throws IllegalArgumentException, RuntimeException {
 		AnglicismeThesaurus aT = new AnglicismeThesaurus();
 		Locale[] ls = new AnglicismeThesaurus().getLocales();
 		PropertyValue[] emptyArgs = new PropertyValue[] {};
 		XMeaning[] res = aT.queryMeanings("spam",ls[0],emptyArgs);
-		assertTrue(res != null && res.length > 0);
+		// No entry in dictionnary on 'spam'
+		assertFalse(res != null && res.length > 0);
 	}
+	
+	@Test
 	public void testGetSynonyme3() throws IllegalArgumentException, RuntimeException {
 		AnglicismeThesaurus aT = new AnglicismeThesaurus();
 		Locale[] ls = new AnglicismeThesaurus().getLocales();
 		PropertyValue[] emptyArgs = new PropertyValue[] {};
-		XMeaning[] res = aT.queryMeanings("email",ls[0],emptyArgs);
-		assertTrue(res != null && res.length > 2);
+		XMeaning[] res = aT.queryMeanings("e-mail",ls[0],emptyArgs);
+		assertFalse(res != null && res.length > 2);
 	}
 }

@@ -1,5 +1,5 @@
 /*
-Correcteur terminologique - éradication des anglicismes.
+Correcteur terminologique - ï¿½radication des anglicismes.
 Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
 Copyright (c) 2003 by Sun Microsystems, Inc.
 
@@ -32,17 +32,17 @@ public class XMeaningThesaurus implements
 		this.aSynonyms = aSynonyms;
 		
 		//!! Aucun de ces deux tests ne devrait arriver. 
-		//!! Les valeurs données sont là pour sécurité.
+		//!! Les valeurs donnÃ©es sont lÃ  pour sÃ©curitÃ©.
 		if (this.aMeaning == null)
 			this.aMeaning = new String();
 		
-		// Un sens sans synonymes devrait être valide.
-		// Cependant, on place un tableau vide par sécurité.
+		// Un sens sans synonymes devrait Ãªtre valide.
+		// Cependant, on place un tableau vide par sÃ©curitÃ©.
 		if (this.aSynonyms == null)
 			this.aSynonyms = new String[]{};
 	}
 	
-	// Implémentation des interfaces de XMeaning
+	// ImplÃ©mentation des interfaces de XMeaning
 	public String getMeaning() throws com.sun.star.uno.RuntimeException
 	{
 		return aMeaning;

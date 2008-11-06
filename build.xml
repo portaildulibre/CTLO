@@ -17,21 +17,37 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 -->
-<project name="terminologie" default="total">
+<project name="terminologie" default="package">
 	<description>This ant file is only to package the AnglicismeThesaurus component</description>
 	
+	
+	<!--
+**********************************************************************************************************	    
+	    Warning, those variable are SYSTEM SPECIFIC, you should set them properly
+	    before making any attempt to use run this Ant script.
+**********************************************************************************************************
+	    -->
+	
+	<property name="unopkg.exe"	value="/usr/lib/openoffice.org/program/unopkg.bin"		/>
+	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"/>
+
+	
 	<property name="out.path" 	value="bin/ant" 		/>
-	<property name="version" 	value="0.2" 			/>
+	<property name="version" 	value="0.3" 			/>
 	<property name="src"		value="src"			/>
 	
 	
 	<property name="target"		value="target"			/>
 	<property name="classes"	value="${target}/classes"	/>
 	<property name="package"	value="${target}/package"	/>	
-	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"/>
-
+	<property name="dict"		value="data"			/>
+	<property name="tests"		value="tests"			/>
+	<property name="tests.classes"	value="${target}/tests/classes"	/>
+	<property name="tests.reports"	value="${target}/reports/test"	/>
+	
+	<!-- If REPO is set, tools will maven 2 local repository -->
 	<property name="REPO"		value="/home/rpelisse/.m2/repository"	/>
-	<property name="rulesets"	value="pmd.xml"	/>
+	<property name="rulesets"	value="resources/pmd.xml"	/>
 	
 	<path id="project.classpath">
 		<fileset dir="${project.lib}">
@@ -39,15 +55,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</fileset>
 	</path>
 
-	<target name="clean">
+	<target name="clean"
+		description="Clean working directory">
 		<delete dir="${target}" />
 	</target>	
 	
-	<target name="init" depends="clean">
+	<target name="init" 
+		depends="clean"
+		description="Set up working directory">
 		<mkdir dir="${basedir}/${target}"/>
 	</target>
 
-	<target name="compile" depends="init">
+	<target name="compile" 
+		depends="init"
+		description="Compile project source code">
+		
 		<mkdir dir="${classes}"/>
 		<javac srcdir="${src}"
 		       destdir="${classes}"
@@ -56,7 +78,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</javac>
 	</target>
 	
-	<target name="jar" depends="compile">
+	<!-- Assembling the jar file -->
+	
+	<target name="jar" 
+		depends="compile"
+		description="Create jar file">
 
 		<jar 	basedir="${classes}" 
 		     	includes="**/*" 
@@ -70,37 +96,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		
 	</target>
 	
-	<target name="package" depends="jar">
-		<!--
-		<mkdir 	dir="${package}/META-INF" />
-		<copy 	todir="${out.path}/META-INF" 
-		      	file="manifest.xml" />
-		<mkdir 	dir="${package}/starBasicLib" />
-		<copy 	todir="${package}/starBasicLib">
-			<fileset dir="starBasicLib">
-				<include name="**/*.xlb" />
-				<include name="**/*.xba" />
-			</fileset>
-		</copy>
-		
-		<mkdir dir="${package}/dialogLib" />
-		<copy todir="${package}/dialogLib">
-			<fileset dir="dialogLib">
-				<include name="**/*.xlb" />
-				<include name="**/*.xdl" />
-			</fileset>
-		</copy> 
-		
-		<copy todir="${package}">
-			<fileset dir=".">
-				<include name="**/*.xcu" />
-			</fileset>
-		</copy>
-		
-		<copy todir="${package}" file="README" />
-		<copy todir="${package}" file="COPYING" />
-		
-		-->
+	<!-- Building the pkg file for OOo -->
+	
+	<target name="package" 
+		depends="jar"
+		description="Package application for OOo">
 	
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
 		<zip 	destfile="${target}/${ant.project.name}-${version}.uno.pkg"
@@ -120,8 +120,70 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<delete dir="${package}" />
 	</target>
 
-	<target name="quality" depends="pmd"  description="Java Code Quality Control"/>
+	<!-- Unit test execution -->
+	<target name="compile-test">
+		<mkdir dir="${tests.classes}"/>
+		<javac  srcdir="${tests}"
+			destdir="${tests.classes}">
+			<classpath refid="project.classpath" />
+			<classpath location="${classes}" />
+		</javac>
+	</target>
+	
+	<target name="test" 
+		depends="compile,compile-test"
+		description="Run project unit test">
+		<mkdir dir="${tests.reports}"/>
+		<junit  fork="yes"
+			dir="${basedir}"
+			failureProperty="test.failed">
+			<!-- JUnit does requies project dependancies -->
+			<classpath refid="project.classpath"/>
+			<classpath location="${classes}" />
+			<classpath location="${tests.classes}" />
+			<classpath location="${dict}" />
+						
+			<!-- XML output for result    -->
+			<formatter type="xml" />
+
+			<batchtest todir="${tests.reports}">
+				<fileset dir="${tests}">
+					<include name="**/*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
 		
+        </target>
+	
+	<!-- OOo integration test -->
+	
+	<target name="deploy">
+		<exec executable="${unopkg.exe}"
+		      failonerror="yes"
+		      failifexecutionfails="yes">
+			<arg value="add"/>
+			<arg value="-v"/>
+			<arg file="${target}/${ant.project.name}-${version}.uno.pkg"/>
+		</exec>
+	</target>
+	
+	<target name="remove">
+		<exec executable="${unopkg.exe}"
+		      failonerror="yes"
+		      failifexecutionfails="yes">
+			<arg value="remove"/>
+			<arg value="-v"/>
+			<arg value="${ant.project.name}-${version}.uno.pkg"/>
+		</exec>
+	</target>
+
+	<!-- 
+	     QA tools
+	-->
+	     
+	
+	<target name="quality" depends="pmd"  description="Java Code Quality Control"/>
+	
 	<target name="pmd" depends="init">
 		<path id="pmd.classpath">
 			<pathelement location="${REPO}/pmd/pmd/4.2.4/pmd-4.2.4.jar" />
@@ -136,7 +198,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<classpath refid="pmd.classpath" />
 		</taskdef>
 		
-		<!-- Mise ne place de PMD -->
+		<!-- PMD -->
 		<pmd 	targetjdk="1.5"
 			shortFilenames="true"
 			rulesetfiles="${rulesets}">
@@ -158,36 +220,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<classpath refid="pmd.classpath" />
 		</taskdef>
 		
-		<cpd 	minimumTokenCount="250"
-			outputFile="${report.cpd}">
+		<cpd 	minimumTokenCount="10"
+			outputFile="${target}/cpd.xml">
 			<fileset 	dir="${src}">
 				<include name="**/*.java" />
 			</fileset>
 		</cpd>  
 	</target>
 	
-	<!-- FIXME: To remove ? -->
-	<target name="purge">
-		<delete failonerror="false" dir="${out.path}" />
-	</target>
+
+	
+	<!--
+		Release script  
+	-->
+	
+	<target name="release" depends="package,deploy,remove"/>
 	
 	
-	<target name="deployer">
-		<exec executable="C:\Program Files\OpenOffice.org 2.0\program\unopkg.exe">
-			<arg value="add"/>
-			<arg value="-v"/>
-			<arg file="${out.path}/${ant.project.name}.uno.pkg"/>
-		</exec>
-	</target>
 	
-	<target name="retirer">
-		<exec executable="C:\Program Files\OpenOffice.org 2.0\program\unopkg.exe">
-			<arg value="remove"/>
-			<arg value="-v"/>
-			<arg file="${out.path}/${ant.project.name}.uno.pkg"/>
-		</exec>
-	</target>
-	
-	<target name="total" depends="retirer,package,deployer"/>
 
 </project>

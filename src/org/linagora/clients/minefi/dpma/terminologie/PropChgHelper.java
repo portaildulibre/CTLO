@@ -1,5 +1,5 @@
 /*
-Correcteur terminologique - éradication des anglicismes.
+Correcteur terminologique - ï¿½radication des anglicismes.
 Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
 Copyright (c) 2003 by Sun Microsystems, Inc.
 
@@ -78,11 +78,11 @@ public class PropChgHelper implements
 	
 	public void AddAsListenerTo( XPropertySet xPropertySet )
 	{
-		// Ne plus surveiller les anciens paramètres (s'il y en a).
+		// Ne plus surveiller les anciens paramÃ¨tres (s'il y en a).
 		RemoveAsListener();
 		
-		// Définir le nouveau groupe de propriétés à utiliser et
-		// démarrer la surveillance dessus.
+		// DÃ©finir le nouveau groupe de propriÃ©tÃ©s Ã  utiliser et
+		// dÃ©marrer la surveillance dessus.
 		xPropSet = xPropertySet;
 		if (xPropSet != null)
 		{
@@ -124,7 +124,7 @@ public class PropChgHelper implements
 		}
 	}
 	
-	// __________ méthode des interfaces __________
+	// __________ mÃ©thode des interfaces __________
 	
 	//***************
 	// XEventListener
@@ -144,7 +144,8 @@ public class PropChgHelper implements
 	public void propertyChange( PropertyChangeEvent aEvt )
 	throws com.sun.star.uno.RuntimeException
 	{
-		// sera surchargé dans les classes dérivées
+		// sera surchargÃ© dans les classes dÃ©rivÃ©es
+		
 	}
 	
 	//******************************

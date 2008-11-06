@@ -1,5 +1,5 @@
 /*
- Correcteur terminologique - éradication des anglicismes.
+ Correcteur terminologique - Ã©radication des anglicismes.
  Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
  Copyright (c) 2003 by Sun Microsystems, Inc.
 
@@ -45,7 +45,7 @@ import com.sun.star.uno.UnoRuntime;
 public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 		XInitialization, XServiceDisplayName, XServiceInfo {
 	/**
-	 * @var int Le nombre d'entrée dans la liste terminologique.
+	 * @var int Le nombre d'entrÃ©e dans la liste terminologique.
 	 */
 	private static final int ANGLICISME_PRELOAD_COUNT = 4000;
 	/**
@@ -53,12 +53,12 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 	 */
 	final static String __serviceName = "org.linagora.clients.minefi.dpma.AnglicismeThesaurus";
 	/**
-	 * @var String Chemin vers le fichier de données à l'intérieur du jar
+	 * @var String Chemin vers le fichier de donnÃ©es Ã  l'intÃ©rieur du jar
 	 */
 	final static String dataPath = "/terminologie_fr_FR.dat";
 	PropChgHelper aPropChgHelper;
 	/**
-	 * @var Locale La locale supportée
+	 * @var Locale La locale supportÃ©e
 	 */
 	Locale oLocale;
 	private String encoding;
@@ -67,7 +67,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 	 * Constructeur
 	 */
 	public AnglicismeThesaurus() {
-		// Nom de paramètres utiles à utiliser.
+		// Nom de paramÃ¨tres utiles Ã  utiliser.
 		String[] aProps = new String[] { "IsIgnoreControlCharacters",
 				"IsUseDictionaryList", };
 		aPropChgHelper = new PropChgHelper((XThesaurus) this, aProps);
@@ -80,7 +80,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 				initDataStruct();
 			}
 		} catch (IOException e) {
-			// impossible d'ouvrir le fichier de données
+			// impossible d'ouvrir le fichier de donnÃ©es
 			e.printStackTrace();
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 	}
 
 	/**
-	 * Vérifie si deux locales sont égales.
+	 * VÃ©rifie si deux locales sont Ã©gales.
 	 * 
 	 * @param Locale
 	 *            aLoc1
@@ -135,7 +135,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 				index = tmp[0];
 				count = Integer.parseInt(tmp[1]);
 				XMeaning[] list = new XMeaningThesaurus[count];
-				// on prend les n sens différents du mot en cours
+				// on prend les n sens diffÃ©rents du mot en cours
 				for (int i = 0; i < count; i++) {
 					line = buffer.readLine();
 					String[] tmp2 = new String[] {};
@@ -216,7 +216,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 
 			// Le module linguistic2 n'a pas le droit pas d'envoyer une
 			// exception
-			// en cas de problème. On se contente de renvoyer une valeur vide
+			// en cas de problï¿½me. On se contente de renvoyer une valeur vide
 			// (un XMeaning[]) qui veut dire "on n'a pas pu trouver le mot".
 			if (!hasLocale(aLocale)) {
 				return aRes;
@@ -254,7 +254,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 		if (2 == nLen) {
 			XPropertySet xPropSet = (XPropertySet) UnoRuntime.queryInterface(
 					XPropertySet.class, aArguments[0]);
-			// Commence l'écoute des événements sur les propriétés
+			// Commence l'Ã©coute des Ã©vÃ©nements sur les propriÃ©tÃ©s
 			aPropChgHelper.AddAsListenerTo(xPropSet);
 		}
 	}
@@ -298,16 +298,16 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 	// __________ static things __________
 
 	/**
-	 * Renvoie une usine pour créer le service. Cette méthode est appelée par le
+	 * Renvoie une usine pour crÃ©er le service. Cette mÃ©thode est appelÃ©e par le
 	 * <code>JavaLoader</code>.
 	 * <p>
 	 * 
-	 * @return Renvoie un <code>XSingleServiceFactory</code> pour créer le
+	 * @return Renvoie un <code>XSingleServiceFactory</code> pour crÃ©er le
 	 *         composant.
 	 * @param implName
-	 *            Le nom de l'implémentation pour laquelle le service est voulu.
+	 *            Le nom de l'implÃ©mentation pour laquelle le service est voulu.
 	 * @param multiFactory
-	 *            Le gestionnaire de services à utiliser si besoin.
+	 *            Le gestionnaire de services Ã  utiliser si besoin.
 	 * @param regKey
 	 *            Le registre.
 	 * @see com.sun.star.comp.loader.JavaLoader
@@ -324,11 +324,11 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 	}
 
 	/**
-	 * Inscrit les informations sur le service donné dans le registre donné.
-	 * Cette méthode est appelée par le <code>JavaLoader</code>.
+	 * Inscrit les informations sur le service donnÃ© dans le registre donnÃ©.
+	 * Cette mÃ©thode est appelÃ©e par le <code>JavaLoader</code>.
 	 * <p>
 	 * 
-	 * @return Renvoie true si l'opération est un succès.
+	 * @return Renvoie true si l'opÃ©ration est un succÃ¨s.
 	 * @param xRegKey
 	 *            Le registre.
 	 * @see com.sun.star.comp.loader.JavaLoader
