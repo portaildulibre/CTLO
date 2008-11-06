@@ -1,0 +1,21 @@
+2006-09-11  Sebastien Bahloul <bahloul@linagora.com>
+
+ * Append label hyperlink to open external browser
+ * Modify README encoding to be UTF-8 compliant
+
+2006-09-05  Sebastien Bahloul <bahloul@linagora.com>
+
+ * Updating general dialog "Remplacer" button in order to
+   accept simple "Enter" key validation
+
+2006-08-06  Sebastien Bahloul <bahloul@linagora.com>
+
+ * Updating PHP tools to generate thesaurus
+
+2006-08-05  Sebastien Bahloul <bahloul@linagora.com>
+
+ * Fix quick usage resulting to dead lock and race conditions
+
+2006-08-06  Manuel Odesser <modesser@linagora.com>
+ 
+ * Initial release by Manuel Odesser

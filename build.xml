@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	
 	<property name="target"		value="target"			/>
 	<property name="classes"	value="${target}/classes"	/>
-	
+	<property name="package"	value="${target}/package"	/>	
 	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"/>
 
 	<property name="REPO"		value="/home/rpelisse/.m2/repository"	/>
@@ -56,6 +56,65 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</javac>
 	</target>
 	
+	<target name="jar" depends="compile">
+
+		<jar 	basedir="${classes}" 
+		     	includes="**/*" 
+			destfile="${target}/${ant.project.name}-${version}.jar">
+			<manifest>
+				<attribute 	name="RegistrationClassName" 		
+						value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
+			</manifest>
+			<fileset dir="data"/>
+		</jar>
+		
+	</target>
+	
+	<target name="package" depends="jar">
+		<!--
+		<mkdir 	dir="${package}/META-INF" />
+		<copy 	todir="${out.path}/META-INF" 
+		      	file="manifest.xml" />
+		<mkdir 	dir="${package}/starBasicLib" />
+		<copy 	todir="${package}/starBasicLib">
+			<fileset dir="starBasicLib">
+				<include name="**/*.xlb" />
+				<include name="**/*.xba" />
+			</fileset>
+		</copy>
+		
+		<mkdir dir="${package}/dialogLib" />
+		<copy todir="${package}/dialogLib">
+			<fileset dir="dialogLib">
+				<include name="**/*.xlb" />
+				<include name="**/*.xdl" />
+			</fileset>
+		</copy> 
+		
+		<copy todir="${package}">
+			<fileset dir=".">
+				<include name="**/*.xcu" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${package}" file="README" />
+		<copy todir="${package}" file="COPYING" />
+		
+		-->
+		<mkdir  dir="${package}"/>
+		<zip 	destfile="${target}/${ant.project.name}-${version}.uno.pkg"
+		     	basedir="${package}">
+			<fileset dir="${basedir}/resources"	includes="META-INF/manifest.xml"		/>
+			<fileset dir="${basedir}" 		includes="README"				/>
+			<fileset dir="${basedir}" 		includes="COPYING"				/>
+			<fileset dir="${basedir}/lib"		includes="dialogLib/"				/>
+			<fileset dir="${basedir}/lib"		includes="starBasicLib/"			/>
+			<fileset dir="${basedir}"		includes="images/"				/>
+			<fileset dir="${basedir}/resources" 	includes="*.xcu"				/>
+			<fileset dir="${classes}"								/>
+			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
+		</zip>
+	</target>
 
 	<target name="quality" depends="pmd"  description="Java Code Quality Control"/>
 		
@@ -90,7 +149,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<xslt 	in="${target}/pmd.xml" 
 			style="/perso/workspace/pmd-4.2.4/etc/pmd-nicerhtml.xsl" 
 			out="${target}/pmd.html" />
-		<!-- Mise en place de CPD
+		<!-- Looking for cut'n'paste code -->
 		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
 			<classpath refid="pmd.classpath" />
 		</taskdef>
@@ -100,55 +159,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<fileset 	dir="${src}">
 				<include name="**/*.java" />
 			</fileset>
-		</cpd>  -->
+		</cpd>  
 	</target>
 	
-	
-	<target name="package" depends="purge">
-		<mkdir dir="${out.path}" />
-		<copy todir="${out.path}">
-			<fileset dir="bin">
-				<include name="**/*.class" />
-			</fileset>
-			<fileset dir="build">
-				<include name="**/*.class" />
-			</fileset>
-		</copy>
-		<jar basedir="${out.path}" includes="**/*" destfile="${out.path}/${ant.project.name}.jar">
-			<manifest>
-				<attribute name="RegistrationClassName" value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
-			</manifest>
-			<fileset dir="data"/>
-		</jar>
-		<mkdir dir="${out.path}/META-INF" />
-		<copy todir="${out.path}/META-INF" file="manifest.xml" />
-		<mkdir dir="${out.path}/starBasicLib" />
-		<copy todir="${out.path}/starBasicLib">
-			<fileset dir="starBasicLib">
-				<include name="**/*.xlb" />
-				<include name="**/*.xba" />
-			</fileset>
-		</copy>
-		<mkdir dir="${out.path}/dialogLib" />
-		<copy todir="${out.path}/dialogLib">
-			<fileset dir="dialogLib">
-				<include name="**/*.xlb" />
-				<include name="**/*.xdl" />
-			</fileset>
-		</copy>
-		<copy todir="${out.path}">
-			<fileset dir=".">
-				<include name="**/*.xcu" />
-			</fileset>
-		</copy>
-		<copy todir="${out.path}" file="README" />
-		<copy todir="${out.path}" file="COPYING" />
-		
-		<zip destfile="${out.path}/${ant.project.name}-${version}.uno.pkg"
-			basedir="${out.path}"
-			includes="${ant.project.name}.jar,META-INF/manifest.xml,*.xcu,starBasicLib/*.xlb,starBasicLib/*.xba,dialogLib/*.xlb,dialogLib/*.xdl,README,COPYING" />
-	</target>
-	
+	<!-- FIXME: To remove ? -->
 	<target name="purge">
 		<delete failonerror="false" dir="${out.path}" />
 	</target>

@@ -3,3 +3,4 @@ CVS/*
 .cvsignore
 .project
 .settings/org.eclipse.jdt.core.prefs
+target/*
