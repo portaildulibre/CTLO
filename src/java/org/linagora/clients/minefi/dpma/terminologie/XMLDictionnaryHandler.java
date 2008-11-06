@@ -21,7 +21,6 @@ package org.linagora.clients.minefi.dpma.terminologie;
 
 import java.util.Map;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -30,4 +29,19 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLDictionnaryHandler extends DefaultHandler {
 	private Map resultingMap;
+
+	/**
+	 * @return the resultingMap
+	 */
+	public Map getResultingMap() {
+		return resultingMap;
+	}
+
+	/**
+	 * @param resultingMap the resultingMap to set
+	 */
+	public void setResultingMap(Map resultingMap) {
+		this.resultingMap = resultingMap;
+	}
+	
 }

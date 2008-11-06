@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	
 	<property name="out.path" 	value="bin/ant" 		/>
 	<property name="version" 	value="0.3" 			/>
-	<property name="src"		value="src"			/>
+	<property name="src"		value="src/java"			/>
 	
 	
 	<property name="target"		value="target"			/>
