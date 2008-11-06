@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
+	<classpathentry kind="var" path="OOo/agenda.jar" />
+	<classpathentry kind="var" path="OOo/classes.jar" />
+	<classpathentry kind="var" path="OOo/commonwizards.jar" />
+	<classpathentry kind="var" path="OOo/fax.jar" />
+	<classpathentry kind="var" path="OOo/form.jar" />
+	<classpathentry kind="var" path="OOo/java_uno.jar" />
+	<classpathentry kind="var" path="OOo/js.jar" />
+	<classpathentry kind="var" path="OOo/juh.jar" />
+	<classpathentry kind="var" path="OOo/jurt.jar" />
+	<classpathentry kind="var" path="OOo/jut.jar" />
+	<classpathentry kind="var" path="OOo/letter.jar" />
+	<classpathentry kind="var" path="OOo/officebean.jar" />
+	<classpathentry kind="var" path="OOo/query.jar" />
+	<classpathentry kind="var" path="OOo/report.jar" />
+	<classpathentry kind="var" path="OOo/ridl.jar" />
+	<classpathentry kind="var" path="OOo/ScriptFramework.jar" />
+	<classpathentry kind="var" path="OOo/ScriptProviderForBeanShell.jar" />
+	<classpathentry kind="var" path="OOo/ScriptProviderForJava.jar" />
+	<classpathentry kind="var" path="OOo/ScriptProviderForJavaScript.jar" />
+	<classpathentry kind="var" path="OOo/sdbc_hsqldb.jar" />
+	<classpathentry kind="var" path="OOo/table.jar" />
+	<classpathentry kind="var" path="OOo/unoil.jar" />
+	<classpathentry kind="var" path="OOo/unoloader.jar" />
+	<classpathentry kind="var" path="OOo/web.jar" />
+	<classpathentry kind="var" path="OOo/writer2latex.jar" />
+	<classpathentry kind="var" path="OOo/XMergeBridge.jar" />
+	<classpathentry kind="var" path="OOo/xmerge.jar" />
+	<classpathentry kind="var" path="OOo/XSLTFilter.jar" />
+	<classpathentry kind="var" path="OOo/XSLTValidate.jar" />
+</classpath>
