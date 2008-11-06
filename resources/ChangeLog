@@ -1,3 +1,9 @@
+2008-11-06  Romain Pelisse <romain.pelisse@atosorigin.com>
+
+* Reorganzing project directory
+* Adding missing resources
+* Simplified build process
+
 2006-09-11  Sebastien Bahloul <bahloul@linagora.com>
 
  * Append label hyperlink to open external browser

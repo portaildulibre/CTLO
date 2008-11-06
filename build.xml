@@ -108,6 +108,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<fileset dir="${basedir}/resources"	includes="META-INF/manifest.xml"		/>
 			<fileset dir="${basedir}" 		includes="README"				/>
 			<fileset dir="${basedir}" 		includes="COPYING"				/>
+			<fileset dir="${basedir}"		includes="resources/ChangeLog"			/>
 			<fileset dir="${basedir}/lib"		includes="dialogLib/"				/>
 			<fileset dir="${basedir}/lib"		includes="starBasicLib/"			/>
 			<fileset dir="${basedir}/resources"	includes="images/"				/>
