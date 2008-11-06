@@ -28,20 +28,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 **********************************************************************************************************
 	    -->
 	
-	<property name="unopkg.exe"	value="/usr/lib/openoffice.org/program/unopkg.bin"		/>
-	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"/>
+	<property name="unopkg.exe"		value="/usr/lib/openoffice.org/program/unopkg.bin"		/>
+	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"		/>
 
 	
-	<property name="out.path" 	value="bin/ant" 		/>
-	<property name="version" 	value="0.3" 			/>
-	<property name="src"		value="src/java"			/>
+	<property name="out.path" 		value="bin/ant" 				/>
+	<property name="version" 		value="0.3" 					/>
+	<property name="src.java"		value="src/java"				/>
+	<property name="src.xsl"		value="src/xsl"					/>
 	
-	
-	<property name="target"		value="target"			/>
-	<property name="classes"	value="${target}/classes"	/>
-	<property name="package"	value="${target}/package"	/>	
-	<property name="dict"		value="data"			/>
-	<property name="tests"		value="tests"			/>
+	<property name="target"			value="target"					/>
+	<property name="classes"		value="${target}/classes"		/>
+	<property name="package"		value="${target}/package"		/>	
+	<property name="dict"			value="data"					/>
+	<property name="tests"			value="tests"					/>
 	<property name="tests.classes"	value="${target}/tests/classes"	/>
 	<property name="tests.reports"	value="${target}/reports/test"	/>
 	
@@ -71,11 +71,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		description="Compile project source code">
 		
 		<mkdir dir="${classes}"/>
-		<javac srcdir="${src}"
+		<javac srcdir="${src.java}"
 		       destdir="${classes}"
 		       debug="true"> <!-- FIXME: should not be debug for release-->
 			<classpath refid="project.classpath"/>
 		</javac>
+	</target>
+	
+	<!-- Generating data file from FranceTerme extraction -->
+	
+	<target name="generate-xml-file">
+		<xslt 	in="resources/terminologie.xml"
+				style="src/xsl/franceterme-adaptation.xsl"
+				out="target/franceterme-adapted.xml">
+		</xslt>
 	</target>
 	
 	<!-- Assembling the jar file -->
@@ -207,7 +216,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 					linePrefix=".line" />
 			<formatter 	type="html"
 					toFile="${target}/pmd.html"/>
-			<fileset 	dir="${src}">
+			<fileset 	dir="${src.java}">
 				<include name="**/*.java" />
 			</fileset>
 		</pmd>
@@ -222,7 +231,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		
 		<cpd 	minimumTokenCount="10"
 			outputFile="${target}/cpd.xml">
-			<fileset 	dir="${src}">
+			<fileset 	dir="${src.java}">
 				<include name="**/*.java" />
 			</fileset>
 		</cpd>  
