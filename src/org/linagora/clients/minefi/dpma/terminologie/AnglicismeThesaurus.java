@@ -24,7 +24,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
@@ -39,37 +43,41 @@ import com.sun.star.lib.uno.helper.ComponentBase;
 import com.sun.star.linguistic2.XMeaning;
 import com.sun.star.linguistic2.XThesaurus;
 import com.sun.star.registry.XRegistryKey;
-import com.sun.star.uno.Exception;
 import com.sun.star.uno.UnoRuntime;
 
-public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
-		XInitialization, XServiceDisplayName, XServiceInfo {
+public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XInitialization, XServiceDisplayName, XServiceInfo {
+	
 	/**
 	 * @var int Le nombre d'entrée dans la liste terminologique.
 	 */
-	private static final int ANGLICISME_PRELOAD_COUNT = 4000;
+	private static final int ANGLICISME_PRELOAD_COUNT = 4000; // TODO: Set this from build file
 	/**
 	 * @var String Nom du service UNO
 	 */
-	final static String __serviceName = "org.linagora.clients.minefi.dpma.AnglicismeThesaurus";
+	public final static String __serviceName = "org.linagora.clients.minefi.dpma.AnglicismeThesaurus";
+
 	/**
 	 * @var String Chemin vers le fichier de données à l'intérieur du jar
 	 */
-	final static String dataPath = "/terminologie_fr_FR.dat";
-	PropChgHelper aPropChgHelper;
+	public final static String dataPath = "/terminologie_fr_FR.dat";
+	public final static String xmlDataPath = "/terminologie.xml";
+	
+	public PropChgHelper aPropChgHelper; //FIXME: Should this be public ?
 	/**
 	 * @var Locale La locale supportée
 	 */
-	Locale oLocale;
+	public Locale oLocale;				//FIXME: Should this be public ?
 	private String encoding;
 	private static HashMap data;
+	
+	private boolean loadAsXml = true; 	// Set to false to fallback to the old text file loading process
 	/**
 	 * Constructeur
 	 */
 	public AnglicismeThesaurus() {
+		
 		// Nom de paramètres utiles à utiliser.
-		String[] aProps = new String[] { "IsIgnoreControlCharacters",
-				"IsUseDictionaryList", };
+		String[] aProps = new String[] { "IsIgnoreControlCharacters","IsUseDictionaryList", };
 		aPropChgHelper = new PropChgHelper((XThesaurus) this, aProps);
 		oLocale = new Locale("fr", "FR", "");
 
@@ -77,12 +85,13 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 		try {
 			if(data == null) {
 				data = new HashMap(ANGLICISME_PRELOAD_COUNT);
-				initDataStruct();
+				initDataStruct(loadAsXml);
 			}
-		} catch (IOException e) {
+		} catch ( IOException e) {
 			// impossible d'ouvrir le fichier de données
 			e.printStackTrace();
-		} catch (java.lang.Exception e) {
+		} catch (AnglicismeThesaurusException e) {
+			// the issue is our code
 			e.printStackTrace();
 		}
 	}
@@ -102,9 +111,21 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 				&& aLoc1.Variant.equals(aLoc2.Variant);
 	}
 
+	
+	private String getDataFilePath() {
+		String filepath;
+		if ( this.loadAsXml ) {
+			filepath = AnglicismeThesaurus.xmlDataPath;
+		}
+		else {
+			filepath = AnglicismeThesaurus.dataPath;
+		}
+		return filepath;	
+	}
+	
 	// __________ low level stuff
 
-	/**
+	/*
 	 * Open index and dat files and load list array
 	 * 
 	 * @param String
@@ -113,17 +134,54 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 	 * @throws Exception
 	 * @return boolean
 	 */
-	private boolean initDataStruct() throws IOException, Exception {
+	private boolean initDataStruct(boolean loadAsXML) throws IOException, AnglicismeThesaurusException {
+
+		String filepath = this.getDataFilePath();
+		InputStream dataInputStream = AnglicismeThesaurus.class.getResourceAsStream(filepath);
+		// open the data file
+		if(dataInputStream == null) {
+			throw new AnglicismeThesaurusException("Could not open data file '"+ filepath +"'. The file was not found in the application classpath.");
+		}
+		// Are we using a text file format ?
+		if ( ! loadAsXML ) {
+			extractFromTextFile(dataInputStream);
+		}
+		else {
+			extractFromXmlFile(dataInputStream);
+		}
+		return true;
+	}
+	
+	/*
+	 * Parse the XML input file and load the data from it.
+	 * XML parsing is preferred as XML abstraction layer provides ensure
+	 * minimal encoding issue.
+	 * Also, it allow to directly hierarchical data from the XML files 
+	 * to build the proper object for OO. 
+	 * Note that as we use SAX, rather than DOM, the loading process is
+	 * not so memory consuming. 
+	 *
+	 */
+	private void extractFromXmlFile(InputStream dataInputStream) {
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		XMLDictionnaryHandler xmlHandler = new XMLDictionnaryHandler();
+		xmlHandler.setResultingMap(this.data);
+		try {
+
+		        OutputStreamWriter writer = new OutputStreamWriter (System.out, "UTF8");
+		        SAXParser saxParser = factory.newSAXParser();
+		        saxParser.parse(dataInputStream, xmlHandler);
+
+		  } catch (Throwable err) {
+		        err.printStackTrace ();
+		  }		
+	}
+
+	private void extractFromTextFile(InputStream dataInputStream) throws IOException, AnglicismeThesaurusException {
 		String line;
 		String index;
 		String[] tmp;
 		int count;
-
-		InputStream dataInputStream = AnglicismeThesaurus.class.getResourceAsStream(dataPath);
-		// open the data file
-		if(dataInputStream == null) {
-			throw new Exception("Could not open data file '"+dataPath+"' included in jar archive.");
-		}
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(dataInputStream, "UTF-8"));
 		// Read first line (encoding)
 		setEncoding(buffer.readLine());
@@ -148,11 +206,10 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 				data.put(index, list);
 			} else {
 				buffer.close();
-				throw new Exception("Bad data file format at line '" + line + "' in file '"+dataPath+"' included in jar archive.");
+				throw new AnglicismeThesaurusException("Bad data file format at line '" + line + "' in file '"+dataPath+"' included in jar archive.");
 			}
 		}
 		buffer.close();
-		return true;
 	}
 
 	/**
@@ -216,7 +273,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus,
 
 			// Le module linguistic2 n'a pas le droit pas d'envoyer une
 			// exception
-			// en cas de probl�me. On se contente de renvoyer une valeur vide
+			// en cas de problème. On se contente de renvoyer une valeur vide
 			// (un XMeaning[]) qui veut dire "on n'a pas pu trouver le mot".
 			if (!hasLocale(aLocale)) {
 				return aRes;
