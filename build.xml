@@ -81,10 +81,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<!-- Generating data file from FranceTerme extraction -->
 	
 	<target name="generate-xml-file">
-		<xslt 	in="resources/terminologie.xml"
-				style="src/xsl/franceterme-adaptation.xsl"
-				out="target/franceterme-adapted.xml">
+		<!-- FranceTerme syntax is simplified and data reorganized to
+		     be "anglicism" driven... -->
+		<property name="out" value="target/franceterme-adapted.xml"/>
+		<xslt 	in="resources/extraction.xml"
+			style="src/xsl/franceterme-adaptation.xsl"
+			out="${out}">
 		</xslt>
+		
+		<!-- First transformation create double entry, now we factorized those... -->
+		<xslt 	in="${out}"
+			style="src/xsl/regroup-same-anglicism.xsl"
+			out="target/dictionnary.xml">
+			<param name="ref-file" expression="${basedir}/target/franceterme-adapted.xml"/>
+		</xslt>
+		
+		<!-- Let's remove 'domaine' entry with the same alternative text --> 
+		
+		<!-- Let's remove homographic terms -->
+		
 	</target>
 	
 	<!-- Assembling the jar file -->

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FRANCETERME" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+        </Connections>
+        <Tables>
+        </Tables>
+        <Sources>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="FRANCETERME" msdata:IsDataSet="true" msdata:Locale="fr-FR" msdata:EnforceConstraints="False">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Article">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DatePub" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+              <xs:element name="Terme_Vedette" minOccurs="0" maxOccurs="unbounded"  nillable="true" >
+                <xs:complexType  mixed="true">
+                  <xs:sequence>
+                    <xs:element name="variante" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent msdata:ColumnName="variante_Text" msdata:Ordinal="1">
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="type" form="unqualified" type="xs:string" />
+                            <xs:attribute name="categorie" form="unqualified" type="xs:string" />
+                            <xs:attribute name="origine" form="unqualified" type="xs:string" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    
+                  </xs:sequence>
+                  <xs:attribute name="categorie" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Equivalent" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element name="variante" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent msdata:ColumnName="variante_Text" msdata:Ordinal="1">
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="type" form="unqualified" type="xs:string" />
+                            <xs:attribute name="categorie" form="unqualified" type="xs:string" />
+                            <xs:attribute name="origine" form="unqualified" type="xs:string" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+  
+                  </xs:sequence>
+                  <xs:attribute name="admis" >
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+														<xs:enumeration value="admis"/>
+														<xs:enumeration value="étranger"/>
+											</xs:restriction>
+  									</xs:simpleType> 
+  								</xs:attribute>
+                  <xs:attribute name="langue" form="unqualified" type="xs:string" />
+                  <xs:attribute name="categorie" form="unqualified" type="xs:string" />
+                  <xs:attribute name="origine" form="unqualified" type="xs:string" />
+                  
+                </xs:complexType>
+                                    
+
+              </xs:element>
+              <xs:element name="Synonyme" nillable="true" minOccurs="0" maxOccurs="unbounded" >
+                <xs:complexType>
+                  <xs:simpleContent msdata:ColumnName="Synonyme_Text" msdata:Ordinal="0">
+                    <xs:extension base="xs:string">
+                          <xs:attribute name="categorie" form="unqualified" type="xs:string" />
+                          <xs:attribute name="origine" form="unqualified" type="xs:string" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Domaine" minOccurs="0" maxOccurs="unbounded"  nillable="true" >
+                <xs:complexType  mixed="true">
+                  <xs:sequence>
+                    <xs:element name="Dom" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent msdata:ColumnName="Dom_Text" msdata:Ordinal="1">
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="numero" form="unqualified" type="xs:string" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="S-dom" nillable="true" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent msdata:ColumnName="S-dom_Text" msdata:Ordinal="1">
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="numero" form="unqualified" type="xs:string" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="numero" form="unqualified" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="Equivalent_variante" msdata:parent="Equivalent" msdata:child="variante" msdata:parentkey="Equivalent_Text" msdata:childkey="type" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>
