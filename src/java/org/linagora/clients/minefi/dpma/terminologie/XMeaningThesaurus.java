@@ -20,8 +20,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 package org.linagora.clients.minefi.dpma.terminologie;
 
-public class XMeaningThesaurus implements
-	com.sun.star.linguistic2.XMeaning
+import com.sun.star.linguistic2.XMeaning;
+
+public class XMeaningThesaurus implements XMeaning
 {
 	String aMeaning;
 	String[] aSynonyms;

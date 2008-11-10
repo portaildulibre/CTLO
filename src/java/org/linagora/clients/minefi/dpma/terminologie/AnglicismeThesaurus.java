@@ -20,15 +20,11 @@
 
 package org.linagora.clients.minefi.dpma.terminologie;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import org.linagora.clients.minefi.dpma.terminologie.loader.Loader;
+import org.linagora.clients.minefi.dpma.terminologie.loader.TextFileLoader;
+import org.linagora.clients.minefi.dpma.terminologie.loader.XMLFileLoader;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
@@ -63,14 +59,16 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	public final static String xmlDataPath = "/terminologie.xml";
 	
 	public PropChgHelper aPropChgHelper; //FIXME: Should this be public ?
+	
 	/**
 	 * @var Locale La locale supportée
 	 */
 	public Locale oLocale;				//FIXME: Should this be public ?
+	
 	private String encoding;
 	private static HashMap data;
 	
-	private boolean loadAsXml = true; 	// Set to false to fallback to the old text file loading process
+	private boolean loadAsXml = false; 	// Set to false to fallback to the old text file loading process
 	/**
 	 * Constructeur
 	 */
@@ -82,17 +80,24 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 		oLocale = new Locale("fr", "FR", "");
 
 		// charge les anglicismes
-		try {
-			if(data == null) {
-				data = new HashMap(ANGLICISME_PRELOAD_COUNT);
-				initDataStruct(loadAsXml);
+		if(data == null) {
+			data = new HashMap(ANGLICISME_PRELOAD_COUNT);
+			
+			Loader loader = null;
+			if (loadAsXml) {
+				loader = new XMLFileLoader(xmlDataPath);
 			}
-		} catch ( IOException e) {
-			// impossible d'ouvrir le fichier de données
-			e.printStackTrace();
-		} catch (AnglicismeThesaurusException e) {
-			// the issue is our code
-			e.printStackTrace();
+			else {
+				loader = new TextFileLoader(dataPath);
+			}
+			
+			try {
+				loader.loadDictionnary(data);
+			}
+			catch (AnglicismeThesaurusException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -110,108 +115,8 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 				&& aLoc1.Country.equals(aLoc2.Country)
 				&& aLoc1.Variant.equals(aLoc2.Variant);
 	}
-
 	
-	private String getDataFilePath() {
-		String filepath;
-		if ( this.loadAsXml ) {
-			filepath = AnglicismeThesaurus.xmlDataPath;
-		}
-		else {
-			filepath = AnglicismeThesaurus.dataPath;
-		}
-		return filepath;	
-	}
-	
-	// __________ low level stuff
-
-	/*
-	 * Open index and dat files and load list array
-	 * 
-	 * @param String
-	 *            initDataStruct
-	 * @throws IOException
-	 * @throws Exception
-	 * @return boolean
-	 */
-	private boolean initDataStruct(boolean loadAsXML) throws IOException, AnglicismeThesaurusException {
-
-		String filepath = this.getDataFilePath();
-		InputStream dataInputStream = AnglicismeThesaurus.class.getResourceAsStream(filepath);
-		// open the data file
-		if(dataInputStream == null) {
-			throw new AnglicismeThesaurusException("Could not open data file '"+ filepath +"'. The file was not found in the application classpath.");
-		}
-		// Are we using a text file format ?
-		if ( ! loadAsXML ) {
-			extractFromTextFile(dataInputStream);
-		}
-		else {
-			extractFromXmlFile(dataInputStream);
-		}
-		return true;
-	}
-	
-	/*
-	 * Parse the XML input file and load the data from it.
-	 * XML parsing is preferred as XML abstraction layer provides ensure
-	 * minimal encoding issue.
-	 * Also, it allow to directly hierarchical data from the XML files 
-	 * to build the proper object for OO. 
-	 * Note that as we use SAX, rather than DOM, the loading process is
-	 * not so memory consuming. 
-	 *
-	 */
-	private void extractFromXmlFile(InputStream dataInputStream) {
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		XMLDictionnaryHandler xmlHandler = new XMLDictionnaryHandler();
-		xmlHandler.setResultingMap(this.data);
-		try {
-
-		        OutputStreamWriter writer = new OutputStreamWriter (System.out, "UTF8");
-		        SAXParser saxParser = factory.newSAXParser();
-		        saxParser.parse(dataInputStream, xmlHandler);
-
-		  } catch (Throwable err) {
-		        err.printStackTrace ();
-		  }		
-	}
-
-	private void extractFromTextFile(InputStream dataInputStream) throws IOException, AnglicismeThesaurusException {
-		String line;
-		String index;
-		String[] tmp;
-		int count;
-		BufferedReader buffer = new BufferedReader(new InputStreamReader(dataInputStream, "UTF-8"));
-		// Read first line (encoding)
-		setEncoding(buffer.readLine());
-		// now parse the remaining lines of the index
-		// Read through file one line at time.
-		while ((line = buffer.readLine()) != null) {
-			if (-1 != line.indexOf("|")) {
-				tmp = line.split("\\|");
-				index = tmp[0];
-				count = Integer.parseInt(tmp[1]);
-				XMeaning[] list = new XMeaningThesaurus[count];
-				// on prend les n sens différents du mot en cours
-				for (int i = 0; i < count; i++) {
-					line = buffer.readLine();
-					String[] tmp2 = new String[] {};
-					tmp2 = line.split("\\|");
-					line = tmp2[0];
-					String[] tmp3 = new String[tmp2.length - 1];
-					System.arraycopy(tmp2, 1, tmp3, 0, tmp2.length - 1);
-					list[i] = new XMeaningThesaurus(line, tmp3);
-				}
-				data.put(index, list);
-			} else {
-				buffer.close();
-				throw new AnglicismeThesaurusException("Bad data file format at line '" + line + "' in file '"+dataPath+"' included in jar archive.");
-			}
-		}
-		buffer.close();
-	}
-
+	//FIXME: Are thos actually used by OOo ? 
 	/**
 	 * @return String
 	 */

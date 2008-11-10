@@ -17,28 +17,16 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package org.linagora.clients.minefi.dpma.terminologie;
+package org.linagora.clients.minefi.dpma.terminologie.loader;
 
-import java.io.IOException;
+import java.util.Map;
+
+import org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurusException;
 
 /**
  * @author Romain PELISSE, romain.pelisse@atosorigin.com
  *
  */
-public class AnglicismeThesaurusException extends Exception {
-
-	public AnglicismeThesaurusException(String message) {
-		super(message);
-	}
-
-	public AnglicismeThesaurusException(String message,IOException exception) {
-		super(message,exception);
-	}
-
-	/**
-	 * Default serial ID
-	 */
-	private static final long serialVersionUID = 1L;
-
-
+public interface Loader {
+	public Map loadDictionnary(Map data) throws AnglicismeThesaurusException;
 }

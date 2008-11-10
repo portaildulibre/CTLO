@@ -30,10 +30,8 @@ import com.sun.star.linguistic2.XLinguServiceEventBroadcaster;
 import com.sun.star.linguistic2.XLinguServiceEventListener;
 import com.sun.star.uno.XInterface;
 
-public class PropChgHelper implements
-	XPropertyChangeListener,
-	XLinguServiceEventBroadcaster
-{
+public class PropChgHelper implements XPropertyChangeListener,XLinguServiceEventBroadcaster {
+	
 	XInterface xEvtSource;
 	String[] aPropNames;
 	XPropertySet xPropSet;
