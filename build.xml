@@ -28,32 +28,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 **********************************************************************************************************
 	    -->
 	
-	<property name="unopkg.exe"		value="/usr/lib/openoffice.org/program/unopkg.bin"		/>
-	<property name="project.lib"	value="/usr/lib/openoffice.org/program/classes/"		/>
+	<property name="unopkg.exe"		value="/usr/lib/openoffice.org/program/unopkg.bin"	/>
+	<property name="project.lib"		value="/usr/lib/openoffice.org/program/classes/"	/>
 
 	
-	<property name="out.path" 		value="bin/ant" 				/>
-	<property name="version" 		value="0.3" 					/>
-	<property name="src.java"		value="src/java"				/>
-	<property name="src.xsl"		value="src/xsl"					/>
+	<!-- Regular project property -->
 	
-	<property name="target"			value="target"					/>
-	<property name="classes"		value="${target}/classes"		/>
-	<property name="package"		value="${target}/package"		/>	
-	<property name="dict"			value="data"					/>
-	<property name="tests"			value="tests"					/>
-	<property name="tests.classes"	value="${target}/tests/classes"	/>
-	<property name="tests.reports"	value="${target}/reports/test"	/>
+	<property name="out.path" 		value="bin/ant" 					/>
+	<property name="version" 		value="0.3" 						/>
+	<property name="src.java"		value="src/java"					/>
+	<property name="src.xsl"		value="src/xsl"						/>
 	
-	<!-- If REPO is set, tools will maven 2 local repository -->
-	<property name="REPO"		value="/home/rpelisse/.m2/repository"	/>
-	<property name="rulesets"	value="resources/pmd.xml"	/>
+	<property name="target"			value="target"						/>
+	<property name="classes"		value="${target}/classes"				/>
+	<property name="package"		value="${target}/package"				/>	
+	<property name="dict"			value="data"						/>
+	<property name="tests"			value="tests"						/>
+	<property name="tests.classes"		value="${target}/tests/classes"				/>
+	<property name="tests.reports"		value="${target}/reports/test"				/>
+	<property name="tests.coverage"		value="${target}/coverage/"						/>
+	<property name="REPO"			value="/home/rpelisse/.m2/repository"			/>
+	<property name="rulesets"		value="resources/pmd.xml"				/>
+	
+	<!-- Project classpath : contains anything required to build the plugin -->
 	
 	<path id="project.classpath">
 		<fileset dir="${project.lib}">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
+	
+	<!-- Targets -->
 
 	<target name="clean"
 		description="Clean working directory">
@@ -83,22 +88,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<target name="generate-xml-file">
 		<!-- FranceTerme syntax is simplified and data reorganized to
 		     be "anglicism" driven... -->
-		<property name="out" value="target/franceterme-adapted.xml"/>
+		<property name="out" value="${target}/franceterme-adapted.xml"/>
 		<xslt 	in="resources/extraction.xml"
 			style="src/xsl/franceterme-adaptation.xsl"
 			out="${out}">
 		</xslt>
 		
 		<!-- First transformation create double entry, now we factorized those... -->
+		<property name="basic-database"	value="${target}/basic-database.xml"/>
 		<xslt 	in="${out}"
 			style="src/xsl/regroup-same-anglicism.xsl"
-			out="target/dictionnary.xml">
+			out="${basic-database}">
 			<param name="ref-file" expression="${basedir}/target/franceterme-adapted.xml"/>
 		</xslt>
 		
-		<!-- Let's remove 'domaine' entry with the same alternative text --> 
+		<!-- Let's remove homographic terms (such as 'diffusion', spelled equally in french and in english)-->
+		<property name="database-without-homographies"	value="${target}/db-without-homographies.xml"/>
+		<xslt 	in="${basic-database}"
+			style="src/xsl/remove-homographies.xsl"
+			out="target/database-without-homographies">
+			<param name="ref-file" expression="${basedir}/target/franceterme-adapted.xml"/>
+		</xslt>
+				
+		<!-- Let's remove english word that match french word (such as 'font','des,'ai',...) --> 
+		<property name="database-without-homographies"
+			  value="${target}/database-without-homographies.xml"/>
+		<xslt 	in="${basic-database}"
+			style="src/xsl/remove-homographies.xsl"
+			out="${database-without-homographies}">
+		</xslt>	
 		
-		<!-- Let's remove homographic terms -->
+		<!-- FIXME: This requires a french dictionnary !-->
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/remove-french-word.xsl"
+			out="${target}/terminologie.xml">
+		</xslt>	
 		
 	</target>
 	
@@ -252,8 +276,68 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</cpd>  
 	</target>
 	
-
 	
+	<!-- TODO: this is broken, need to have working emma_ant jar ! -->
+	<target name="tests-coverage">
+
+		<!-- Adding EmmaTask to Ant -->
+		<path id="emma.classpath">
+			<pathelement location="${REPO}/emma/emma/emma-2.0.5312.jar" />
+			<pathelement location="${REPO}/emma/emma_ant/2.0.5312/emma_ant-2.0.5312.jar" />
+		</path>
+		
+		<taskdef name="emma" 
+			 classname="com.vladium.emma.emmaTask">
+			<classpath refid="emma.classpath" />
+		</taskdef>
+		
+		<taskdef name="emmajava" 
+			 classname="com.vladium.emma.emmajavaTask">
+			<classpath refid="emma.classpath" />
+		</taskdef>
+		
+		<echo>Instrumenting project classes ...</echo>
+		<emma 	enabled="true" >
+			<instr instrpath="${classes}"
+			       destdir="${classes}"
+			       metadatafile="${tests.coverage}/metadata.emma"
+			       mode="overwrite">
+			</instr>
+		</emma>
+		
+		<echo>Running instrumented tests classes ...</echo>
+		<emmajava 	enabled="false" 
+				fullmetadata="true">
+			<classpath>
+				<path refid="emma.classpath"/>
+				<pathelement location="${REPO}/junit/junit/4.4/junit-4.4.jar" />
+				<pathelement location="${REPO}/jdom/jdom/1.0/jdom-1.0.jar" />
+				<pathelement location="${REPO}/log4j/log4j/1.2.9/log4j-1.2.9.jar" />
+				<pathelement path="${classes}"/>
+			</classpath>
+			
+		</emmajava>
+		
+		<!-- Genere les rapports -->
+		<echo>Generating Emma reports ...</echo>
+		<emma 	enabled="true" >
+			<report sourcepath="${basedir}/src/java"
+				sort="+name"
+				metrics="method:70,block:80,line:80,class:100">
+				<fileset dir="${tests.coverage}" >
+					<include name="**/*.emma" />
+					<include name="*.ec" />
+				</fileset>
+				<xml 	outfile="${tests.coverage}/coverage.xml" 
+				     	depth="method" />
+				<html 	outfile="${tests.coverage}/coverage.html"
+				      	depth="method" 
+					columns="name,class,method,block,line" />
+			</report>
+		</emma>
+			
+	</target>
+
 	<!--
 		Release script  
 	-->

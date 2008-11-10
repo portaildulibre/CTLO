@@ -24,10 +24,14 @@
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-	
-	<xsl:param name="ref-file"/>
-	<xsl:variable name="index-file" select="document($ref-file)"/>
 
+	<xsl:template match="/">
+<xsl:message>
+Les termes suivants ont été supprimmé car leur unique traduction en anglaise est une homographie du terme français:
+</xsl:message>
+		<xsl:apply-templates select="@*|node()"/>	
+	</xsl:template>
+	
 	<!-- Copy all nodes from here.  -->
     	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -35,44 +39,23 @@
 		</xsl:copy>
     	</xsl:template>
 
-	<xsl:template match="anglicismes">
-		<xsl:element name="anglicismes">
-			<xsl:apply-templates select="@*|node()"/>	
-		</xsl:element>
-	</xsl:template>
-
     	<xsl:template match="anglicisme">
-
-		<!-- FIXME:Warning: must not retreat other entry, need to keep a map of
-			already dealt with entry... ask pps on this matter -->
-		<xsl:variable name="value" select="@id"/>
+		<xsl:variable name="label" select="@id"/>
 		<xsl:choose>
-			<!-- If there is more than one entry associated to this term, we
-				have to merge the data -->
-			<xsl:when test="count($index-file/anglicismes/anglicisme[@id = $value]) > 1">
-				<!--
-				<xsl:message>
-					[<xsl:value-of select="$value"/>] a pour doublon:
-					<xsl:for-each select="$index-file/anglicismes/anglicisme[@id = $value]">
-						{<xsl:value-of select="@id"/>}
-					</xsl:for-each>
-				</xsl:message> -->
-				<xsl:element name="anglicisme">
-					<xsl:attribute name="id">
-						<xsl:value-of select="$value"/>
-					</xsl:attribute>
-					<xsl:element name="domaines">
-						<xsl:for-each select="$index-file/anglicismes/anglicisme[@id = $value]/domaines/domaine">
-								<xsl:copy>
-									<xsl:apply-templates select="@*|node()"/>	
-								</xsl:copy>	
-						</xsl:for-each>
-					</xsl:element>
-				</xsl:element>
-				<!-- TODO: Add this term to 'dealt with' list -->
-				
+			<xsl:when test="domaines/domaine/synonymes/synonyme[text() = $label]">
+				<!-- if there is only one synonym, we remove the entry, otherwise
+					we keep it -->
+				<xsl:choose>
+					<xsl:when test="count(domaines/domaine/synonymes/synonyme) > 1">
+						<xsl:copy>
+							<xsl:apply-templates select="@*|node()"/>	
+						</xsl:copy>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message><xsl:value-of select="$label"/></xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
-			<!-- Otherwise, we simply copy the data ... -->
 			<xsl:otherwise>
 				<xsl:copy>
 					<xsl:apply-templates select="@*|node()"/>	

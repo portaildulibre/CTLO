@@ -25,44 +25,29 @@
 	This script adapts FranceTerme syntax to the simplified syntax used
 	by the plugin:
 	
-	<terme id="anglicisme">
-		<domaine name="nom du domaine">
-			<equivalent>alternatif</equivalent>	
-			<equivalent>alternatif</equivalent>	
-		</domaine>
-		<domaine name="nom du domaine">
-			<equivalent>alternatif</equivalent>	
-			<equivalent>alternatif</equivalent>	
-		</domaine>
-	</terme>
+<anglicismes>
+	<anglicisme id="PCR method">
+		<domaines>
+			<domaine id="Biochimie et biologie moléculaire">
+				<synonymes>
+					<synonyme>amplification en chaîne par polymérase</synonyme>
+				</synonymes>
+			</domaine>
+			<domaine id="Génétique">
+				<synonymes>
+					<synonyme>amplification en chaîne par polymérase</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+	...
 -->
 <xsl:stylesheet version="1.0" 
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-	
 
-	<!-- Copy all nodes from here. 
-    	<xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>	
-		</xsl:copy>
-    	</xsl:template>
--->
-	<!-- We only look for 'anglicisme', therefore we only keep the following node.
-Assembling the XML datafile is a bit tricky as we want to index every english term that are in fact not unique inside the FranceTerme file (basicly, there can two different <Article> that have the same term. (ID and ID_REF attribute in XML technology are designed to answer those kind of issue, however they have not been used for FranceTerme designed).
-
-So, the process to create our database is recursive:
-
-1. First term is encounter, we store it (with its metadata) as an xml structure, inside an xsl:variable.
-
-2. We move to the second term, we check that this new term is not in our variable:
-2.1 If not we add it, redefining a new variable
-2.2 The term is already present, we add the (maybe) new metadata
-
-3. Keep going on...
-	-->
-
+	<!-- Defining the root of the new XML document -->
 	<xsl:template match="/">
 		<anglicismes>		
 			<xsl:apply-templates/>
@@ -72,8 +57,11 @@ TOTAL Anglicismes:<xsl:value-of select="count(//Article/Equivalent[@langue = 'en
 		</xsl:message>
 	</xsl:template>
 
+	<!--
+		For each article we select each Equivalent in english. Each one of those will be the top level entry 
+		of our new XML document.
+	-->
 	<xsl:template match="Article">
-	
 		<xsl:for-each select="Equivalent[(@langue = 'en')]">
 			<!-- FIXME: Gérer les variantes !!! Trouver comment récupérer le text et non les fils !-->
 			<xsl:variable name="anglicisme" select="string(normalize-space(text()))"/>
@@ -82,38 +70,11 @@ TOTAL Anglicismes:<xsl:value-of select="count(//Article/Equivalent[@langue = 'en
 					<xsl:attribute 	name="id"><xsl:value-of select="$anglicisme"/></xsl:attribute>
 					<xsl:choose>	
 						<xsl:when test="count(../Domaine) > 0">
-							<xsl:element name="domaines">
-								<xsl:for-each select="../Domaine/Dom">
-									<xsl:element name="domaine">
-										<xsl:attribute name="id">
-											<xsl:value-of select="string(text())"/>
-										</xsl:attribute>
-										<xsl:element name="synonymes">
-											<!--FIXME: Gérer les variantes ici aussi ! -->
-											<xsl:if 	test="count(../../Terme_Vedette) > 0">
-												<xsl:for-each 		select="../../Terme_Vedette">
-													<xsl:element name="synonyme">
-														<xsl:value-of select="string(normalize-space(text()))"/>
-													</xsl:element>
-												</xsl:for-each>
-											</xsl:if>
-											<xsl:if 	test="count(../../Synonyme) > 0">
-												<xsl:for-each 	select="../../Synonyme">
-													<xsl:element name="synonyme">
-														<xsl:value-of select="string(normalize-space(text()))"/>
-													</xsl:element>
-												</xsl:for-each>
-											</xsl:if>
-							</xsl:element>
-									</xsl:element>
-								</xsl:for-each>
-							</xsl:element>	
-
-							
+							<xsl:call-template name="make-domaines"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:message>
-							Anglicism sans domaine: <xsl:value-of select="$anglicisme"/>
+							Anglicisme sans domaine: <xsl:value-of select="$anglicisme"/>
 							</xsl:message>
 						</xsl:otherwise>
 					</xsl:choose> 
@@ -121,4 +82,101 @@ TOTAL Anglicismes:<xsl:value-of select="count(//Article/Equivalent[@langue = 'en
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
+	
+	<!--
+		Functions area:
+		- - - - - - - -
+
+		Below this limit there is only template called (~ functions)
+	-->
+	
+	<!-- No real need to have a template here, but it does help making
+		this stylesheet more human-readable... -->
+	<xsl:template name="make-domaines">
+		<xsl:element name="domaines">
+			<xsl:for-each select="../Domaine/Dom">
+				<xsl:element name="domaine">
+					<xsl:attribute name="id">
+						<xsl:value-of select="string(normalize-space(text()))"/>
+					</xsl:attribute>
+					<xsl:element name="synonymes">
+						<xsl:if 	test="count(../../Terme_Vedette) > 0">
+							<xsl:for-each 		select="../../Terme_Vedette">
+								<xsl:call-template name="make-synonyme"/>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if 	test="count(../../Synonyme) > 0">
+							<xsl:for-each 	select="../../Synonyme">
+								<xsl:call-template name="make-synonyme"/>
+							</xsl:for-each>
+						</xsl:if>
+					</xsl:element>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+
+	<!-- 
+		Make an <synonyme> entry based on the current node data.
+		Therefore, the following code works on both <Synonyme> and <Terme_Vedette>
+		entry.
+	-->
+	<xsl:template name="make-synonyme">
+
+		<!-- Regrouping all possible text node into a normalized string -->
+		<xsl:variable name="assemble-text">
+                        <xsl:call-template name="recursive-text-assembling">
+                                <xsl:with-param name="text-position"
+                                                select="1"/>
+                                <xsl:with-param name="current-string"
+                                                select="string('')"/>
+                        </xsl:call-template>
+                </xsl:variable>
+
+		<!-- Let remove alternative (useless) data-->	
+		<xsl:variable name="final-form">
+			<xsl:choose>
+				<xsl:when test="contains($assemble-text,',')">
+					<!-- removing the alternative form (if any) -->
+					<xsl:value-of select="substring-before($assemble-text,',')"/>	
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$assemble-text"/>
+				</xsl:otherwise>
+			</xsl:choose>		
+		</xsl:variable>		
+
+		<xsl:element name="synonyme">
+			<xsl:value-of select="$final-form"/>
+		</xsl:element>			
+		
+	</xsl:template>
+
+
+	<!-- TODO: Maybe there is a more conventional way to do this ? -->
+        <xsl:template name="recursive-text-assembling">
+                <xsl:param name="text-position"/>
+                <xsl:param name="current-string"/>
+
+                <xsl:variable   name="text-content"
+                                select="text()[position() = $text-position]"/>
+                <xsl:choose>
+                        <xsl:when test="string-length($text-content) > 0">
+                                <xsl:variable   name="product"
+                                                select="concat($current-string,normalize-space($text-content))"/>
+                                <xsl:call-template name="recursive-text-assembling">
+                                        <xsl:with-param name="text-position"
+                                                        select="number($text-position) + 1"/>
+                                        <xsl:with-param name="current-string"
+                                                        select="$product"/>
+                                </xsl:call-template>
+                        </xsl:when>
+                        <xsl:otherwise>
+                                <xsl:value-of select="$current-string"/>
+                        </xsl:otherwise>
+                </xsl:choose>
+        </xsl:template>
+
+
+
 </xsl:stylesheet>
