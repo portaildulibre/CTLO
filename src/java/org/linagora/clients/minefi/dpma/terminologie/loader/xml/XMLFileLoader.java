@@ -17,16 +17,19 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package org.linagora.clients.minefi.dpma.terminologie.loader;
+package org.linagora.clients.minefi.dpma.terminologie.loader.xml;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.linagora.clients.minefi.dpma.terminologie.XMLDictionnaryHandler;
+import org.linagora.clients.minefi.dpma.terminologie.loader.AbstractLoader;
+import org.xml.sax.SAXException;
 
 /**
  * @author Romain PELISSE, romain.pelisse@atosorigin.com
@@ -58,14 +61,15 @@ public class XMLFileLoader extends AbstractLoader {
 		XMLDictionnaryHandler xmlHandler = new XMLDictionnaryHandler();
 		xmlHandler.setResultingMap(data);
 		try {
-
-		        OutputStreamWriter writer = new OutputStreamWriter (System.out, "UTF8");
-		        SAXParser saxParser = factory.newSAXParser();
-		        saxParser.parse(dataInputStream, xmlHandler);
-
-		  } catch (Throwable err) {
-		        err.printStackTrace ();
-		  }	
+			factory.newSAXParser().parse(dataInputStream, xmlHandler);
+		} catch (SAXException e) {			
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+				
 	}
 
 }

@@ -27,8 +27,14 @@
 
 	<xsl:param name="french-dictionnary-file"/>
 
-	<xsl:variable name="french-dictionnary"	select="document($french-dictionnary-file)"/>
+	<xsl:variable name="french-dictionnary"		select="document($french-dictionnary-file)"/>
 	
+	<xsl:template match="/">
+		<xsl:message>Retrait des anglicism identique à des termes français:</xsl:message>
+		<xsl:apply-templates select="@*|node()"/>	
+	</xsl:template>
+
+
 	<!-- Copy all nodes from here.  -->
     	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -36,22 +42,12 @@
 		</xsl:copy>
     	</xsl:template>
 
+	<!-- FIXME: Need a REAL french dictionnary !!! -->
     	<xsl:template match="anglicisme">
 		<xsl:variable name="label" select="@id"/>
 		<xsl:choose>
-			<xsl:when test="domaines/domaine/synonymes/synonyme[text() = $label]">
-				<!-- if there is only one synonym, we remove the entry, otherwise
-					we keep it -->
-				<xsl:choose>
-					<xsl:when test="count(domaines/domaine/synonymes/synonyme) > 1">
-						<xsl:copy>
-							<xsl:apply-templates select="@*|node()"/>	
-						</xsl:copy>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:message><xsl:value-of select="$label"/></xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
+			<xsl:when test="$french-dictionnary/dictionnaire/mot[text() = $label]">
+				<xsl:message><xsl:value-of select="$label"/></xsl:message>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:copy>

@@ -17,31 +17,35 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package org.linagora.clients.minefi.dpma.terminologie;
+package org.linagora.clients.minefi.dpma.terminologie.loader;
 
-import java.util.Map;
 
-import org.xml.sax.helpers.DefaultHandler;
+import org.junit.After;
+import org.junit.Before;
 
 /**
+ * TODO !
+ * 
  * @author Romain PELISSE, romain.pelisse@atosorigin.com
  *
  */
-public class XMLDictionnaryHandler extends DefaultHandler {
-	private Map resultingMap;
+public class XMLFileLoaderTest {
 
 	/**
-	 * @return the resultingMap
+	 * @throws java.lang.Exception
 	 */
-	public Map getResultingMap() {
-		return resultingMap;
+	@Before
+	public void setUp() throws Exception {
 	}
 
 	/**
-	 * @param resultingMap the resultingMap to set
+	 * @throws java.lang.Exception
 	 */
-	public void setResultingMap(Map resultingMap) {
-		this.resultingMap = resultingMap;
+	@After
+	public void tearDown() throws Exception {
 	}
+
+	
+	
 	
 }

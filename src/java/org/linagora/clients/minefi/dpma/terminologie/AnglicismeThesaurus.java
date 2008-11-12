@@ -21,10 +21,11 @@
 package org.linagora.clients.minefi.dpma.terminologie;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.linagora.clients.minefi.dpma.terminologie.loader.Loader;
-import org.linagora.clients.minefi.dpma.terminologie.loader.TextFileLoader;
-import org.linagora.clients.minefi.dpma.terminologie.loader.XMLFileLoader;
+import org.linagora.clients.minefi.dpma.terminologie.loader.text.TextFileLoader;
+import org.linagora.clients.minefi.dpma.terminologie.loader.xml.XMLFileLoader;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
@@ -66,14 +67,28 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	public Locale oLocale;				//FIXME: Should this be public ?
 	
 	private String encoding;
-	private static HashMap data;
+	private static Map data;
 	
-	private boolean loadAsXml = false; 	// Set to false to fallback to the old text file loading process
+	private boolean loadAsXml = true; 	// Set to false to fallback to the old text file loading process
 	/**
 	 * Constructeur
 	 */
 	public AnglicismeThesaurus() {
-		
+		init();
+	}
+	
+	/**
+	 * <p>This constructor is merely for test, it should not be used while the plugin
+	 * is running inside OOo</p>
+	 * 
+	 * @param loadAsXML
+	 */
+	public AnglicismeThesaurus(boolean loadAsXml) {
+		this.loadAsXml = loadAsXml;
+		init();
+	}
+	
+	private void init() {
 		// Nom de paramètres utiles à utiliser.
 		String[] aProps = new String[] { "IsIgnoreControlCharacters","IsUseDictionaryList", };
 		aPropChgHelper = new PropChgHelper((XThesaurus) this, aProps);

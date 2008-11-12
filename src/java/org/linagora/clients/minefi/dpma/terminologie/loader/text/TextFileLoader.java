@@ -17,7 +17,7 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-package org.linagora.clients.minefi.dpma.terminologie.loader;
+package org.linagora.clients.minefi.dpma.terminologie.loader.text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurusException;
 import org.linagora.clients.minefi.dpma.terminologie.XMeaningThesaurus;
+import org.linagora.clients.minefi.dpma.terminologie.loader.AbstractLoader;
 
 import com.sun.star.linguistic2.XMeaning;
 
@@ -67,12 +68,12 @@ public class TextFileLoader extends AbstractLoader {
 					// on prend les n sens différents du mot en cours
 					for (int i = 0; i < count; i++) {
 						line = buffer.readLine();
-						String[] tmp2 = new String[] {};
-						tmp2 = line.split("\\|");
-						line = tmp2[0];
-						String[] tmp3 = new String[tmp2.length - 1];
-						System.arraycopy(tmp2, 1, tmp3, 0, tmp2.length - 1);
-						list[i] = new XMeaningThesaurus(line, tmp3);
+						String[] stringBufferArray = new String[] {};
+						stringBufferArray = line.split("\\|");
+						String domain = stringBufferArray[0];
+						String[] term = new String[stringBufferArray.length - 1];
+						System.arraycopy(stringBufferArray, 1, term, 0, stringBufferArray.length - 1);
+						list[i] = new XMeaningThesaurus(domain, term);
 					}
 					data.put(index, list);
 				} else {

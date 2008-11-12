@@ -43,10 +43,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="classes"		value="${target}/classes"				/>
 	<property name="package"		value="${target}/package"				/>	
 	<property name="dict"			value="data"						/>
+	<property name="dict.xml"		value="${target}/terminologie.xml"			/>
 	<property name="tests"			value="tests"						/>
 	<property name="tests.classes"		value="${target}/tests/classes"				/>
 	<property name="tests.reports"		value="${target}/reports/test"				/>
-	<property name="tests.coverage"		value="${target}/coverage/"						/>
+	<property name="tests.coverage"		value="${target}/coverage/"				/>
 	<property name="REPO"			value="/home/rpelisse/.m2/repository"			/>
 	<property name="rulesets"		value="resources/pmd.xml"				/>
 	
@@ -121,9 +122,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<!-- FIXME: This requires a french dictionnary !-->
 		<xslt 	in="${database-without-homographies}"
 			style="src/xsl/remove-french-word.xsl"
-			out="${target}/terminologie.xml">
+			out="${dict.xml}">
+			<param name="french-dictionnary-file" expression="${basedir}/resources/fr_FR.dic.xml"/>
 		</xslt>	
 		
+		<!-- Custom removal seems quite necessary...
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/remove-french-word.xsl"
+			out="${dict.xml}">
+			<param name="french-dictionnary-file" expression="${basedir}/resources/fr_FR.dic.xml"/>
+		</xslt>	
+		-->
 	</target>
 	
 	<!-- Assembling the jar file -->
@@ -179,7 +188,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	</target>
 	
 	<target name="test" 
-		depends="compile,compile-test"
+		depends="compile,compile-test,generate-xml-file"
 		description="Run project unit test">
 		<mkdir dir="${tests.reports}"/>
 		<junit  fork="yes"
@@ -189,8 +198,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<classpath refid="project.classpath"/>
 			<classpath location="${classes}" />
 			<classpath location="${tests.classes}" />
+			<!-- Old database (Criter) -->
 			<classpath location="${dict}" />
-						
+			<!-- New one -->
+			<classpath location="${target}"/>
 			<!-- XML output for result    -->
 			<formatter type="xml" />
 
