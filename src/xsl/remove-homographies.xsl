@@ -27,7 +27,7 @@
 
 	<xsl:template match="/">
 <xsl:message>
-Les termes suivants ont été supprimmé car leur unique traduction en anglaise est une homographie du terme français:
+Les termes suivants ont été supprimmé car leur unique traduction anglaise est une homographie du terme français:
 </xsl:message>
 		<xsl:apply-templates select="@*|node()"/>	
 	</xsl:template>

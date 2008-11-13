@@ -5,7 +5,7 @@
 		Ces conventions ont pour but d'améliorer la portabilité, compatibilité, lisibilité, et compréhension du code source.
 		]]>
     </description>
-    <rule ref="chapitres/02.1-package.xml" />
-    <rule ref="chapitres/02.2-classes.xml" />
-    <rule ref="chapitres/02.3-variables.xml" />
+    <rule ref="resources/chapitres/02.1-package.xml" />
+    <rule ref="resources/chapitres/02.2-classes.xml" />
+    <rule ref="resources/chapitres/02.3-variables.xml" />
 </ruleset>

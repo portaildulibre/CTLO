@@ -104,35 +104,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</xslt>
 		
 		<!-- Let's remove homographic terms (such as 'diffusion', spelled equally in french and in english)-->
-		<property name="database-without-homographies"	value="${target}/db-without-homographies.xml"/>
-		<xslt 	in="${basic-database}"
-			style="src/xsl/remove-homographies.xsl"
-			out="target/database-without-homographies">
-			<param name="ref-file" expression="${basedir}/target/franceterme-adapted.xml"/>
-		</xslt>
-				
-		<!-- Let's remove english word that match french word (such as 'font','des,'ai',...) --> 
 		<property name="database-without-homographies"
 			  value="${target}/database-without-homographies.xml"/>
 		<xslt 	in="${basic-database}"
 			style="src/xsl/remove-homographies.xsl"
 			out="${database-without-homographies}">
 		</xslt>	
-		
-		<!-- FIXME: This requires a french dictionnary !-->
-		<xslt 	in="${database-without-homographies}"
-			style="src/xsl/remove-french-word.xsl"
-			out="${dict.xml}">
-			<param name="french-dictionnary-file" expression="${basedir}/resources/fr_FR.dic.xml"/>
-		</xslt>	
-		
-		<!-- Custom removal seems quite necessary...
-		<xslt 	in="${database-without-homographies}"
-			style="src/xsl/remove-french-word.xsl"
-			out="${dict.xml}">
-			<param name="french-dictionnary-file" expression="${basedir}/resources/fr_FR.dic.xml"/>
-		</xslt>	
-		-->
+		<move file="${database-without-homographies}" tofile="${dict.xml}"/>		
 	</target>
 	
 	<!-- Assembling the jar file -->
@@ -272,7 +250,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</pmd>
 		
 		<xslt 	in="${target}/pmd.xml" 
-			style="/perso/workspace/pmd-4.2.4/etc/pmd-nicerhtml.xsl" 
+			style="/perso/workspace/pmd-trunk/etc/pmd-nicerhtml.xsl" 
 			out="${target}/pmd.html" />
 		<!-- Looking for cut'n'paste code -->
 		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">

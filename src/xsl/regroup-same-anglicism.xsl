@@ -28,6 +28,12 @@
 	<xsl:param name="ref-file"/>
 	<xsl:variable name="index-file" select="document($ref-file)"/>
 
+
+
+	<xsl:key 	name="context-key" match="//anglicisme" use="@id" />
+	<xsl:variable 	name="unique-anglicisme"
+			select="//anglicisme[generate-id()=generate-id(key('context-key',@id))]"/>
+
 	<!-- Copy all nodes from here.  -->
     	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -37,49 +43,17 @@
 
 	<xsl:template match="anglicismes">
 		<xsl:element name="anglicismes">
-			<xsl:apply-templates select="@*|node()"/>	
-		</xsl:element>
-	</xsl:template>
-
-    	<xsl:template match="anglicisme">
-
-		<!-- FIXME:Warning: must not retreat other entry, need to keep a map of
-			already dealt with entry... ask pps on this matter -->
-		<xsl:variable name="value" select="@id"/>
-		<xsl:choose>
-			<!-- If there is more than one entry associated to this term, we
-				have to merge the data -->
-			<xsl:when test="count($index-file/anglicismes/anglicisme[@id = $value]) > 1">
+			<xsl:for-each select="$unique-anglicisme">
 				<!--
-				<xsl:message>
-					[<xsl:value-of select="$value"/>] a pour doublon:
-					<xsl:for-each select="$index-file/anglicismes/anglicisme[@id = $value]">
-						{<xsl:value-of select="@id"/>}
-					</xsl:for-each>
-				</xsl:message> -->
-				<xsl:element name="anglicisme">
-					<xsl:attribute name="id">
-						<xsl:value-of select="$value"/>
-					</xsl:attribute>
-					<xsl:element name="domaines">
-						<xsl:for-each select="$index-file/anglicismes/anglicisme[@id = $value]/domaines/domaine">
-								<xsl:copy>
-									<xsl:apply-templates select="@*|node()"/>	
-								</xsl:copy>	
-						</xsl:for-each>
-					</xsl:element>
-				</xsl:element>
-				<!-- TODO: Add this term to 'dealt with' list -->
-				
-			</xsl:when>
-			<!-- Otherwise, we simply copy the data ... -->
-			<xsl:otherwise>
+				<xsl:message><xsl:value-of select="normalize-space(current())"/></xsl:message>
+				-->
 				<xsl:copy>
 					<xsl:apply-templates select="@*|node()"/>	
-				</xsl:copy>
-			</xsl:otherwise>
-		</xsl:choose>
-    	</xsl:template>
+				</xsl:copy>	
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+	
 
 
 </xsl:stylesheet>
