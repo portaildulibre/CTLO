@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 Correcteur terminologique - éradication des anglicismes.
-Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
+Copyright (C) 2006 Linagora SA
+	Manuel Odesser <modesser@linagora.com>
+	Sebastien Bahloul <bahloul@linagora.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -46,23 +48,25 @@ Global Const CasseUCFirst = 1
 Global Const CasseUpper = 2
 Global Const CasseLower = 3
 
-Sub test
-	MsgBox(&quot;coucou&quot;)
-End Sub
-
 &apos;======================================================================
 &apos;======================================================================
 
 &apos; Active le correcteur terminologique en cours de frappe
 Sub SetupKeyHandler
 	keyMutex(&quot;set&quot;,True)
+	If IsNull(TerminologieKeyHandler) Then
+		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
+	End If
+	removeHook
 	addHook
 	keyMutex(&quot;set&quot;,False)
 End sub
 
 &apos; Désactive le correcteur terminologique
 Sub RemoveKeyHandler
+	keyMutex(&quot;set&quot;,True)
 	removeHook
+	keyMutex(&quot;set&quot;,False)
 End Sub
 
 Sub addHook
@@ -73,14 +77,15 @@ Sub addHook
 	If HasUnoInterfaces(oDoc, &quot;com.sun.star.frame.XModel&quot;) Then
 		If oDoc.supportsService(&quot;com.sun.star.text.TextDocument&quot;) Then
 			oController = oDoc.currentController
-			TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
+&apos;			TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
 			oController.addKeyHandler(TerminologieKeyHandler) &apos; Enregistre l&apos;écouteur
 		End If
 	End If
 End Sub
 
 Sub removeHook
-	thisComponent.currentController.removeKeyHandler(TerminologieKeyHandler)
+	ON ERROR RESUME NEXT &apos;If this procedure is launched by the quick start, no document has been defined
+	StarDesktop.CurrentComponent.currentController.removeKeyHandler(TerminologieKeyHandler)
 End Sub
 
 &apos; se lance à la fermeture de l&apos;application
@@ -100,17 +105,29 @@ End Sub
 &apos; Il ne faut pas modifier le nom de cette méthode.
 &apos; @return boolean
 Function KeyHandler_keyPressed(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
-	KeyHandler_keyPressed = appuiSurUneTouche(oKeyEvent)
+	If Not keyMutex(&quot;get&quot;) Then
+		removeHook
+		appuiSurUneTouche(oKeyEvent)
+		addHook
+	Else
+		removeHook
+	End If
+	KeyHandler_keyPressed = False
 End Function
 
 Function keyMutex(op As String, Optional etat As Boolean)
 	Static mutex As Boolean
-	If op = &quot;get&quot; Then
-		keyMutex = mutex
-	End If
 	If op = &quot;set&quot; Then
+		If etat = True Then
+			While mutex 
+				Wait 100
+			Wend
+		End If
 		mutex = etat
 		keyMutex = True
+	End If
+	If op = &quot;get&quot; Then
+		keyMutex = mutex
 	End If
 End Function
 
@@ -119,7 +136,7 @@ End Function
 Function appuiSurUneTouche(oKeyEvent As Object) As Boolean
 	If keyMutex(&quot;get&quot;) Then
 		While keyMutex(&quot;get&quot;)
-			Wait 50
+			Wait 100
 		Wend
 	End If
 	keyMutex(&quot;set&quot;,True)
@@ -142,7 +159,8 @@ Function appuiSurUneTouche(oKeyEvent As Object) As Boolean
 		&apos;pas une limite de mot
 	Endif
 	keyMutex(&quot;set&quot;,False)
-	appuiSurUneTouche = False &apos;on laisse se propager l&apos;événement &apos;appui sur la touche&apos;
+	appuiSurUneTouche = False
+	 &apos;on laisse se propager l&apos;événement &apos;appui sur la touche&apos;
 End Function
 
 Sub rechercheTerminologique()
@@ -175,6 +193,7 @@ End Sub
 Function getPreviousWord(skipLeftmostSpace As Boolean, wordCount As Integer) As String
 	Dim currentWord As String, previousWord As String, out As String
 	Dim currentWordCount As Integer, res As Variant
+	ON ERROR RESUME NEXT
 	out = &quot;&quot;
 	previousWord = &quot;&quot;
 	currentWordCount = 0
@@ -399,6 +418,9 @@ Sub UpdateTermsList()
     Dim sens as String, j As Integer, k As Integer, l As Integer
 	Dim tmp
 	Dim vSyns As Variant
+	If IsNull(oDialog) Then
+		Exit Sub
+	End If
     oDialogModel = oDialog.getModel()
     &apos; on récupère le sens cliqué
     oControlModel = oDialogModel.getByName(&quot;Domaines&quot;)
@@ -742,5 +764,76 @@ Function GetProperties(oObj)
 	Next
 	GetProperties() = cDscrpt
 End Function
+
+Sub installTerminologie ()
+		Dim addonKey, toAddStr, filePath
+    	addonKey = &quot;oor:name=&quot;&quot;Bindings&quot;&quot;&quot;
+    	toAddStr = &quot;&lt;node oor:name=&quot;&quot;OnStartApp&quot;&quot; oor:op=&quot;&quot;replace&quot;&quot;&gt;&lt;prop oor:name=&quot;&quot;BindingURL&quot;&quot; oor:type=&quot;&quot;xs:string&quot;&quot;&gt;&lt;value&gt;vnd.sun.star.script:Terminologie.libs.SetupKeyHandler?language=Basic&amp;amp;location=application&lt;/value&gt;&lt;/prop&gt;&lt;/node&gt;&quot;
+    	filePath = &quot;registry/data/org/openoffice/Office/Events.xcu&quot;
+		addAutomaticLaunch(toAddStr, addonKey, filePath)
+End Sub
+
+Sub addAutomaticLaunch( toAddStr , addonKey, filePath )
+	Dim oPathInstall, aFile, aFileNew, iNumber, iNumberNew 
+	oPathInstall  = TrouveRepInstall()
+	aFile = convertToURL(oPathInstall &amp; filePath)
+	aFileNew = convertToURL(oPathInstall &amp; filePath &amp; &quot;.new&quot;)
+	
+	iNumberNew = Freefile
+	Open aFileNew For Output As iNumberNew
+	
+	iNumber = Freefile
+	Open aFile For Input As iNumber
+	While not eof(iNumber)
+		Line Input #iNumber, sLine
+		
+		if InStr(sLine, addonKey)  then
+				Print #iNumberNew, sLine
+				Line Input #iNumber, sLine
+      			sLine = toAddStr
+      			Print #iNumberNew, sLine
+				Line Input #iNumber, sLine
+      	end if 
+		
+		Print #iNumberNew, sLine
+		
+	wend
+	Close #iNumber
+	Close #iNumberNew
+	
+	kill (aFile)
+	Name aFileNew as aFile
+End Sub
+
+Function TrouveRepInstall() as String
+	Dim oSettings, oPathSettings
+	Dim chemin as String, i as long
+	Dim aHistorySettings, aConfigProvider
+	Dim aParams(1) As new com.sun.star.beans.PropertyValue
+	Dim aPathSettings, oConfigAccess, cUnoSetupConnectionURL
+	
+	aConfigProvider = createUnoService( &quot;com.sun.star.configuration.ConfigurationProvider&quot; )
+
+	aParams(0).Name = &quot;nodepath&quot;
+	aParams(0).Value = &quot;/org.openoffice.Office.Common/Path/Current&quot;
+	aPathSettings = aConfigProvider.createInstanceWithArguments( &quot;com.sun.star.configuration.ConfigurationAccess&quot;, aParams() )
+	&apos;chemin= aPathSettings.getbyname(&quot;ooSetupInstallPath&quot;)
+	cUnoSetupConnectionURL = aPathSettings.getbyname(&quot;UIConfig&quot;)
+
+	TrouveRepInstall = ConvertToURL(chemin)
+End Function
+
+&apos; @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
+Sub OpenCriterURL()
+on error resume next
+	Dim objlancer, handleErrors
+	Dim adresse as String
+
+	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)
+	adresse = convertToURL(&quot;http://www.criter.dglf.culture.gouv.fr&quot;)
+	handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
+	objlancer.execute(adresse, &quot;&quot;, handleErrors)
+
+End Sub
 
 </script:module>

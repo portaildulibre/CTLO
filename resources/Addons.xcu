@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--
 Correcteur terminologique - éradication des anglicismes.
-Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
+Copyright (C) 2006 Linagora SA
+	Manuel Odesser <modesser@linagora.com>
+	Sebastien Bahloul <bahloul@linagora.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -23,6 +25,97 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	oor:name="Addons"
 	oor:package="org.openoffice.Office">
 	<node oor:name="AddonUI">
+		<node oor:name="Images">
+			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.setup" oor:op="replace">
+				<prop oor:name="URL">
+					<value>macro:///Terminologie.libs.SetupKeyHandler</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL" oor:type="xs:string">
+						<value>%origin%/images/correct_frappe.png</value>
+					</prop>
+				</node>
+			</node>
+			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.checkAll" oor:op="replace">
+				<prop oor:name="URL">
+					<value>macro:///Terminologie.libs.CheckEachWord</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL" oor:type="xs:string">
+						<value>%origin%/images/correct_page.png</value>
+					</prop>
+				</node>
+			</node>
+			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.checkSelection" oor:op="replace">
+				<prop oor:name="URL">
+					<value>macro:///Terminologie.libs.CheckSelection</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL" oor:type="xs:string">
+						<value>%origin%/images/correct_mot.png</value>
+					</prop>
+				</node>
+			</node>
+		</node> 
+<!-- Impossible de renommer la barre, voir http://www.openoffice.org/servlets/ReadMsg?list=dev&msgNo=13875 -->
+      	<node oor:name="OfficeToolBar">
+			<prop oor:name="Title" oor:type="xs:string">
+				<value xml:lang="fr-FR">Correcteur terminologique</value>
+			</prop>
+			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.boutons" oor:op="replace">
+				<node oor:name="activate" oor:op="replace">
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>macro:///Terminologie.libs.SetupKeyHandler</value>
+					</prop>
+					<prop oor:name="ImageIdentifier" oor:type="xs:string">
+						<value />
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value xml:lang="fr-FR">Activer le correcteur terminologique</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+				</node>
+				<node oor:name="checkAll" oor:op="replace">
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>macro:///Terminologie.libs.CheckEachWord</value>
+					</prop>
+					<prop oor:name="ImageIdentifier" oor:type="xs:string">
+						<value />
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value xml:lang="fr-FR">Vérifier tout le document</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+				</node>
+				<node oor:name="checkSelection" oor:op="replace">
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>macro:///Terminologie.libs.CheckSelection</value>
+					</prop>
+					<prop oor:name="ImageIdentifier" oor:type="xs:string">
+						<value />
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value xml:lang="fr-FR">Vérifier la sélection</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+				</node>
+			</node>
+		</node>
 		<node oor:name="OfficeHelp">
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.help" oor:op="replace">
 				<prop oor:name="Context" oor:type="xs:string">
