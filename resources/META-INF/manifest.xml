@@ -19,9 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 -->
 <!DOCTYPE manifest:manifest PUBLIC "-//OpenOffice.org//DTD Manifest 1.0//EN" "Manifest.dtd">
 <manifest:manifest>
+
 	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.uno-component;type=Java"
-		manifest:full-path="terminologie.jar" />
+		manifest:full-path="terminologie-0.3.jar" />
+	<!-- FIXME: Should set the version from build !!! -->
 	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.configuration-data"
 		manifest:full-path="Addons.xcu" />

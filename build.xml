@@ -67,7 +67,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	</target>	
 	
 	<target name="init" 
-		depends="clean"
 		description="Set up working directory">
 		<mkdir dir="${basedir}/${target}"/>
 	</target>
@@ -116,7 +115,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<!-- Assembling the jar file -->
 	
 	<target name="jar" 
-		depends="compile"
+		depends="compile,generate-xml-file"
 		description="Create jar file">
 
 		<jar 	basedir="${classes}" 
@@ -126,7 +125,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				<attribute 	name="RegistrationClassName" 		
 						value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
 			</manifest>
-			<fileset dir="data"/>
+			<fileset dir="${target}">
+				<include name="terminologie.xml"/>
+			</fileset>
 		</jar>
 		
 	</target>

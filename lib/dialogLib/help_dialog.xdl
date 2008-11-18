@@ -18,13 +18,124 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 -->
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="help_dialog" dlg:left="136" dlg:top="44" dlg:width="201" dlg:height="169" dlg:closeable="true" dlg:moveable="true">
- <dlg:styles>
-  <dlg:style dlg:style-id="0" dlg:font-height="10" dlg:font-weight="150"/>
- </dlg:styles>
- <dlg:bulletinboard>
-  <dlg:button dlg:id="CommandButton1" dlg:tab-index="0" dlg:left="142" dlg:top="140" dlg:width="56" dlg:height="26" dlg:value="Fermer" dlg:button-type="ok"/>
-  <dlg:textfield dlg:id="TextField1" dlg:tab-index="1" dlg:left="8" dlg:top="31" dlg:width="185" dlg:height="98" dlg:tabstop="false" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true" dlg:value="Ceci est l&apos;aide du correcteur terminologique.&#x0a;&#x0a;Il a été réalisé sous l&apos;égide du Ministère de la Culture, avec la participation de la DGLFLF.&#x0a;&#x0a;Remerciement à :&#x0a;Laure Patas d&apos;Ilier&#x0a;Etienne Quillot&#x0a;Sébastien Balhoul&#x0a;&#x0a;Développement :&#x0a;Manuel Odesser"/>
-  <dlg:text dlg:style-id="0" dlg:id="Label1" dlg:tab-index="2" dlg:left="2" dlg:top="10" dlg:width="196" dlg:height="12" dlg:value="Correcteur terminologique" dlg:align="center"/>
- </dlg:bulletinboard>
+<dlg:window 	xmlns:dlg="http://openoffice.org/2000/dialog" 
+		xmlns:script="http://openoffice.org/2000/script" 
+		dlg:id="help_dialog" 
+		dlg:left="136" 
+		dlg:top="44" 
+		dlg:width="230" 
+		dlg:height="430" 
+		dlg:closeable="true" 
+		dlg:moveable="true">
+	<dlg:styles>
+		<dlg:style dlg:style-id="0" dlg:font-height="10" dlg:font-weight="150"/>
+	</dlg:styles>
+	<dlg:bulletinboard>
+		<dlg:text 	dlg:style-id="0" 
+				dlg:id="Titre" 
+				dlg:tab-index="2" 
+				dlg:left="2" 
+				dlg:top="10" 
+				dlg:width="196" 
+				dlg:height="12" 
+				dlg:value="Correcteur terminologique pour OpenOffice.org" 
+				dlg:align="center"/>
+
+  		<dlg:text 	dlg:id="PremierParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="31" 
+				dlg:width="215" 
+				dlg:height="64" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="Ce correcteur terminologique, développé pour le logiciel libre OpenOffice.org, a été conçu pour faciliter l'obligation qui est faite  aux agents de l'administration et des établissements publics français d'utiliser les  termes et expressions publiés au Journal officiel à la place des termes et  expressions équivalents en langues étrangères, en vertu de l'article 11 du  décret n° 96-602 du 3 juillet 1996 relatif à l'enrichissement de la langue  française."/>
+
+  		<dlg:text 	dlg:id="DeuxiemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="100" 
+				dlg:width="215" 
+				dlg:height="45" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="Il prend en compte l'ensemble des termes et expressions publiés au Journal  officiel à l'exception, pour des raisons techniques, de ceux qui correspondent à des termes et expressions équivalents en langues étrangères constitués de  trois mots et plus. Ces derniers représentent, de fait, une minorité."/>
+		<dlg:text 	dlg:id="TroisiemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="150" 
+				dlg:width="215" 
+				dlg:height="50" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="Pour un terme étranger, le logiciel fait apparaître l'équivalent français recommandé, et éventuellement lorsqu'elles existent ses variantes (abréviation, forme abrégée, synonyme, etc.). Il mentionne également son domaine, dans la mesure où un même terme étranger peut  avoir un équivalent français différent en fonction de celui-ci."/>
+		<dlg:text 	dlg:id="QuatriemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="200" 
+				dlg:width="215" 
+				dlg:height="30" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="Le logiciel, qui peut évidemment être désactivé ce qui ne correspond pas à  l'objectif recherché, prévoit une correction, soit au fur et à mesure de la frappe, soit sur le document entier, soit sur une sélection."/>
+
+		<dlg:text 	dlg:id="CinquiemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="235" 
+				dlg:width="215" 
+				dlg:height="30" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="En cas de doute, il propose un lien vers la base de données FranceTerme de la Délégation générale à la langue française et aux langues de France, pour avoir accès à la fiche détaillée du terme français (dont la définition)."/>
+
+		<dlg:text 	dlg:id="SixiemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="270" 
+				dlg:width="215" 
+				dlg:height="20" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="Ce logiciel a été réalisé par la société (le prestataire peut mentionner son nom ici), à la demande et avec le financement des ministères financiers."/>
+
+		<dlg:text 	dlg:id="SeptiemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="295" 
+				dlg:width="215" 
+				dlg:height="50" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="M. Alfred Gilder, haut fonctionnaire chargé de la terminologie et de la néologie, assure la maîtrise d'ouvrage  avec Mme Laure Patas d'Illiers, chef de projet au bureau des projets  applicatifs de la direction du  personnel et de l'adaptation de l'environnement professionnel et  Mme Isabelle  Hugues, adjointe du haut fonctionnaire chargé de la terminologie et de la néologie."/>
+
+		<dlg:text 	dlg:id="HuitiemeParagraphe" 
+				dlg:tab-index="1" 
+				dlg:left="8" 
+				dlg:top="350" 
+				dlg:width="215" 
+				dlg:height="40" 
+				dlg:tabstop="false" 
+				dlg:vscroll="true"
+				dlg:multiline="true" 
+				dlg:value="La délégation générale à la langue française et aux langues de France et les services informatiques du ministère de la culture et de la communication ont apporté leur concours à ce projet."/>
+
+		<dlg:button 	dlg:id="ButtonFermer" 
+				dlg:tab-index="0" 
+				dlg:left="142" 
+				dlg:top="395" 
+				dlg:width="56" 
+				dlg:height="26" 
+				dlg:value="Fermer" 
+				dlg:button-type="ok"/>
+
+
+	</dlg:bulletinboard>
 </dlg:window>
