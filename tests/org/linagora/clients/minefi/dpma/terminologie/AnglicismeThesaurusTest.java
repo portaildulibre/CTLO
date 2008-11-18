@@ -63,7 +63,7 @@ public class AnglicismeThesaurusTest extends AnglicismeThesaurus {
 		Locale[] ls = new AnglicismeThesaurus().getLocales();
 		PropertyValue[] emptyArgs = new PropertyValue[] {};
 		XMeaning[] res = aT.queryMeanings("e-mail",ls[0],emptyArgs);
-		assertTrue(res != null && res.length > 2);
+		assertTrue(res != null && res.length >= 2);
 	}
 	
 }
