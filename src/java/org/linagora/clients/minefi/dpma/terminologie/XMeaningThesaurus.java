@@ -1,5 +1,5 @@
 /*
-Correcteur terminologique - �radication des anglicismes.
+Correcteur terminologique - éradication des anglicismes.
 Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
 Copyright (c) 2003 by Sun Microsystems, Inc.
 
