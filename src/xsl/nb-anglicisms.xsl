@@ -25,38 +25,10 @@
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 	
-	<xsl:param name="ref-file"/>
-	<xsl:variable name="index-file" select="document($ref-file)"/>
-
-
-
-	<xsl:key 	name="context-key" match="//anglicisme" use="@id" />
-	<xsl:variable 	name="unique-anglicisme"
-			select="//anglicisme[generate-id()=generate-id(key('context-key',@id))]"/>
-
-	<!-- Copy all nodes from here.  -->
-    	<xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>	
-		</xsl:copy>
-    	</xsl:template>
-
-	<xsl:template match="anglicismes">
-		<xsl:element name="anglicismes">
-			<xsl:for-each select="$unique-anglicisme">
-				<!--
-				<xsl:message><xsl:value-of select="normalize-space(current())"/></xsl:message>
-				-->
-				<xsl:copy>
-					<xsl:apply-templates select="@*|node()"/>	
-				</xsl:copy>	
-			</xsl:for-each>
-		</xsl:element>
+	<xsl:template match="/">
+		<xsl:variable name="nb-anglicism" select="count(//anglicisme)"/>
 		<xsl:message>
-Suppression des doublons parmis les <xsl:value-of select="@nb"/> entrées.
+Après modification, il reste <xsl:value-of select="$nb-anglicism"/> entrées dans la table de correspondance.
 		</xsl:message>
 	</xsl:template>
-	
-
-
 </xsl:stylesheet>

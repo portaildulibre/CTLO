@@ -49,11 +49,18 @@
 
 	<!-- Defining the root of the new XML document -->
 	<xsl:template match="/">
-		<anglicismes>		
+		<xsl:variable name="total-angliscim-no-variation"	select="count(//Article/Equivalent[(@langue = 'en')])"/>
+		<xsl:variable name="addons-variations"			select="count(//Article/Equivalent[@langue = 'en']/variante)"/>
+		<xsl:variable name="sum-anglicism"			select="$total-angliscim-no-variation + $addons-variations"/>
+
+		<anglicismes>
+			<xsl:attribute name="nb"><xsl:value-of select="$sum-anglicism"/></xsl:attribute>		
 			<xsl:apply-templates/>
 		</anglicismes>
 		<xsl:message>
-TOTAL Anglicismes:<xsl:value-of select="count(//Article/Equivalent[@langue = 'en'])"/>
+Nombre total d'anglicisme (sans leurs variantes): <xsl:value-of select="$total-angliscim-no-variation"/>
+Nombre total de variantes: <xsl:value-of select="$addons-variations"/>
+TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 		</xsl:message>
 	</xsl:template>
 
@@ -63,23 +70,40 @@ TOTAL Anglicismes:<xsl:value-of select="count(//Article/Equivalent[@langue = 'en
 	-->
 	<xsl:template match="Article">
 		<xsl:for-each select="Equivalent[(@langue = 'en')]">
-			<!-- FIXME: Gérer les variantes !!! Trouver comment récupérer le text et non les fils !-->
-			<xsl:variable name="anglicisme" select="string(normalize-space(text()))"/>
-			<xsl:if test="count(variante) = 0">
+			<xsl:variable name="anglicisme">
+				<xsl:call-template name="recursive-text-assembling">
+					<xsl:with-param name="text-position"
+							select="1"/>
+					<xsl:with-param name="current-string"
+							select="string('')"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:element name="anglicisme">
+				<xsl:attribute 	name="id"><xsl:value-of select="$anglicisme"/></xsl:attribute>
+				<xsl:choose>	
+					<xsl:when test="count(../Domaine) > 0">
+						<xsl:call-template name="make-domaines"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message>
+						Anglicisme sans domaine: <xsl:value-of select="$anglicisme"/>
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose> 
+			</xsl:element> 
+
+			<xsl:for-each select="variante">
+				<xsl:variable name="variante" select="."/>
+				<xsl:message>Ajout de la variante <xsl:value-of select="string(normalize-space(text()))"/> pour <xsl:value-of select="$anglicisme"/></xsl:message>
 				<xsl:element name="anglicisme">
-					<xsl:attribute 	name="id"><xsl:value-of select="$anglicisme"/></xsl:attribute>
-					<xsl:choose>	
-						<xsl:when test="count(../Domaine) > 0">
-							<xsl:call-template name="make-domaines"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:message>
-							Anglicisme sans domaine: <xsl:value-of select="$anglicisme"/>
-							</xsl:message>
-						</xsl:otherwise>
-					</xsl:choose> 
-				</xsl:element> 
-			</xsl:if>
+					<xsl:attribute 	name="id"><xsl:value-of select="string(normalize-space(text()))"/></xsl:attribute>
+					<xsl:element name="domaines">
+						<xsl:for-each select="../../Domaine/Dom">
+							<xsl:call-template name="make-domain"/>
+						</xsl:for-each>
+					</xsl:element>
+				</xsl:element>
+			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
 	
@@ -95,27 +119,30 @@ TOTAL Anglicismes:<xsl:value-of select="count(//Article/Equivalent[@langue = 'en
 	<xsl:template name="make-domaines">
 		<xsl:element name="domaines">
 			<xsl:for-each select="../Domaine/Dom">
-				<xsl:element name="domaine">
-					<xsl:attribute name="id">
-						<xsl:value-of select="string(normalize-space(text()))"/>
-					</xsl:attribute>
-					<xsl:element name="synonymes">
-						<xsl:if 	test="count(../../Terme_Vedette) > 0">
-							<xsl:for-each 		select="../../Terme_Vedette">
-								<xsl:call-template name="make-synonyme"/>
-							</xsl:for-each>
-						</xsl:if>
-						<xsl:if 	test="count(../../Synonyme) > 0">
-							<xsl:for-each 	select="../../Synonyme">
-								<xsl:call-template name="make-synonyme"/>
-							</xsl:for-each>
-						</xsl:if>
-					</xsl:element>
-				</xsl:element>
+				<xsl:call-template name="make-domain"/>
 			</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
 
+	<xsl:template name="make-domain">
+		<xsl:element name="domaine">
+			<xsl:attribute name="id">
+				<xsl:value-of select="string(normalize-space(text()))"/>
+			</xsl:attribute>
+			<xsl:element name="synonymes">
+				<xsl:if 	test="count(../../Terme_Vedette) > 0">
+					<xsl:for-each 		select="../../Terme_Vedette">
+						<xsl:call-template name="make-synonyme"/>
+					</xsl:for-each>
+				</xsl:if>
+				<xsl:if 	test="count(../../Synonyme) > 0">
+					<xsl:for-each 	select="../../Synonyme">
+						<xsl:call-template name="make-synonyme"/>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
 	<!-- 
 		Make an <synonyme> entry based on the current node data.
 		Therefore, the following code works on both <Synonyme> and <Terme_Vedette>

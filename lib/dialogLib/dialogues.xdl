@@ -25,27 +25,97 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		dlg:id="dialogues" 
 		dlg:left="149" 
 		dlg:top="114" 
-		dlg:width="204" 
-		dlg:height="157" 
+		dlg:width="250" 
+		dlg:height="245" 
 		dlg:help-url="http://franceterme.culture.fr" 
 		dlg:closeable="true" 
 		dlg:moveable="true" 
 		dlg:title="Remplacement des termes étrangers">
 	<dlg:bulletinboard>
 
-		<dlg:text 	dlg:id="LabelDomaine" 
-				dlg:tab-index="0" 
-				dlg:left="2" 
-				dlg:top="57" 
-				dlg:width="80" 
-				dlg:height="9" 
-				dlg:value="Domaines :"/>
-		<dlg:menulist 	dlg:id="Domaines" 
-				dlg:tab-index="0" 
-				dlg:left="2" 
-				dlg:top="67" 
-				dlg:width="80" 
-				dlg:height="78">
+
+		<dlg:text 		dlg:id="TexteExplicatif" 
+					dlg:tab-index="3" 
+					dlg:left="3" 
+					dlg:top="6" 
+					dlg:width="150" 
+					dlg:height="45" 
+					dlg:help-text="Aller sur le site de France Terme" 
+					dlg:help-url="http://franceterme.culture.fr"
+					dlg:multiline="true" 
+					dlg:value="Sélectionnez un domaine, un terme français, puis cliquez sur Remplacer. Pour garder le terme étranger cliquez sur Ignorer."/>
+
+		<dlg:text 		dlg:id="LienSurFranceTerme" 
+					dlg:tab-index="3" 
+					dlg:left="3" 
+					dlg:top="60" 
+					dlg:width="140" 
+					dlg:height="25" 
+					dlg:help-text="Aller sur le site de France Terme" 
+					dlg:help-url="http://franceterme.culture.fr" 
+					dlg:value="Pour plus d'informations  http://franceterme.culture.fr">
+   					<script:event 	script:event-name="on-mouseup" 
+							script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenCriterURL?language=Basic&amp;location=application"
+							script:language="Script"/>
+		</dlg:text> 
+
+<!-- 
+*****************************************************************************************************************
+
+	Section termes, domaine et équivalents
+
+*****************************************************************************************************************
+-->
+
+  		<dlg:text 		dlg:id="LabelTermeEtranger" 
+					dlg:tab-index="5" 
+					dlg:left="2" 
+					dlg:top="115" 
+					dlg:width="80" 
+					dlg:height="9" 
+					dlg:value="Terme étranger :"/>
+  		
+		<dlg:textfield 		dlg:id="anglicisme" 
+					dlg:tab-index="7" 
+					dlg:left="2" 
+					dlg:top="125" 
+					dlg:width="80" 
+					dlg:height="15" 
+					dlg:tabstop="false" 
+					dlg:readonly="true"/>
+
+  		<dlg:text 		dlg:id="LabelRemplacerPar" 
+					dlg:tab-index="8" 
+					dlg:left="125" 
+					dlg:top="115" 
+					dlg:width="80" 
+					dlg:height="9" 
+					dlg:value="Remplacer par :"/>
+
+		<dlg:textfield 		dlg:id="remplacement" 
+					dlg:tab-index="6" 
+					dlg:left="125" 
+					dlg:top="125" 
+					dlg:width="80" 
+					dlg:height="15" 
+					dlg:tabstop="false"/>
+
+
+
+		<dlg:text 		dlg:id="LabelDomaine" 
+					dlg:tab-index="0" 
+					dlg:left="2" 
+					dlg:top="145" 
+					dlg:width="120" 
+					dlg:height="9" 
+					dlg:value="Domaines :"/>
+
+		<dlg:menulist 		dlg:id="Domaines" 
+					dlg:tab-index="0" 
+					dlg:left="2" 
+					dlg:top="155" 
+					dlg:width="120" 
+					dlg:height="78">
 			<script:event 
 					script:event-name="on-blur" 		script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" 
 					script:language="Script"/>
@@ -59,43 +129,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 					script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" 
 					script:language="Script"/>
 		</dlg:menulist>
-		<dlg:text 		dlg:id="TexteExplicatif" 
-					dlg:tab-index="3" 
-					dlg:left="3" 
-					dlg:top="6" 
-					dlg:width="140" 
-					dlg:height="45" 
-					dlg:help-text="Aller sur le site de France Terme" 
-					dlg:help-url="http://franceterme.culture.fr"
-					dlg:multiline="true" 
-					dlg:value="Sélectionnez un domaine, un terme français, puis cliquez sur Remplacer. Pour garder le terme étranger cliquez sur Ignorer."/>
-<!--
-		<dlg:text 		dlg:id="LienSurFranceTerme" 
-					dlg:tab-index="3" 
-					dlg:left="3" 
-					dlg:top="36" 
-					dlg:width="140" 
-					dlg:height="25" 
-					dlg:help-text="Aller sur le site de France Terme" 
-					dlg:help-url="http://franceterme.culture.fr" 
-					dlg:value="Pour plus d'informations  http://franceterme.culture.fr"
-   					<script:event 	script:event-name="on-mouseup" 
-							script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenCriterURL?language=Basic&amp;location=application"
-							script:language="Script"/>
-		</dlg:text> -->
 
   		<dlg:text 		dlg:id="LabelTermes" 
 					dlg:tab-index="1" 
-					dlg:left="86" 
-					dlg:top="57" 
+					dlg:left="125" 
+					dlg:top="145" 
 					dlg:width="80" 
 					dlg:height="9" 
 					dlg:value="Termes français :"/>
+
   		<dlg:menulist 		dlg:id="Termes" 
 					dlg:tab-index="1" 
-					dlg:left="86" 
-					dlg:top="67" 
-					dlg:width="117" 
+					dlg:left="125" 
+					dlg:top="155" 
+					dlg:width="120" 
 					dlg:height="78">
    			<script:event 	script:event-name="on-keyup"
 					script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application"
@@ -107,55 +154,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 					script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application"
 					script:language="Script"/>
 		</dlg:menulist>
-		<dlg:button 		dlg:id="CommandButton2" 
-					dlg:tab-index="4" 
-					dlg:left="164" 
-					dlg:top="28" 
-					dlg:width="39" 	
-					dlg:height="16" 
-					dlg:value="Ignorer">
-   			<script:event 	script:event-name="on-mousedown"
-					script:macro-name="vnd.sun.star.script:Terminologie.libs.DialogClose?language=Basic&amp;location=application" 
-					script:language="Script"/>
-  		</dlg:button>
-  		<dlg:text 		dlg:id="LabelTermeEtranger" 
-					dlg:tab-index="5" 
-					dlg:left="2" 
-					dlg:top="29" 
-					dlg:width="63" 
-					dlg:height="9" 
-					dlg:value="Terme étranger :"/>
-  		
-		<dlg:textfield 		dlg:id="anglicisme" 
-					dlg:tab-index="7" 
-					dlg:left="2" 
-					dlg:top="41" 
-					dlg:width="63" 
-					dlg:height="12" 
-					dlg:tabstop="false" 
-					dlg:readonly="true"/>
 
-  		<dlg:text 		dlg:id="LabelRemplacerPar" 
-					dlg:tab-index="8" 
-					dlg:left="86" 
-					dlg:top="29" 
-					dlg:width="74" 
-					dlg:height="9" 
-					dlg:value="Remplacer par :"/>
+<!--
+*****************************************************************************************************************
 
-		<dlg:textfield 		dlg:id="remplacement" 
-					dlg:tab-index="6" 
-					dlg:left="86" 
-					dlg:top="41" 
-					dlg:width="74" 
-					dlg:height="12" 
-					dlg:tabstop="false"/>
+			Boutons d'actions
 
-  		<dlg:button 		dlg:id="ReplaceButton" 
+*****************************************************************************************************************
+		-->
+
+		<dlg:button 		dlg:id="ReplaceButton" 
 					dlg:tab-index="2" 
-					dlg:left="164" 
+					dlg:left="175" 
 					dlg:top="7" 
-					dlg:width="39" 
+					dlg:width="70" 
 					dlg:height="16" 
 					dlg:default="true" 
 					dlg:value="Remplacer">
@@ -169,5 +181,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 					script:macro-name="vnd.sun.star.script:Terminologie.libs.ReplaceAnglicisme?language=Basic&amp;location=application" 
 					script:language="Script"/>
 		</dlg:button>
+
+		<dlg:button 		dlg:id="BoutonIgnorer" 
+					dlg:tab-index="4" 
+					dlg:left="175" 
+					dlg:top="28" 
+					dlg:width="70" 	
+					dlg:height="16" 
+					dlg:value="Ignorer">
+   			<script:event 	script:event-name="on-mousedown"
+					script:macro-name="vnd.sun.star.script:Terminologie.libs.DialogClose?language=Basic&amp;location=application" 
+					script:language="Script"/>
+  		</dlg:button>
+
+		<dlg:button 		dlg:id="BoutonRemplacerPartout" 
+					dlg:tab-index="2" 
+					dlg:left="175" 
+					dlg:top="49" 
+					dlg:width="70" 
+					dlg:height="16" 
+					dlg:default="true" 
+					dlg:value="Remplacer partout">
+   			<script:event 	script:event-name="on-performaction"
+					script:macro-name="vnd.sun.star.script:Terminologie.libs.ReplaceAnglicisme?language=Basic&amp;location=application" 
+					script:language="Script"/>
+   			<script:event 	script:event-name="on-keydown"
+					script:macro-name="vnd.sun.star.script:Terminologie.libs.ReplaceAnglicisme?language=Basic&amp;location=application" 
+					script:language="Script"/>
+   			<script:event 	script:event-name="on-mousedown"
+					script:macro-name="vnd.sun.star.script:Terminologie.libs.ReplaceAnglicisme?language=Basic&amp;location=application" 
+					script:language="Script"/>
+		</dlg:button>
+
+		<dlg:button 		dlg:id="BoutonIgnorerTout" 
+					dlg:tab-index="4" 
+					dlg:left="175" 
+					dlg:top="70" 
+					dlg:width="70" 	
+					dlg:height="16" 
+					dlg:value="Ignorer partout">
+   			<script:event 	script:event-name="on-mousedown"
+					script:macro-name="vnd.sun.star.script:Terminologie.libs.DialogClose?language=Basic&amp;location=application" 
+					script:language="Script"/>
+  		</dlg:button>
+
+		<dlg:button 		dlg:id="BoutonAide" 
+					dlg:tab-index="4" 
+					dlg:left="175" 
+					dlg:top="91" 
+					dlg:width="70" 	
+					dlg:height="16" 
+					dlg:value="Aide">
+   			<script:event 	script:event-name="on-mousedown"
+					script:macro-name="vnd.sun.star.script:Terminologie.libs.DialogClose?language=Basic&amp;location=application" 
+					script:language="Script"/>
+  		</dlg:button>
+
+  		
 	</dlg:bulletinboard>
 </dlg:window>

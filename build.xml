@@ -102,6 +102,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<param name="ref-file" expression="${basedir}/target/franceterme-adapted.xml"/>
 		</xslt>
 		
+		<!-- How many entries have we factorized ? -->
+		<property name="dev.null"	value="${target}/empty.xml"/>
+		<xslt 	in="${basic-database}"
+			style="src/xsl/nb-anglicisms.xsl"
+			out="${dev.null}">
+		</xslt>
+				
 		<!-- Let's remove homographic terms (such as 'diffusion', spelled equally in french and in english)-->
 		<property name="database-without-homographies"
 			  value="${target}/database-without-homographies.xml"/>
@@ -109,6 +116,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			style="src/xsl/remove-homographies.xsl"
 			out="${database-without-homographies}">
 		</xslt>	
+		
+		<!-- How many entries have we remove for homographic reasons ? -->
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/nb-anglicisms.xsl"
+			out="${dev.null}">
+		</xslt>
+
+		
 		<move file="${database-without-homographies}" tofile="${dict.xml}"/>		
 	</target>
 	
