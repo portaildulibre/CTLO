@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+# file: hypotenuse.py
+
+import sys
+
+#if len(sys.argv) != 2: 
+#	sys.exit("Must provide two filenames")
+
+original = open (sys.argv[1])
+updated = open(sys.argv[2])
+
+# let load once for all the updated file
+reference = []
+entries = updated.readlines()
+for entry in entries:
+    reference.append(entry)
+updated.close()
+
+# now we look for missing terms
+fileList = original.readlines()
+for fileLine in fileList:
+	if len(fileLine) > 0 :	
+		if not (fileLine in reference) :
+        		print fileLine
+original.close() 
+	
+	
