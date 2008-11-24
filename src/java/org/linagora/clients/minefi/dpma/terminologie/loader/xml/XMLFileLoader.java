@@ -21,11 +21,9 @@ package org.linagora.clients.minefi.dpma.terminologie.loader.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.linagora.clients.minefi.dpma.terminologie.loader.AbstractLoader;

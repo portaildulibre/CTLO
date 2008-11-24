@@ -19,22 +19,41 @@
  */
 package org.linagora.clients.minefi.dpma.terminologie;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
+
+import com.sun.star.lang.IllegalArgumentException;
+import com.sun.star.linguistic2.XMeaning;
 
 /**
  * @author Romain PELISSE, romain.pelisse@atosorigin.com
  *
  */
-public class PlurialAndSpaceDetectionTest {
+public class PlurialAndSpaceDetectionTest extends AbstractAnglicismeThesaurusTest {
 
 	@Test
-	public void findWordWithSpaceInsteadOf() {
-		
+	public void pluralForm() throws IllegalArgumentException, RuntimeException {
+		XMeaning[] results = super.getSynonyme("binary digits");
+		assertNotNull(results);
+		assertTrue(results.length > 0);
 	}
 	
 	@Test
-	public void findWordWithInsteadOfSpace() {
-		
+	public void alternativesForms() throws IllegalArgumentException, RuntimeException {
+		XMeaning[] results = super.getSynonyme("wild-card");
+		assertNotNull(results);
+		assertTrue(results.length > 0);
+		results = super.getSynonyme("data-bank");
+		assertNotNull(results);
+		assertTrue(results.length > 0);
 	}
-	
+
+	@Test
+	public void alternativesFormAndPluralForm() throws IllegalArgumentException, RuntimeException {
+		XMeaning[] results = super.getSynonyme("binary-digits");
+		assertNotNull(results);
+		assertTrue(results.length > 0);	
+	}
 }

@@ -20,7 +20,6 @@
 package org.linagora.clients.minefi.dpma.terminologie.loader.xml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

@@ -52,4 +52,12 @@ public class XMeaningThesaurus implements XMeaning
 	{
 		return aSynonyms;
 	}
+	
+	@Override
+	public String toString() {
+		String synonyms = ", synomyms:";
+		for (int idSynonym = 0; idSynonym < aSynonyms.length ; idSynonym++ )
+			synonyms += aSynonyms[idSynonym] + "|";
+		return this.aMeaning + synonyms;
+	}
 };

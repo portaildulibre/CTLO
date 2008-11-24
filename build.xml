@@ -44,6 +44,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="package"		value="${target}/package"				/>	
 	<property name="dict"			value="data"						/>
 	<property name="dict.xml"		value="${target}/terminologie.xml"			/>
+	<property name="dict.exclusion"		value="liste.exclusion.txt"				/>
+	<property name="dict.exclusion.xml"	value="${target}/exclusions.xml"			/>
 	<property name="tests"			value="tests"						/>
 	<property name="tests.classes"		value="${target}/tests/classes"				/>
 	<property name="tests.reports"		value="${target}/reports/test"				/>
@@ -83,9 +85,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</javac>
 	</target>
 	
+	<target name="generate-exclusion-list">
+		<property name="working.copy"	value="${target}/${dict.exclusion}"/>
+		
+		<delete file="${working.copy}"/>
+		<copy file="resources/${dict.exclusion}" tofile="${working.copy}"/>
+		<replaceregexp byline="true">
+			<regexp pattern="(^[^$].*)"/>
+			<substitution expression="   &lt;exclude&gt;\1&lt;/exclude&gt;"/>
+			<fileset dir="." includes ="${working.copy}"/>
+		 </replaceregexp>
+
+		<replaceregexp byline="true">
+			 <regexp pattern="^.*====FIN(.*)"/>
+			 <substitution expression="&lt;/excludes&gt;"/>
+			 <fileset dir="." includes ="${working.copy}"/>
+		</replaceregexp>
+		 
+		<replaceregexp byline="true">
+			<regexp pattern="^.*====DEBUT(.*)"/>
+			<substitution expression="&lt;!-- This file is generated automaticly, do not edit --&gt;&lt;excludes&gt;"/>
+			<fileset dir="." includes ="${working.copy}"/>
+		</replaceregexp>	
+		<copy file="${working.copy}" tofile="${dict.exclusion.xml}"/>
+	</target>
+	
 	<!-- Generating data file from FranceTerme extraction -->
 	
-	<target name="generate-xml-file">
+	<target name="generate-xml-file" depends="generate-exclusion-list">
 		<!-- FranceTerme syntax is simplified and data reorganized to
 		     be "anglicism" driven... -->
 		<property name="out" value="${target}/franceterme-adapted.xml"/>
@@ -114,15 +141,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			  value="${target}/database-without-homographies.xml"/>
 		<xslt 	in="${basic-database}"
 			style="src/xsl/remove-homographies.xsl"
-			out="${database-without-homographies}">
+			out="${database-without-homographies}.full">
 		</xslt>	
 		
 		<!-- How many entries have we remove for homographic reasons ? -->
-		<xslt 	in="${database-without-homographies}"
+		<xslt 	in="${database-without-homographies}.full"
 			style="src/xsl/nb-anglicisms.xsl"
 			out="${dev.null}">
 		</xslt>
 
+		<!-- Ok, now we remove term that match a french word, based on a exclusion list -->
+		<xslt 	in="${database-without-homographies}.full"
+			style="src/xsl/terms-exclusion.xsl"
+			out="${database-without-homographies}">
+			<param name="exclusion-file" expression="${basedir}/${dict.exclusion.xml}"/>
+		</xslt>
 		
 		<move file="${database-without-homographies}" tofile="${dict.xml}"/>		
 	</target>
@@ -200,9 +233,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<formatter type="xml" />
 
 			<batchtest todir="${tests.reports}">
-				<fileset dir="${tests}">
-					<include name="**/*.java" />
-				</fileset>
+				<fileset dir="${tests}"
+					 includes="**/*.java"
+					 excludes="Abstract**/*.java"/>
 			</batchtest>
 		</junit>
 		
@@ -220,7 +253,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</exec>
 	</target>
 	
-	<target name="remove">
+	<target name="undeploy">
 		<exec executable="${unopkg.exe}"
 		      failonerror="yes"
 		      failifexecutionfails="yes">
@@ -347,7 +380,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		Release script  
 	-->
 	
-	<target name="release" depends="package,deploy,remove"/>
+	<target name="release" depends="package,undeploy,deploy"/>
 	
 	
 	

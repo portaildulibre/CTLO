@@ -26,10 +26,12 @@ import java.util.Map;
 import org.linagora.clients.minefi.dpma.terminologie.loader.Loader;
 import org.linagora.clients.minefi.dpma.terminologie.loader.text.TextFileLoader;
 import org.linagora.clients.minefi.dpma.terminologie.loader.xml.XMLFileLoader;
+import org.linagora.clients.minefi.dpma.terminologie.util.Utils;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.comp.loader.FactoryHelper;
+import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.Locale;
 import com.sun.star.lang.XInitialization;
 import com.sun.star.lang.XMultiServiceFactory;
@@ -42,6 +44,15 @@ import com.sun.star.linguistic2.XThesaurus;
 import com.sun.star.registry.XRegistryKey;
 import com.sun.star.uno.UnoRuntime;
 
+/**
+ * 
+ * FIXME: Cette classe fait trop de chose ! Elle représente à la fois le composant technique à intégrer dans
+ * OOo et les traitements spécifique au correcteur. Il faut la couper en deux.
+ * 
+ * @author Manuel Odesser modesser@linagora.com
+ * @author Romain PELISSE, romain.pelisse@atosorigin.com
+ *
+ */
 public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XInitialization, XServiceDisplayName, XServiceInfo {
 	
 	/**
@@ -59,6 +70,10 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	public final static String dataPath = "/terminologie_fr_FR.dat";
 	public final static String xmlDataPath = "/terminologie.xml";
 	
+	private final static String PLURAL_SYMBOL = "s";
+	private final static String SUPPORTED_SERVICE_NAME = "com.sun.star.linguistic2.Thesaurus";
+	private final static String SERVICE_NAME= "Correcteur terminologique";
+	
 	public PropChgHelper aPropChgHelper; //FIXME: Should this be public ?
 	
 	/**
@@ -67,7 +82,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	public Locale oLocale;				//FIXME: Should this be public ?
 	
 	private String encoding;
-	private static Map data;
+	private static Map<String,XMeaning[]> data;
 	
 	private boolean loadAsXml = true; 	// Set to false to fallback to the old text file loading process
 	/**
@@ -96,7 +111,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 
 		// charge les anglicismes
 		if(data == null) {
-			data = new HashMap(ANGLICISME_PRELOAD_COUNT);
+			data = new HashMap<String,XMeaning[]>(ANGLICISME_PRELOAD_COUNT);
 			
 			Loader loader = null;
 			if (loadAsXml) {
@@ -182,31 +197,80 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	 * @throws RuntimeException
 	 * @see com.sun.star.linguistic2.XThesaurus
 	 */
-	public XMeaning[] queryMeanings(String aTerm, Locale aLocale,
-			PropertyValue[] aProperties)
-			throws com.sun.star.lang.IllegalArgumentException, RuntimeException {
-		XMeaning[] aRes = new XMeaning[] {};
-		try {
-			if (IsEqual(aLocale, new Locale()) || aTerm.length() == 0) {
-				return aRes;
-			}
+	public XMeaning[] queryMeanings(String term, Locale locale, PropertyValue[] properties) throws IllegalArgumentException, RuntimeException {
+		XMeaning[] results = new XMeaning[] {};
+		// Le module linguistic2 n'a pas le droit pas d'envoyer une exception en cas de problème. On se contente de renvoyer une valeur vide
+		// (un XMeaning[]) qui veut dire "on n'a pas pu trouver le mot".
+		if ( term == null ) {
+			return results;
+		}
 
-			// Le module linguistic2 n'a pas le droit pas d'envoyer une
-			// exception
-			// en cas de problème. On se contente de renvoyer une valeur vide
-			// (un XMeaning[]) qui veut dire "on n'a pas pu trouver le mot".
-			if (!hasLocale(aLocale)) {
-				return aRes;
+		try {
+			if (IsEqual(locale, new Locale()) || term.length() == 0) {
+				return results;
 			}
-			if (data.containsKey(aTerm)) {
-				aRes = (XMeaning[])data.get(aTerm);
+			// même remarque que ci dessus
+			if (!hasLocale(locale)) {
+				return results;
 			}
+			// on cherche si le terme est présent dans la base terminologique
+			results = searchTermAndPossibleVariation(results, term);
+
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
-		return aRes;
+		return results;
 	}
 
+	/*
+	 * 
+	 * @param aRes
+	 * @param term
+	 * @return
+	 */
+	private XMeaning[] searchTermAndPossibleVariation(XMeaning[] results,String term) {
+		// on cherche si le terme est présent
+		results = searchForTerm(term,new XMeaning[]{});
+		// on recherche les variation de formes composées 
+		if ( term.contains("-") ) {
+			// Recherche du même terme avec un espace à la place
+			results = searchForTerm(term.replaceAll("-", " "), results);
+			// Recherche du même terme "concaténé" (sans espace)
+			results = searchForTerm(term.replaceAll("-", ""), results);
+		}
+		return results;
+	}
+	
+	private XMeaning[] searchForPluralForm(XMeaning[] results, String term) {
+		// Si le terme finit par un 's' ou un 'x'...
+		if ( term.endsWith(PLURAL_SYMBOL) || term.endsWith(PLURAL_SYMBOL.toUpperCase()) ) {
+			// ... on recherche sans le s.
+			XMeaning[] pluralFormResults = searchForTerm(term.substring(0,term.length() -1), results);
+			if ( pluralFormResults != null && pluralFormResults.length > 0 ) {
+				results = Utils.concat(results, pluralFormResults);
+			}
+		}
+		return results;
+	}
+	
+	/*
+	 * 
+	 * @param term
+	 * @param results
+	 * @return
+	 */
+	private XMeaning[] searchForTerm(String term, XMeaning[] results) {
+		if ( results == null ) // this is an erronous call 
+			throw new RuntimeException("Improper call of this method");
+		XMeaning[] alternativeResults = (XMeaning[])data.get(term);
+		// If we got any results, we agregate the data
+		if (alternativeResults != null && alternativeResults.length > 0 ) {
+			results = Utils.concat(results, alternativeResults);
+		}
+		// Let's look for plural form
+		return searchForPluralForm(results, term);
+	}
+	
 	/**
 	 * @param Locale
 	 *            aLocale
@@ -215,7 +279,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	 * @see com.sun.star.lang.XServiceDisplayName
 	 */
 	public String getServiceDisplayName(Locale aLocale) throws RuntimeException {
-		return "Correcteur terminologique";
+		return SERVICE_NAME;
 	}
 
 	/**
@@ -321,7 +385,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 	 * @throws RuntimeException
 	 */
 	public static String[] getSupportedServiceNames_Static() {
-		String[] aResult = { "com.sun.star.linguistic2.Thesaurus" };
+		String[] aResult = { SUPPORTED_SERVICE_NAME };
 		return aResult;
 	}
 }

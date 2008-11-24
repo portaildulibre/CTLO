@@ -315,7 +315,7 @@ End Function
 Sub CheckEachWord()
 	Dim oCursors(), i%
 	If Not CreateFullTextIterator(ThisComponent, oCursors()) Then Exit Sub
-	For i% = LBound(oCursors()) To UBound(oCursors())
+	For i% = UBound(oCursors()) To LBound(oCursors())
 		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
 	Next
 	MsgBox &quot;La vérification terminologique est terminée.&quot;
