@@ -327,6 +327,7 @@ Sub CheckSelection()
 	For i% = LBound(oCursors()) To UBound(oCursors())
 		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
 	Next
+	MsgBox &quot;La vérification terminologique est terminée.&quot;
 End Sub
 
 Function CheckWord(vLCursor, vRCursor, oText)
