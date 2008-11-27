@@ -22,11 +22,23 @@ package org.linagora.clients.minefi.dpma.terminologie;
 
 import com.sun.star.linguistic2.XMeaning;
 
-public class XMeaningThesaurus implements XMeaning
+/**
+ * TODO
+ * 
+ * @author Romain PELISSE, romain.pelisse@atosorigin.com
+ *
+ */
+public final class XMeaningThesaurus implements XMeaning
 {
 	String aMeaning;
 	String[] aSynonyms;
 	
+	/**
+	 *  Default constructor
+	 *  
+	 * @param aMeaning
+	 * @param aSynonyms
+	 */
 	public XMeaningThesaurus ( String aMeaning, String[] aSynonyms )
 	{
 		this.aMeaning = aMeaning;
@@ -43,16 +55,30 @@ public class XMeaningThesaurus implements XMeaning
 			this.aSynonyms = new String[]{};
 	}
 	
-	// Implémentation des interfaces de XMeaning
+	/*
+	 * @see com.sun.star.linguistic2.XMeaning#getMeaning()
+	 */
 	public String getMeaning() throws com.sun.star.uno.RuntimeException
 	{
 		return aMeaning;
 	}
+	
+	/*
+	 * @see com.sun.star.linguistic2.XMeaning#querySynonyms()
+	 */
 	public String[] querySynonyms() throws com.sun.star.uno.RuntimeException
 	{
 		return aSynonyms;
 	}
 	
+	/**
+	 * Overriding default implementation of toString to provide clearer output
+	 * while debugging. 
+	 * Note that this method should NOT be used to realize any business
+	 * action !
+	 * 
+	 * @return a "string" representation of this component (a list of synonyms)
+	 */
 	@Override
 	public String toString() {
 		String synonyms = ", synomyms:";

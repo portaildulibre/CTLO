@@ -1,4 +1,6 @@
 ====DEBUT DE LA LISTE D'EXCLUSION====
+ai
+des
 chat
 pin
 primer

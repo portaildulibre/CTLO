@@ -48,6 +48,16 @@ Global Const CasseUCFirst = 1
 Global Const CasseUpper = 2
 Global Const CasseLower = 3
 
+&apos; Messages
+Global Const FinDeVerification = &quot;La vérification terminologique est terminée.&quot;
+
+&apos; Public variables
+
+&apos; ignored term variables
+Dim NbTermIgnorer As Integer
+&apos;NbTermIgnorer = 0
+Dim IgnoreTermArray(NbTermIgnorer) As String 
+
 &apos;======================================================================
 &apos;======================================================================
 
@@ -163,27 +173,40 @@ Function appuiSurUneTouche(oKeyEvent As Object) As Boolean
 	 &apos;on laisse se propager l&apos;événement &apos;appui sur la touche&apos;
 End Function
 
+Function isIgnored(term As String)
+	isIgnored = False
+	Dim I 
+	For I = 0 To NbTermIgnorer
+		If ( IgnoreTermArray(I) = term ) Then
+			isIgnored = True
+		End If 
+	Next I
+End Function
+
 Sub rechercheTerminologique()
 	motChoisiPourRemplacement = trim(getPreviousWord(False,1))
-	If Len(motChoisiPourRemplacement) &gt; 0 Then
+	If ( Len(motChoisiPourRemplacement) &gt; 0 ) Then
+		&apos; Switch from whatever to lowercase
 		Casse = GetCasse(motChoisiPourRemplacement)
 		motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
-		listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
-		If UBound(listeDeCandidats) &lt; 0 Then
-			&apos; on n&apos;a rien trouvé pour le mot en cours
-			&apos; alors on cherche une locution de deux mots
-			motChoisiPourRemplacement = trim(getPreviousWord(True,2))
-			Casse = GetCasse(motChoisiPourRemplacement)
-			motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
+		If (  NOT isIgnored(motChoisiPourRemplacement) ) Then
 			listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
 			If UBound(listeDeCandidats) &lt; 0 Then
-				&apos; on n&apos;a rien trouvé pour la locution en cours
-				&apos; on pourrait continuer ici pour chercher les locutions de trois mots.
+				&apos; on n&apos;a rien trouvé pour le mot en cours
+				&apos; alors on cherche une locution de deux mots
+				motChoisiPourRemplacement = trim(getPreviousWord(True,2))
+				Casse = GetCasse(motChoisiPourRemplacement)
+				motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
+				listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
+				If UBound(listeDeCandidats) &lt; 0 Then
+					&apos; on n&apos;a rien trouvé pour la locution en cours
+					&apos; on pourrait continuer ici pour chercher les locutions de trois mots.
+				Else
+					showDialog()
+				End If
 			Else
 				showDialog()
 			End If
-		Else
-			showDialog()
 		End If
 	End If
 End Sub
@@ -307,6 +330,7 @@ Function GetThesaurusCandidates(s as String)
 	Dim aLocale As New com.sun.star.lang.Locale
 	aLocale.Language = &quot;fr&quot;
 	aLocale.Country = &quot;FR&quot;
+	&apos;	MsgBox &quot;Loading...&quot;
 	Set oAnglicismeThesaurus = createUnoService(&quot;org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus&quot;)
 	Set vReturn = oAnglicismeThesaurus.queryMeanings(s, aLocale, emptyArgs())
 	GetThesaurusCandidates = vReturn
@@ -315,10 +339,10 @@ End Function
 Sub CheckEachWord()
 	Dim oCursors(), i%
 	If Not CreateFullTextIterator(ThisComponent, oCursors()) Then Exit Sub
-	For i% = UBound(oCursors()) To LBound(oCursors())
+	For i% = LBound(oCursors()) To UBound(oCursors())
 		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
 	Next
-	MsgBox &quot;La vérification terminologique est terminée.&quot;
+	MsgBox FinDeVerification
 End Sub
 
 Sub CheckSelection()
@@ -327,11 +351,12 @@ Sub CheckSelection()
 	For i% = LBound(oCursors()) To UBound(oCursors())
 		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
 	Next
-	MsgBox &quot;La vérification terminologique est terminée.&quot;
+	MsgBox FinDeVerification
 End Sub
 
 Function CheckWord(vLCursor, vRCursor, oText)
 	Dim tmpCursor As Object, res As Boolean
+	
 	If IsNull(vLCursor) Or IsNull(vRCursor) Or IsNull(oText) Then Exit Function
 	If oText.compareRegionEnds(vLCursor, vRCursor) &lt;= 0 Then Exit Function
 	vLCursor.goLeft(1, False)
@@ -381,12 +406,10 @@ Sub ShowDialog()
 	ReDim Preserve list (x-1)
 	oControlModel.StringItemList=list()
 	&apos; S&apos;il n&apos;y a qu&apos;un domaine, on active directement la colonne des synonymes
-	If UBound(list()) = 0 Then
-		Dim tmp(1) As Integer
-		tmp(0) = 0
-		oControlModel.SelectedItems = tmp()
-		UpdateTermsList
-	EndIf
+	Dim tmp(1) As Integer
+	tmp(0) = 0
+	oControlModel.SelectedItems = tmp()
+	UpdateTermsList
 	&apos; affiche la boîte de dialogue
     oDialog.execute()
 End Sub
@@ -404,6 +427,9 @@ Sub DialogConstructor
     &apos; crée la boîte proprement dite
     oInputStreamProvider = oLib.getByName(sDialogName)
     oDialog = CreateUnoDialog(oInputStreamProvider)
+    &apos; Préselection du premier terme
+	UpdateTermsList()
+	UpdateSelectedTerm()
 End Sub
 
 &apos; Ferme la boîte de dialogue
@@ -426,7 +452,8 @@ Sub UpdateTermsList()
     &apos; on récupère le sens cliqué
     oControlModel = oDialogModel.getByName(&quot;Domaines&quot;)
     on error goto noSelectedMeaning
-    sens = oControlModel.StringItemList(oControlModel.SelectedItems(0))
+	sens = oControlModel.StringItemList(oControlModel.SelectedItems(0))
+
 noSelectedMeaningNext:
     on error resume next
     &apos; et on met à jour la liste des synonymes
@@ -436,26 +463,23 @@ noSelectedMeaningNext:
 		If sens = listeDeCandidats(j).getMeaning() Then
 			vSyns = listeDeCandidats(j).querySynonyms()
 			&apos; on ajoute une ligne blanche entre chaque entrée
-			Dim vSyns2(2*UBound(vSyns)) As Variant
-			l = 0
-			For k = LBound(vSyns) To UBound(vSyns)
-				vSyns2(l) = vSyns(k)
-				vSyns2(l+1) = &quot;&quot;
-				l = l + 2
-			Next k
-			oControlModel.StringItemList=vSyns2()
+&apos;			Dim vSyns2(2*UBound(vSyns)) As Variant
+&apos;			l = 0
+&apos;			For k = LBound(vSyns) To UBound(vSyns)
+&apos;				vSyns2(l) = vSyns(k)
+&apos;				vSyns2(l+1) = &quot;&quot;
+&apos;				l = l + 2
+&apos;			Next k
+&apos;			oControlModel.StringItemList=vSyns2()
+			oControlModel.StringItemList=vSyns()
 			Exit For
 		EndIf
 	Next
 	&apos; S&apos;il n&apos;y a qu&apos;un terme, on active directement la colonne des synonymes
-	&apos;  et le bouton &apos;remplacer&apos;
-&apos;	If UBound(vSyns()) = 0 Then
-&apos;		Dim temp(1) As Integer
-&apos;		temp(0) = 0
-&apos;		oControlModel.SelectedItems = temp()
-&apos;		UpdateSelectedTerm
-&apos;		ActivateReplaceButton
-&apos;	EndIf
+	Dim temp(1) As Integer &apos;FIXME: Cette bidouille est elle vraiment utile ?
+	temp(0) = 0
+	oControlModel.SelectedItems = temp()
+	UpdateSelectedTerm
 	Exit Sub
 
 noSelectedMeaning:
@@ -468,7 +492,7 @@ End Sub
 &apos; @author Manuel Odesser modesser@linagora.com
 Sub UpdateSelectedTerm()
     Dim oDialogModel As Object, oControlModel As Object
-    Dim terme as String&apos;, j As Integer
+    Dim terme as String
     dim tmp
     oDialogModel = oDialog.getModel()
     &apos; on récupère le terme cliqué
@@ -535,15 +559,69 @@ End Sub
 Sub ReplaceAnglicisme()
     Dim oDialogModel As Object, oControlModel As Object
     Dim motARemplacer As String
+    
     oDialogModel = oDialog.getModel()
     &apos; on récupère le terme cliqué
     oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
 	motARemplacer = oControlModel.getPropertyValue(&quot;Text&quot;)
+	
 	If motARemplacer &lt;&gt; &quot;&quot; Then
 		&apos; on remplace
 		xModelCursor.setString(SetCasse(Casse,motARemplacer))
-		DialogClose
+		oDialog.endExecute()
 	End If
+End Sub
+
+
+&apos; Remplace tout les occurences de l&apos;anglicisme par son équivalent 
+&apos; français sélectionné par l&apos;utilisateur 
+&apos;
+&apos; @author Romain PELISSE, romain.pelisse@atosorigin.com
+&apos;
+Sub ReplaceAllAnglicisme()
+	Dim Doc As Object
+	Dim Replace As Object
+    Dim oDialogModel As Object, oControlModel As Object
+    Dim remplacement As String
+    Dim anglicisme As String
+    
+    oDialogModel = oDialog.getModel()
+    &apos; on récupère le terme cliqué et le terme à remplacer
+    oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
+	remplacement = oControlModel.getPropertyValue(&quot;Text&quot;)
+	oControlModel = oDialogModel.getByName(&quot;anglicisme&quot;)
+	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
+
+	If remplacement &lt;&gt; &quot;&quot; Then
+		Doc = StarDesktop.CurrentComponent
+		Replace = Doc.createReplaceDescriptor
+	  	Replace.SearchString = anglicisme
+		Replace.ReplaceString = remplacement
+		Doc.replaceAll(Replace)
+		oDialog.endExecute()
+	End If
+End Sub
+
+&apos; Ignore un anglicisme  sélectionné par l&apos;utilisateur 
+&apos;	jusqu&apos;à la fin de la vérification.
+&apos; @author Romain PELISSE, romain.pelisse@atosorigin.com
+&apos;
+Sub IgnoreAll()
+	Dim anglicisme As String
+	Dim oDialogModel As Object, oControlModel As Object
+	&apos; Retrieving selected anglicism
+	 
+    oDialogModel = oDialog.getModel()
+	oControlModel = oDialogModel.getByName(&quot;anglicisme&quot;)
+	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
+	&apos; Resize ignore term array
+	NbTermIgnorer = NbTermIgnorer + 1
+	ReDim IgnoreTermArray(NbTermIgnorer)
+	&apos; Change casse to lower	
+	anglicisme = SetCasse(CasseLower,anglicisme)
+	&apos; Add to array
+	IgnoreTermArray(NbTermIgnorer) = anglicisme
+	oDialog.endExecute()
 End Sub
 
 &apos;======================================================================
@@ -579,11 +657,15 @@ End Sub
 &apos;======================================================================
 &apos;======================================================================
 &apos; Framework texte
-
+&apos;
+&apos;
 &apos; @author Andrew Pitonyak andrew@pitonyak.org
+&apos;
 &apos; @param oDoc is a writer object
 &apos; @parma oCursors() : Has the return cursors
+&apos;
 &apos; @return true if should iterate and false if should not
+&apos;
 Function CreateSelectedTextIterator(oDoc As Object, oCursors()) As Boolean
 	Dim lSelCount As Long &apos;Number of selected sections.
 	Dim lWhichSelection As Long &apos;Current selection item.
@@ -633,6 +715,7 @@ End Function
 Function CreateFullTextIterator(oDoc As Object, oCursors()) As Boolean
 	Dim oLCurs &apos;Cursor to the left of the current selection.
 	Dim oRCurs &apos;Cursor to the right of the current selection.
+	
 	CreateFullTextIterator = True
 	oLCurs = oDoc.getText().createTextCursor()
 	oLCurs.gotoStart(False)
