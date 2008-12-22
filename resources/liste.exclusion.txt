@@ -1,6 +1,22 @@
 ====DEBUT DE LA LISTE D'EXCLUSION====
-ai
-des
+SAGE
+EST
+FAQ
+NET
+BAS
+CRU
+DES
+CLIP
+PET
+ALU
+AOC
+BOP
+ROI
+immobiliser
+modeler
+AI
+PIF
+PIB
 chat
 pin
 primer
@@ -30,4 +46,4 @@ fit
 retarder
 font
 fixer
-====FIN DE LA LISTE D'EXCLUSIOn===
+====FIN DE LA LISTE D'EXCLUSION===
