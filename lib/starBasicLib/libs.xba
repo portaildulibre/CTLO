@@ -33,6 +33,7 @@ Option Explicit
 
 Global motChoisiPourRemplacement As String
 Global listeDeCandidats As Object
+Global correcteurCharge As Boolean
 &apos; oDialog doit être une variable globale : elle est utilisée de l&apos;exécution de procédure lancées
 &apos; depuis la boîte de dialogue.
 Global oDialog As Object
@@ -320,7 +321,9 @@ End Function
 &apos;======================================================================
 &apos; Fonctions propres à la linguistique
 
-&apos; La fonction qui fait le boulot de recherche dans la base terminologique
+&apos; Cette fonction effectue la recherche dans la base terminologique
+&apos; embarqué dans l&apos;extension.
+&apos;
 &apos; @return XMeaning[]
 &apos; @author Manuel Odesser modesser@linagora.com
 Function GetThesaurusCandidates(s as String)
@@ -330,7 +333,10 @@ Function GetThesaurusCandidates(s as String)
 	Dim aLocale As New com.sun.star.lang.Locale
 	aLocale.Language = &quot;fr&quot;
 	aLocale.Country = &quot;FR&quot;
-	&apos;	MsgBox &quot;Loading...&quot;
+	If Not correcteurCharge Then
+		MsgBox &quot;Le premier chargement du correcteur peut prendre quelques secondes.&quot;
+		correcteurCharge = true
+	EndIf
 	Set oAnglicismeThesaurus = createUnoService(&quot;org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus&quot;)
 	Set vReturn = oAnglicismeThesaurus.queryMeanings(s, aLocale, emptyArgs())
 	GetThesaurusCandidates = vReturn
@@ -595,6 +601,7 @@ Sub ReplaceAllAnglicisme()
 	If remplacement &lt;&gt; &quot;&quot; Then
 		Doc = StarDesktop.CurrentComponent
 		Replace = Doc.createReplaceDescriptor
+		Replace.SearchWords = True
 	  	Replace.SearchString = anglicisme
 		Replace.ReplaceString = remplacement
 		Doc.replaceAll(Replace)
@@ -602,8 +609,10 @@ Sub ReplaceAllAnglicisme()
 	End If
 End Sub
 
+&apos;
 &apos; Ignore un anglicisme  sélectionné par l&apos;utilisateur 
 &apos;	jusqu&apos;à la fin de la vérification.
+&apos;
 &apos; @author Romain PELISSE, romain.pelisse@atosorigin.com
 &apos;
 Sub IgnoreAll()
@@ -907,14 +916,16 @@ Function TrouveRepInstall() as String
 	TrouveRepInstall = ConvertToURL(chemin)
 End Function
 
+&apos;
 &apos; @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
+&apos;
 Sub OpenCriterURL()
 on error resume next
 	Dim objlancer, handleErrors
 	Dim adresse as String
 
 	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)
-	adresse = convertToURL(&quot;http://www.criter.dglf.culture.gouv.fr&quot;)
+	adresse = convertToURL(&quot;http://franceterme.culture.fr/FranceTerme/&quot;)
 	handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
 	objlancer.execute(adresse, &quot;&quot;, handleErrors)
 
