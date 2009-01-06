@@ -37,20 +37,35 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	}
 	
 	@Test
-	public void testGetSynonyme1() throws IllegalArgumentException, RuntimeException {
+	public void testGetSynonymeSimple() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] res = getSynonyme("spam");
 		// No entry in dictionnary on 'spam'
 		assertTrue(res != null && res.length == 0);
 	}
+
+	@Test
+	public void testGetSynonymeWithSpace() throws IllegalArgumentException, RuntimeException {
+		XMeaning[] res = getSynonyme("wild card");
+		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 2);
+		// Should do the same
+		res = getSynonyme("wild-card");
+		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 2);
+		// An other test		
+		res = getSynonyme("data-base");
+		assertTrue(res != null && res.length == 2 && res[0].querySynonyms().length == 1);
+		res = getSynonyme("data base");
+		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 1);
+
+	}
 	
 	@Test
-	public void testGetSynonyme2() throws IllegalArgumentException, RuntimeException {
+	public void testGetSynonymeWithHyphen() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] results = getSynonyme("hit-and-run");
 		assertTrue(results != null && results.length > 0);
 	}
 	
 	@Test
-	public void testGetSynonyme3() throws IllegalArgumentException, RuntimeException {
+	public void testGetSynonymeWithSeveralOptions() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] results = getSynonyme("e-mail");
 		assertTrue(results != null && results.length >= 2);
 	}

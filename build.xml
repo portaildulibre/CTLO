@@ -27,13 +27,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	    before making any attempt to use run this Ant script.
 **********************************************************************************************************
 	    -->
-	
-	<property name="unopkg.exe"		value="/usr/lib/openoffice.org/program/unopkg.bin"	/>
-	<property name="project.lib"		value="/usr/lib/openoffice.org/program/classes/"	/>
 
-	
+	<property name="OOo_HOME"		value="/usr/lib/openoffice.org/"			/>
+	<property name="unopkg.exe"		value="${OOo_HOME}/ure/bin/uno.bin"			/>
+	<property name="project.lib"		value="${OOo_HOME}/basis3.0/program/classes/"		/>
+	<property name="plugin.lib"		value="${OOo_HOME}/ure/share/java/"			/>
+
 	<!-- Regular project property -->
-	
 	<property name="out.path" 		value="bin/ant" 					/>
 	<property name="version" 		value="0.3" 						/>
 	<property name="src.java"		value="src/java"					/>
