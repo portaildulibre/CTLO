@@ -1,8 +1,13 @@
 package org.linagora.clients.minefi.dpma.terminologie;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import org.junit.Test;
 
@@ -68,5 +73,26 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	public void testGetSynonymeWithSeveralOptions() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] results = getSynonyme("e-mail");
 		assertTrue(results != null && results.length >= 2);
+	}
+	
+	@Test 
+	public void testExclusionList() throws IllegalArgumentException, IOException, RuntimeException {
+        BufferedReader in = new BufferedReader(new FileReader("resources/liste.exclusion.txt"));
+        String str;
+        boolean fail = false;
+        while ((str = in.readLine()) != null) {
+        	if ( ! str.startsWith("==")) {
+        		XMeaning[] results = getSynonyme(str);
+        		//assertTrue(results != null && results.length == 0);				        
+        		if (results != null && results.length > 0 ) {
+        			System.out.println(str + " is not missing !");
+        			fail = true;
+        		}
+        		else
+        			System.out.println(str + " is missing : OK");
+        	}
+        }
+	    in.close();
+        assertFalse(fail);
 	}
 }

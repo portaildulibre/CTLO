@@ -56,22 +56,27 @@ Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>
 		<xsl:variable name="term" 	select="@id"/>
 		<xsl:variable name="node"	select="child::node()"/>
 		
-		<xsl:for-each select="$exclusions/excludes/exclude">
-			<!---->
-			<xsl:choose>
-				<xsl:when test="$term != text()">
-					<xsl:element name="anglicisme">
-						<xsl:attribute name="id">
-							<xsl:value-of select="$term"/>
-						</xsl:attribute>
-						<xsl:apply-templates select="$node"/>	
-					</xsl:element>			
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message>Le terme <xsl:value-of select="$term"/> a été supprimmé de la base des termes étrangers.</xsl:message> 
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each> 
+		<xsl:variable name="is-exclude">
+			  <xsl:call-template name="is-an-exclude-term">
+			    <xsl:with-param name="term" select="$term"/>
+			  </xsl:call-template>
+		</xsl:variable>
+<!--
+		<xsl:message>anglicisme:<xsl:value-of select="$term"/> (<xsl:value-of select="$is-exclude"/>)</xsl:message>
+-->
+		<xsl:choose>
+			<xsl:when test="contains($is-exclude,'excluded')">
+				<xsl:message>Le terme <xsl:value-of select="$term"/> a été retiré.</xsl:message>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:element name="anglicisme">
+					<xsl:attribute name="id">
+						<xsl:value-of select="$term"/>
+					</xsl:attribute>
+					<xsl:apply-templates select="$node"/>	
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<!--
@@ -80,5 +85,13 @@ Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>
 
 		Below this limit there is only template called (~ functions)
 	-->
-	
+	<xsl:template name="is-an-exclude-term">
+		<xsl:param name="term"/>
+		<xsl:for-each select="$exclusions/excludes/exclude">
+			<xsl:choose>
+				<xsl:when test="$term = text()"><xsl:value-of select="'excluded'"/></xsl:when>
+			</xsl:choose>
+		</xsl:for-each> 
+	</xsl:template>
+
 </xsl:stylesheet>

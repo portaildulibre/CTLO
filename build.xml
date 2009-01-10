@@ -156,7 +156,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			out="${database-without-homographies}">
 			<param name="exclusion-file" expression="${basedir}/${dict.exclusion.xml}"/>
 		</xslt>
-		
+
+		<!-- How many entries have we left now ? -->
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/nb-anglicisms.xsl"
+			out="${dev.null}">
+		</xslt>
+
 		<move file="${database-without-homographies}" tofile="${dict.xml}"/>		
 	</target>
 	
@@ -315,7 +321,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	</target>
 	
 	
-	<!-- TODO: this is broken, need to have working emma_ant jar ! -->
+	<!-- TODO: this is broken, need to have a working emma_ant jar ! -->
 	<target name="tests-coverage">
 
 		<!-- Adding EmmaTask to Ant -->
