@@ -22,8 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.uno-component;type=Java"
-		manifest:full-path="terminologie-0.3.jar" />
-	<!-- FIXME: Should set the version from build !!! -->
+		manifest:full-path="terminologie-@@VERSION@@.jar" />
+	<!-- Version setted in build -->
 	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.configuration-data"
 		manifest:full-path="Addons.xcu" />

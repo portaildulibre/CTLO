@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<!-- Regular project property -->
 	<property name="out.path" 		value="bin/ant" 					/>
-	<property name="version" 		value="0.3" 						/>
+	<property name="version" 		value="0.4" 						/>
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
 	
@@ -186,16 +186,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		
 	</target>
 	
+	<!-- Editing file with the version number -->
+	<target name="version">
+		<mkdir dir="${target}/META-INF"/>
+		<copy file="${basedir}/resources/META-INF/manifest.xml" todir="${target}/META-INF/"/>
+		<replace file="${target}/META-INF/manifest.xml" token="@@VERSION@@" value="${version}"/>
+	</target>
+
 	<!-- Building the pkg file for OOo -->
 	
 	<target name="package" 
-		depends="jar"
+		depends="jar,version"
 		description="Package application for OOo">
 	
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
 		<zip 	destfile="${target}/${ant.project.name}-${version}.uno.pkg"
 		     	basedir="${package}">
-			<fileset dir="${basedir}/resources"	includes="META-INF/manifest.xml"		/>
+			<fileset dir="${target}/"		includes="META-INF/manifest.xml"		/>
 			<fileset dir="${basedir}" 		includes="README"				/>
 			<fileset dir="${basedir}" 		includes="COPYING"				/>
 			<fileset dir="${basedir}"		includes="resources/ChangeLog"			/>
