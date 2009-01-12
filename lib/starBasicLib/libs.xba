@@ -334,7 +334,7 @@ Function GetThesaurusCandidates(s as String)
 	aLocale.Language = &quot;fr&quot;
 	aLocale.Country = &quot;FR&quot;
 	If Not correcteurCharge Then
-		MsgBox &quot;Le premier chargement du correcteur peut prendre quelques secondes.&quot;
+	&apos;	MsgBox &quot;Le premier chargement du correcteur peut prendre quelques secondes.&quot;
 		correcteurCharge = true
 	EndIf
 	Set oAnglicismeThesaurus = createUnoService(&quot;org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus&quot;)
@@ -923,11 +923,19 @@ Sub OpenCriterURL()
 on error resume next
 	Dim objlancer, handleErrors
 	Dim adresse as String
-
-	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)
-	adresse = convertToURL(&quot;http://franceterme.culture.fr/FranceTerme/&quot;)
-	handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
-	objlancer.execute(adresse, &quot;&quot;, handleErrors)
+    Dim oDialogModel As Object, oControlModel As Object
+    Dim anglicisme As String
+    
+    &apos; retrieving the 'anglicisme' value
+    oDialogModel = oDialog.getModel()
+    oControlModel = oDialogModel.getByName(&quot;anglicisme&quot;)
+	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
+	&apos; building the appropriate URL
+	adresse = convertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + anglicisme)
+	&apos;  calling the external service
+    handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
+    objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)	
+    objlancer.execute(adresse, &quot;&quot;, handleErrors)
 
 End Sub
 
