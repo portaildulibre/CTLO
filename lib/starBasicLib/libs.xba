@@ -54,10 +54,10 @@ Global Const FinDeVerification = &quot;La vérification terminologique est termi
 
 &apos; Public variables
 
-&apos; ignored term variables
-Dim NbTermIgnorer As Integer
+&apos; ignored term variables 
+Private NbTermIgnorer As Integer
 &apos;NbTermIgnorer = 0
-Dim IgnoreTermArray(NbTermIgnorer) As String 
+Private IgnoreTermArray(NbTermIgnorer) As String 
 
 &apos;======================================================================
 &apos;======================================================================
