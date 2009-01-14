@@ -125,7 +125,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 					<value>com.sun.star.text.TextDocument</value>
 				</prop>
 				<prop oor:name="Title" oor:type="xs:string">
-					<value>Aide du correcteur terminologique</value>
+					<value>A propos du correcteur terminologique</value>
 				</prop>
 				<prop oor:name="URL" oor:type="xs:string">
 					<value>macro:///Terminologie.libs.Aide</value>
