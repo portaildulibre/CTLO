@@ -30,6 +30,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				<prop oor:name="URL">
 					<value>macro:///Terminologie.libs.SetupKeyHandler</value>
 				</prop>
+				<prop oor:name="Title" oor:type="xs:string">
+				        <value>Terminologie</value>
+				</prop>
 				<node oor:name="UserDefinedImages">
 					<prop oor:name="ImageSmallURL" oor:type="xs:string">
 						<value>%origin%/images/correct_frappe.png</value>
