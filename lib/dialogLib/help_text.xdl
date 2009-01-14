@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="help_text" dlg:left="99" dlg:top="12" dlg:width="259" dlg:height="406" dlg:closeable="true" dlg:moveable="true" dlg:title="Aide du correcteur terminologique">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:background-color="0xffffff" dlg:border="simple"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:text dlg:id="Label1" dlg:tab-index="0" dlg:left="2" dlg:top="3" dlg:width="252" dlg:height="24" dlg:value="Le correcteur terminologique a détecté un terme étranger dans votre texte et vous propose de le remplacer par un terme français. Pour cela il suffit souvent d&apos;appuyer sur la touche Entrée." dlg:multiline="true"/>
+  <dlg:text dlg:id="interligne" dlg:tab-index="1" dlg:left="2" dlg:top="27" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:id="Label2" dlg:tab-index="2" dlg:left="2" dlg:top="33" dlg:width="252" dlg:height="10" dlg:value="Détail des opérations :"/>
+  <dlg:text dlg:style-id="0" dlg:id="Label4" dlg:tab-index="3" dlg:left="3" dlg:top="51" dlg:width="92" dlg:height="62" dlg:value="Choisissez un domaine"/>
+  <dlg:text dlg:style-id="0" dlg:id="Label5" dlg:tab-index="4" dlg:left="83" dlg:top="51" dlg:width="170" dlg:height="62" dlg:value="Il est parfois nécessaire de déterminer votre domaine (le contexte) pour vous proposer un terme français adapté. Dans ce cas, la zone de choix des domaines vous propose une liste de domaines. Le premier domaine de la liste&#x0a;est sélectionné par défaut. S&apos;il vous convient, passez à l&apos;étape suivante « choisissez un terme français ». Sinon, sélectionnez dans la liste le domaine qui vous concerne." dlg:multiline="true"/>
+  <dlg:text dlg:style-id="0" dlg:id="Label3" dlg:tab-index="5" dlg:left="3" dlg:top="111" dlg:width="82" dlg:height="44" dlg:value="Choisissez un terme français "/>
+  <dlg:text dlg:style-id="0" dlg:id="Label6" dlg:tab-index="6" dlg:left="83" dlg:top="111" dlg:width="170" dlg:height="44" dlg:value=" La zone de choix des termes français vous propose un ou plusieurs termes. Le premier terme de la liste est sélectionné par défaut. S&apos;il vous convient, passez à l&apos;étape suivante « demandez le remplacement ». Sinon, sélectionnez dans la liste le terme qui vous convient." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label7" dlg:tab-index="7" dlg:left="2" dlg:top="42" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:id="Label8" dlg:tab-index="8" dlg:left="2" dlg:top="176" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:style-id="0" dlg:id="Label9" dlg:tab-index="9" dlg:left="3" dlg:top="154" dlg:width="82" dlg:height="22" dlg:value="Demandez le remplacement"/>
+  <dlg:text dlg:style-id="0" dlg:id="Label10" dlg:tab-index="10" dlg:left="83" dlg:top="154" dlg:width="170" dlg:height="22" dlg:value="Cliquez sur le bouton « Remplacer » ou appuyez sur la touche Entrée." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label11" dlg:tab-index="11" dlg:left="3" dlg:top="183" dlg:width="252" dlg:height="17" dlg:value="Si vous préférez conserver votre terme étranger, cliquez sur le bouton Ignorer ou appuyez sur la touche Echap ou cliquez sur la case de fermeture de la fenêtre (croix rouge en haut à droite)." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label12" dlg:tab-index="12" dlg:left="3" dlg:top="199" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:id="Label13" dlg:tab-index="13" dlg:left="3" dlg:top="207" dlg:width="252" dlg:height="28" dlg:value="A la place du bouton « Remplacer » vous pouvez cliquer sur le bouton « Remplacer partout ». Votre terme étranger sera automatiquement remplacé par le terme français dans le reste de votre document ou de votre sélection." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label14" dlg:tab-index="14" dlg:left="3" dlg:top="241" dlg:width="252" dlg:height="28" dlg:value="A la place du bouton «Ignorer» vous pouvez cliquer sur le bouton «Ignorer partout ». Votre terme étranger sera automatiquement ignoré dans le reste de votre document ou de votre sélection.&#x0a;" dlg:multiline="true"/>
+  <dlg:text dlg:id="Label15" dlg:tab-index="15" dlg:left="3" dlg:top="234" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:id="Label16" dlg:tab-index="16" dlg:left="3" dlg:top="276" dlg:width="252" dlg:height="28" dlg:value="Le correcteur fonctionne sous 3 modes : en cours de frappe, sur le document entier, sur la sélection. Ces trois modes s&apos;activent par les 3 boutons de la barre de boutons du correcteur ou par le menu Outils/Add-ons/Correcteur terminologique." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label17" dlg:tab-index="17" dlg:left="3" dlg:top="269" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:id="Label18" dlg:tab-index="18" dlg:left="3" dlg:top="310" dlg:width="252" dlg:height="35" dlg:value="Au démarrage d&apos;OpenOffice.org, la correction en cours de frappe est automatiquement activée. Vous pouvez la désactiver en cliquant sur le 1er bouton ou par le menu Outils/Addons/Correcteur terminologique. Dans le menu, vous pouvez aussi supprimer l&apos;activation automatique de la correction." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label19" dlg:tab-index="19" dlg:left="3" dlg:top="303" dlg:width="252" dlg:height="8"/>
+  <dlg:text dlg:id="Label20" dlg:tab-index="20" dlg:left="3" dlg:top="350" dlg:width="252" dlg:height="35" dlg:value="Les termes étrangers détectés et les termes français de remplacement sont extraits de la base FranceTerme de la Délégation générale à la langue française et aux langues de France, qui comprend l&apos;ensemble des termes publiés au Journal officiel français. La base est consultable par un lien cliquable dans la fenêtre du correcteur." dlg:multiline="true"/>
+  <dlg:text dlg:id="Label21" dlg:tab-index="21" dlg:left="3" dlg:top="343" dlg:width="252" dlg:height="8"/>
+  <dlg:button dlg:id="CommandButton1" dlg:tab-index="22" dlg:left="176" dlg:top="383" dlg:width="59" dlg:height="19" dlg:value="Ok" dlg:button-type="ok"/>
+ </dlg:bulletinboard>
+</dlg:window>

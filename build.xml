@@ -169,7 +169,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<!-- Assembling the jar file -->
 	
 	<target name="jar" 
-		depends="compile,generate-xml-file"
+		depends="compile,generate-xml-file,version"
 		description="Create jar file">
 
 		<jar 	basedir="${classes}" 
@@ -188,6 +188,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	
 	<!-- Editing file with the version number -->
 	<target name="version">
+		<delete dir="${target}/META-INF"/>
 		<mkdir dir="${target}/META-INF"/>
 		<copy file="${basedir}/resources/META-INF/manifest.xml" todir="${target}/META-INF/"/>
 		<replace file="${target}/META-INF/manifest.xml" token="@@VERSION@@" value="${version}"/>
