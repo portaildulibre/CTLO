@@ -130,8 +130,7 @@ public class XMLDictionnaryHandler extends DefaultHandler {
     public void characters (char characters[], int start, int length) throws SAXException
     {
     	if ( insideSynonyme ) {
-    		currentSynonyme = new String(characters);
-    		currentSynonyme = currentSynonyme.substring(start, start + length); // FIXME: Not really efficient
+    		currentSynonyme = new String(characters,start,length);
     	}
     }
 	
@@ -163,7 +162,7 @@ public class XMLDictionnaryHandler extends DefaultHandler {
 			// Reset to current 'anglicism' to null
 			currentAnglicism = "";
 			currentDomainList.clear();
-//		} else if ( DOMAINS_TAG.equals(qName) ) { // nothing to here, commented out for performance 
+//		} else if ( DOMAINS_TAG.equals(qName) ) { // nothing to do here, commented out for performance 
 //			// We've done with the domains associated with the anglicism's synonyms
 		} else if ( DOMAIN_TAG.equals(qName) ) {
 			// We've done with the current domain

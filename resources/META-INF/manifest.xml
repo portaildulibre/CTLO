@@ -28,6 +28,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		manifest:media-type="application/vnd.sun.star.configuration-data"
 		manifest:full-path="Addons.xcu" />
 	<manifest:file-entry
+		manifest:media-type="application/vnd.sun.star.configuration-data"
+		manifest:full-path="Events.xcu" />
+	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.basic-library"
 		manifest:full-path="starBasicLib/" />
 	<manifest:file-entry

@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<!-- Regular project property -->
 	<property name="out.path" 		value="bin/ant" 					/>
-	<property name="version" 		value="0.4" 						/>
+	<property name="version" 		value="0.3" 						/>
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
 	
@@ -57,6 +57,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	
 	<path id="project.classpath">
 		<fileset dir="${project.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${plugin.lib}">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
@@ -201,7 +204,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		description="Package application for OOo">
 	
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
-		<zip 	destfile="${target}/${ant.project.name}-${version}.uno.pkg"
+		<zip 	destfile="${target}/${ant.project.name}-${version}.oxt"
 		     	basedir="${package}">
 			<fileset dir="${target}/"		includes="META-INF/manifest.xml"		/>
 			<fileset dir="${basedir}" 		includes="README"				/>
@@ -211,6 +214,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<fileset dir="${basedir}/lib"		includes="starBasicLib/"			/>
 			<fileset dir="${basedir}/resources"	includes="images/"				/>
 			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
+			<fileset dir="${basedir}/resources"     includes="Events.xcu"   			/>
                         <fileset dir="${basedir}/resources"     includes="StartupJob.xcu"       		/>
 			<fileset dir="${classes}"								/>
 			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
@@ -243,16 +247,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<classpath location="${dict}" />
 			<!-- New one -->
 			<classpath location="${target}"/>
+			<!-- OOo3 default setting allow only 100Mo for JVM, so we check extension does consume more than 50Mo -->
+			<jvmarg value="-Xms5M"/>
+			<jvmarg value="-Xmx40M"/>
 			<!-- XML output for result    -->
 			<formatter type="xml" />
 
 			<batchtest todir="${tests.reports}">
 				<fileset dir="${tests}"
 					 includes="**/*.java"
-					 excludes="Abstract**/*.java"/>
+					 excludes="**/Abstract*.java"/>
 			</batchtest>
 		</junit>
-		
+	        <junitreport todir="${tests.reports}">
+			<fileset dir="${tests.reports}">
+				<include name="**/TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${tests.reports}/html"/>
+		</junitreport>
         </target>
 	
 	<!-- OOo integration test -->
@@ -263,7 +275,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		      failifexecutionfails="yes">
 			<arg value="add"/>
 			<arg value="-v"/>
-			<arg file="${target}/${ant.project.name}-${version}.uno.pkg"/>
+			<arg file="${target}/${ant.project.name}-${version}.oxt"/>
 		</exec>
 	</target>
 	
@@ -273,7 +285,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		      failifexecutionfails="yes">
 			<arg value="remove"/>
 			<arg value="-v"/>
-			<arg value="${ant.project.name}-${version}.uno.pkg"/>
+			<arg value="${ant.project.name}-${version}.oxt"/>
 		</exec>
 	</target>
 
@@ -313,7 +325,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		</pmd>
 		
 		<xslt 	in="${target}/pmd.xml" 
-			style="/perso/workspace/pmd-trunk/etc/pmd-nicerhtml.xsl" 
+			style="src/xsl/pmd-nicerhtml.xsl" 
 			out="${target}/pmd.html" />
 		<!-- Looking for cut'n'paste code -->
 		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">

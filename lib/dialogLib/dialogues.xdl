@@ -59,7 +59,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
   <dlg:button dlg:id="BoutonIgnorerTout" dlg:tab-index="9" dlg:left="175" dlg:top="70" dlg:width="70" dlg:height="16" dlg:value="Ignorer partout">
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.IgnoreAll?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="BoutonAide" dlg:tab-index="10" dlg:left="175" dlg:top="91" dlg:width="70" dlg:height="16" dlg:value="A propos du correcteur...">
+  <dlg:button dlg:id="BoutonAide" dlg:tab-index="10" dlg:left="175" dlg:top="91" dlg:width="70" dlg:height="16" dlg:value="Aide">
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.Aide?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
  </dlg:bulletinboard>

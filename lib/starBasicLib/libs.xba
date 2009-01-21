@@ -51,7 +51,7 @@ Global Const CasseLower = 3
 
 &apos; Messages
 Global Const FinDeVerification = &quot;La vérification terminologique est terminée.&quot;
-
+Global Const DialogTitle = &quot;Terminologie&quot;
 &apos; Public variables
 
 &apos; ignored term variables 
@@ -59,11 +59,29 @@ Private NbTermIgnorer As Integer
 &apos;NbTermIgnorer = 0
 Private IgnoreTermArray(NbTermIgnorer) As String 
 
-&apos;======================================================================
-&apos;======================================================================
+&apos; état de la correction terminologique
+Private correctionEnFrappe As Boolean
 
-&apos; Active le correcteur terminologique en cours de frappe
+
+&apos; 
+&apos; Cette routine change l'état de la correction en cours de frappe. Si cette
+&apos; dernière est activé, elle est désactivé, sinon elle est activé. 
+&apos;
+&apos;	romain.pelisse@atosorigin.com	
+&apos;
+Sub BasculeCorrectionEnCoursDeFrappe
+	msgbox("before:" + correctionEnFrappe)
+	If NOT correctionEnFrappe Then
+		SetupKeyHandler
+	Else
+		RemoveKeyHandler
+	End if
+	msgbox("after:" + correctionEnFrappe)
+End Sub
+
+' Active le correcteur terminologique en cours de frappe
 Sub SetupKeyHandler
+	msgbox(&quot;Correcteur activé&quot;)
 	keyMutex(&quot;set&quot;,True)
 	If IsNull(TerminologieKeyHandler) Then
 		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
@@ -71,6 +89,7 @@ Sub SetupKeyHandler
 	removeHook
 	addHook
 	keyMutex(&quot;set&quot;,False)
+	correctionEnFrappe = true
 End sub
 
 &apos; Désactive le correcteur terminologique
@@ -78,6 +97,7 @@ Sub RemoveKeyHandler
 	keyMutex(&quot;set&quot;,True)
 	removeHook
 	keyMutex(&quot;set&quot;,False)
+	correctionEnFrappe = false
 End Sub
 
 Sub addHook
@@ -348,7 +368,7 @@ Sub CheckEachWord()
 	For i% = LBound(oCursors()) To UBound(oCursors())
 		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
 	Next
-	MsgBox FinDeVerification
+	MsgBox(FinDeVerification,0,DialogTitle)
 End Sub
 
 Sub CheckSelection()
@@ -357,12 +377,13 @@ Sub CheckSelection()
 	For i% = LBound(oCursors()) To UBound(oCursors())
 		CheckWord(oCursors(i%, 0), oCursors(i%, 1), ThisComponent.Text)
 	Next
-	MsgBox FinDeVerification
+	MsgBox(FinDeVerification,0,DialogTitle)
 End Sub
 
 Function CheckWord(vLCursor, vRCursor, oText)
 	Dim tmpCursor As Object, res As Boolean
 	
+	On ERROR RESUME NEXT REM FIXME: Crash with array in writer !!!
 	If IsNull(vLCursor) Or IsNull(vRCursor) Or IsNull(oText) Then Exit Function
 	If oText.compareRegionEnds(vLCursor, vRCursor) &lt;= 0 Then Exit Function
 	vLCursor.goLeft(1, False)
@@ -645,7 +666,7 @@ Sub ShowHelpDialog()
 	&apos; on créé la boîte
 	HelpDialogConstructor()
 	&apos; affiche la boîte de dialogue
-    oHelpDialog.execute()
+    	oHelpDialog.execute()
 End Sub
 
 &apos; Construit la boîte de dialogue de l&apos;aide
@@ -653,7 +674,7 @@ End Sub
 Sub HelpDialogConstructor()
     Dim oLibContainer As Object, oInputStreamProvider As Object, oLib As Object
     Const sLibName = &quot;Terminologie&quot;
-    Const sDialogName = &quot;help_dialog&quot;
+    Const sDialogName = &quot;help_text&quot;
     &apos; récupération de la librairie dans laquelle est définie la boîte
     oLibContainer = DialogLibraries
     oLibContainer.loadLibrary(sLibName)
@@ -743,6 +764,8 @@ Function IsAnythingSelected(oDoc As Object) As Boolean
 	Dim oSel &apos;A single selection
 	Dim oCursor &apos;A temporary cursor
 	IsAnythingSelected = False
+
+	ON ERROR RESUME NEXT REM FIXME: Crash with Array
 	If IsNull(oDoc) Then Exit Function
 	&apos; The current selection in the current controller.
 	&apos;If there is no current controller, it returns NULL.
@@ -918,7 +941,7 @@ End Function
 
 &apos;
 &apos; @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
-&apos;
+&apos; FUTURE: should be rename to OpenExternalDatabaseURL
 Sub OpenCriterURL()
 on error resume next
 	Dim objlancer, handleErrors
@@ -928,7 +951,7 @@ on error resume next
     
     &apos; retrieving the 'anglicisme' value
     oDialogModel = oDialog.getModel()
-    oControlModel = oDialogModel.getByName(&quot;anglicisme&quot;)
+    oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
 	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
 	&apos; building the appropriate URL
 	adresse = convertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + anglicisme)

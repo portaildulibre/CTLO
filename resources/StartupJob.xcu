@@ -12,11 +12,4 @@
 			<node oor:name="Arguments"/>
 		</node>
 	</node>
-	<node oor:name="Events">
-		<node oor:name="onDocumentOpened" oor:op="replace">
-			<node oor:name="JobList">
-				<node oor:name="StartupJob" oor:op="replace" />
-			</node>
-		</node>
-	</node>
 </oor:component-data>
