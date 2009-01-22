@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<!-- Regular project property -->
 	<property name="out.path" 		value="bin/ant" 					/>
-	<property name="version" 		value="0.3" 						/>
+	<property name="version" 		value="0.3-rc2" 						/>
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
 	
@@ -123,13 +123,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			style="src/xsl/franceterme-adaptation.xsl"
 			out="${out}">
 		</xslt>
-		
-		<!-- First transformation create double entry, now we factorized those... -->
-		<property name="basic-database"	value="${target}/basic-database.xml"/>
+	
+		<!-- We have double entry in this file let agregate their metadata (mostly domain) -->
+		<property name="inconsistent-database"	value="${target}/agregate-database.xml"/>
 		<xslt 	in="${out}"
+			style="src/xsl/agregate-domain.xsl"
+			out="${inconsistent-database}">
+			<param name="ref-filename"	expression="${basedir}/${out}"/>
+		</xslt>
+
+		<!-- First transformation create double entry, now we have to factorize it -->
+		<property name="basic-database"	value="${target}/basic-database.xml"/>
+		<xslt 	in="${inconsistent-database}"
 			style="src/xsl/regroup-same-anglicism.xsl"
 			out="${basic-database}">
-			<param name="ref-file" expression="${basedir}/target/franceterme-adapted.xml"/>
+			<param name="ref-file" 		expression="${basedir}/${inconsistent-database}"/>
 		</xslt>
 		
 		<!-- How many entries have we factorized ? -->
