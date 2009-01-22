@@ -23,8 +23,10 @@
 
 <!-- 
 	This script removes all excluded terms from the term databases.
+	Note that it use a Java extension.
 -->
 <xsl:stylesheet version="1.0" 
+		xmlns:java="java"
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
@@ -87,9 +89,16 @@ Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>
 	-->
 	<xsl:template name="is-an-exclude-term">
 		<xsl:param name="term"/>
+	
 		<xsl:for-each select="$exclusions/excludes/exclude">
 			<xsl:choose>
-				<xsl:when test="$term = text()"><xsl:value-of select="'excluded'"/></xsl:when>
+				<xsl:when test="$term = text()">
+					<xsl:value-of select="'excluded'"/>
+				</xsl:when>
+				<!-- FIXME: Find a away to set term to lower case !!! --> 
+				<xsl:when test="$term = 'Net'">
+					<xsl:value-of select="'excluded'"/>
+				</xsl:when> -->
 			</xsl:choose>
 		</xsl:for-each> 
 	</xsl:template>
