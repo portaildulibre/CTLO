@@ -20,8 +20,12 @@
 
 package org.linagora.clients.minefi.dpma.terminologie;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.linagora.clients.minefi.dpma.terminologie.loader.Loader;
 import org.linagora.clients.minefi.dpma.terminologie.loader.text.TextFileLoader;
@@ -204,7 +208,7 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 		if ( term == null ) {
 			return results;
 		}
-
+		term = term.toLowerCase();
 		try {
 			if (IsEqual(locale, new Locale()) || term.length() == 0) {
 				return results;
@@ -238,7 +242,10 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 			// Recherche du même terme "concaténé" (sans espace)
 			results = searchForTerm(term.replaceAll("-", ""), results);
 		}
-		return results;
+		// Let's remove double entry
+		Set<XMeaning> set = new HashSet<XMeaning>(Arrays.asList(results));
+		XMeaning[] finalResults = new XMeaning[set.size()];
+		return set.toArray(finalResults);
 	}
 	
 	private XMeaning[] searchForPluralForm(XMeaning[] results, String term) {
