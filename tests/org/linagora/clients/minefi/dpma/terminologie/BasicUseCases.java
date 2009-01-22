@@ -49,6 +49,18 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	}
 
 	@Test
+	public void testPackage() throws IllegalArgumentException, RuntimeException {
+		// 
+		XMeaning[]  www = getSynonyme("web");
+		
+		
+		XMeaning[]  paquet = getSynonyme("package");
+		
+		// No entry in dictionnary on 'spam'
+//		assertTrue(res != null && res.length == 8);
+	}
+	
+	@Test
 	public void testGetSynonymeWithSpace() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] res = getSynonyme("wild card");
 		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 2);
@@ -73,6 +85,14 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	public void testGetSynonymeWithSeveralOptions() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] results = getSynonyme("e-mail");
 		assertTrue(results != null && results.length >= 2);
+	}
+
+	@Test
+	public void testUpperCaseWord() throws IllegalArgumentException, RuntimeException {
+		XMeaning[] results = getSynonyme("gds");
+		assertTrue(results != null && results.length >= 1);
+		results = getSynonyme("atm");
+		assertTrue(results != null && results.length >= 1);
 	}
 	
 	@Test 
