@@ -68,7 +68,7 @@ Private correctionEnFrappe As Boolean
 &apos; dernière est activé, elle est désactivé, sinon elle est activé. 
 &apos;
 &apos;	romain.pelisse@atosorigin.com	
-&apos;
+&apos;	WORK IN PROGRESS !
 Sub BasculeCorrectionEnCoursDeFrappe
 	msgbox("before:" + correctionEnFrappe)
 	If NOT correctionEnFrappe Then
@@ -81,7 +81,7 @@ End Sub
 
 ' Active le correcteur terminologique en cours de frappe
 Sub SetupKeyHandler
-	msgbox(&quot;Correcteur activé&quot;)
+REM	msgbox(&quot;Correcteur activé&quot;)
 	keyMutex(&quot;set&quot;,True)
 	If IsNull(TerminologieKeyHandler) Then
 		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
@@ -213,18 +213,20 @@ Sub rechercheTerminologique()
 		If (  NOT isIgnored(motChoisiPourRemplacement) ) Then
 			listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
 			If UBound(listeDeCandidats) &lt; 0 Then
-				&apos; on n&apos;a rien trouvé pour le mot en cours
-				&apos; alors on cherche une locution de deux mots
-				motChoisiPourRemplacement = trim(getPreviousWord(True,2))
-				Casse = GetCasse(motChoisiPourRemplacement)
-				motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
-				listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
-				If UBound(listeDeCandidats) &lt; 0 Then
-					&apos; on n&apos;a rien trouvé pour la locution en cours
-					&apos; on pourrait continuer ici pour chercher les locutions de trois mots.
-				Else
-					showDialog()
-				End If
+REM				Pour le moment on desactive la recherche de locution a 2 mots,
+REM				cette derniere etant source de plusieurs dysfonctionnement
+REM				&apos; on n&apos;a rien trouvé pour le mot en cours
+REM				&apos; alors on cherche une locution de deux mots
+REM				motChoisiPourRemplacement = trim(getPreviousWord(True,2))
+REM 			Casse = GetCasse(motChoisiPourRemplacement)
+REM				motChoisiPourRemplacement = SetCasse(CasseLower,motChoisiPourRemplacement)
+REM				listeDeCandidats = GetThesaurusCandidates(motChoisiPourRemplacement)
+REM				If UBound(listeDeCandidats) &lt; 0 Then
+REM					&apos; on n&apos;a rien trouvé pour la locution en cours
+REM					&apos; on pourrait continuer ici pour chercher les locutions de trois mots.
+REM				Else
+REM					showDialog()
+REM				End If
 			Else
 				showDialog()
 			End If
