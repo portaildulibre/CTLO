@@ -121,6 +121,9 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 			<xsl:for-each select="../Domaine/Dom">
 				<xsl:call-template name="make-domain"/>
 			</xsl:for-each>
+			<xsl:for-each select="../Domaine/S-dom">
+				<xsl:call-template name="make-domain"/>
+			</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
 
