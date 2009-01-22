@@ -97,7 +97,7 @@ public class XMLDictionnaryHandler extends DefaultHandler {
     public void startElement (String uri, String localName,String qName, Attributes attributes) throws SAXException {
 		if ( ANGLICISM_TAG.equals(qName) ) {
 			insideSynonyme = false; // we never know...
-			currentAnglicism = attributes.getValue(ID_ATTRIBUTE);
+			currentAnglicism = attributes.getValue(ID_ATTRIBUTE).toLowerCase();
 		} else if ( DOMAINS_TAG.equals(qName) ) {
 			currentDomainList.clear();							// Most likely to be useless
 		} else if ( DOMAIN_TAG.equals(qName) ) {
