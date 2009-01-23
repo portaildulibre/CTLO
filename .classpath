@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="src/xsl"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/agenda.jar"/>
@@ -23,11 +23,11 @@
 	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/xmerge.jar"/>
 	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/XSLTFilter.jar"/>
 	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/XSLTValidate.jar"/>
-        <classpathentry kind="var" path="OOo_HOME/ure/share/java/java_uno.jar"/>
-        <classpathentry kind="var" path="OOo_HOME/ure/share/java/juh.jar"/>
-        <classpathentry kind="var" path="OOo_HOME/ure/share/java/jurt.jar"/>
-        <classpathentry kind="var" path="OOo_HOME/ure/share/java/ridl.jar"/>
-        <classpathentry kind="var" path="OOo_HOME/ure/share/java/unoloader.jar"/>
+	<classpathentry kind="var" path="OOo_HOME/ure/share/java/java_uno.jar"/>
+	<classpathentry kind="var" path="OOo_HOME/ure/share/java/juh.jar"/>
+	<classpathentry kind="var" path="OOo_HOME/ure/share/java/jurt.jar"/>
+	<classpathentry kind="var" path="OOo_HOME/ure/share/java/ridl.jar"/>
+	<classpathentry kind="var" path="OOo_HOME/ure/share/java/unoloader.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME"/>
 	<classpathentry kind="var" path="OOo_HOME"/>
