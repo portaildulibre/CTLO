@@ -243,11 +243,26 @@ public class AnglicismeThesaurus extends ComponentBase implements XThesaurus, XI
 			results = searchForTerm(term.replaceAll("-", ""), results);
 		}
 		// Let's remove double entry
-		Set<XMeaning> set = new HashSet<XMeaning>(Arrays.asList(results));
-		XMeaning[] finalResults = new XMeaning[set.size()];
-		return set.toArray(finalResults);
+		// FUTURE: This code is a workaround as default implementation of XMeaning, provided
+		//	by OpenOffice does not properly overide equals().
+		List<XMeaning> list = Arrays.asList(results);
+		Set<XMeaning> newSet = new HashSet<XMeaning>(list.size());
+		for ( XMeaning item : list ) {
+			// FIXME:newSet.add(item); this should suffice, but it won't work... Did I miss something here ?
+			boolean toAdd = true;
+			for ( XMeaning alreadyIn : newSet ) {
+				if ( item.equals(alreadyIn) ) {
+					toAdd = false;
+				}
+			}
+			if ( toAdd ) {
+				newSet.add(item);
+			}
+		}
+		XMeaning[] finalResults = new XMeaning[newSet.size()];
+		return newSet.toArray(finalResults);
 	}
-	
+		
 	private XMeaning[] searchForPluralForm(XMeaning[] results, String term) {
 		// Si le terme finit par un 's' ou un 'x'...
 		if ( term.endsWith(PLURAL_SYMBOL) || term.endsWith(PLURAL_SYMBOL.toUpperCase()) ) {
