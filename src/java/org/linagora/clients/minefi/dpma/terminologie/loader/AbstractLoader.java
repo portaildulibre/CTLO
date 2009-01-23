@@ -26,6 +26,10 @@ import org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus;
 import org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurusException;
 
 /**
+ * <p>An abstract class to regroup methods and property in common 
+ * to all parser (text based or XML based).</p>
+ * 
+ * 
  * @author Romain PELISSE, romain.pelisse@atosorigin.com
  *
  */
@@ -33,7 +37,6 @@ public abstract class AbstractLoader implements Loader  {
 
 	protected String filepath;
 	private String encoding;
-	
 	
 	public AbstractLoader(String filepath) {
 		this.filepath = filepath;
@@ -60,7 +63,7 @@ public abstract class AbstractLoader implements Loader  {
 			throw new AnglicismeThesaurusException("Could not open data file '"+ filepath +"'. The file was not found in the application classpath.");
 		}
 		extractFromFile(dataInputStream,data);
-		return null;
+		return null; // FIXME:shouldn't return data here ?
 	}
 	
 	protected abstract void extractFromFile(InputStream dataInputStream, Map data) throws AnglicismeThesaurusException;
