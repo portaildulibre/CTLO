@@ -28,6 +28,8 @@
 <xsl:stylesheet version="1.0" 
 		xmlns:java="java"
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	
+	<xsl:include href="common.xsl"/>
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
@@ -89,16 +91,22 @@ Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>
 	-->
 	<xsl:template name="is-an-exclude-term">
 		<xsl:param name="term"/>
+		<xsl:variable name="term-as-lower-case">
+			<xsl:call-template name="toLowerCase">
+				<xsl:with-param name="string" select="$term"/>
+			</xsl:call-template>
+		</xsl:variable>
 	
 		<xsl:for-each select="$exclusions/excludes/exclude">
+			<xsl:variable name="text">
+				<xsl:call-template name="toLowerCase">
+					<xsl:with-param name="string" select="text()"/>
+				</xsl:call-template>
+			</xsl:variable>
 			<xsl:choose>
-				<xsl:when test="$term = text()">
+				<xsl:when test="$term-as-lower-case = $text">
 					<xsl:value-of select="'excluded'"/>
 				</xsl:when>
-				<!-- FIXME: Find a away to set term to lower case !!! --> 
-				<xsl:when test="$term = 'Net'">
-					<xsl:value-of select="'excluded'"/>
-				</xsl:when> -->
 			</xsl:choose>
 		</xsl:for-each> 
 	</xsl:template>
