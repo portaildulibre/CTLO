@@ -72,6 +72,42 @@ public final class XMeaningThesaurus implements XMeaning
 	}
 	
 	/**
+	 * <p>Overrides default Object implementation in order to ensure a decent comparaison
+	 * between two instances of XMeaningThesaurus.</p>
+	 * <p>Algorithm operates as follows:</p>
+	 * <ul>
+	 * 		<li>Assert if the provided other is a proper instance of XMeaningThesaurus;</li>
+	 * 		<li>Assert if both instances of a Meaning and this is the same for both;</li>
+	 * 		<li>Assert is both instances have the same number of synonyms;</li>
+	 * 		<li>Checks if theirs synonyms are all the same.</li>
+	 * </ul>
+	 * 
+	 * @param other, an object that could be a similar instance of XMeaningThesaurus
+	 */
+	@Override
+	public boolean equals(Object other) {
+		boolean status = false;
+		if ( other instanceof XMeaningThesaurus ) {
+			XMeaning otherMeaning = (XMeaningThesaurus)other;
+			if ( 	this.getMeaning() != null && otherMeaning.getMeaning() != null &&
+					this.getMeaning().equals(otherMeaning.getMeaning()) ) {
+				if ( 	this.querySynonyms() != null && otherMeaning.querySynonyms() != null && 
+						this.querySynonyms().length == otherMeaning.querySynonyms().length ) {
+					String[] thisSynonyms = this.querySynonyms();
+					String[] otherMeaningSynonyms = otherMeaning.querySynonyms();
+					for ( int nbSynonym = 0; nbSynonym < thisSynonyms.length; nbSynonym++ ) {
+						if ( ! thisSynonyms[nbSynonym].equals(otherMeaningSynonyms[nbSynonym]) ) {
+							return false;
+						}
+					}
+					status = true;
+				}
+			}
+		}
+		return status;
+	}
+	
+	/**
 	 * Overriding default implementation of toString to provide clearer output
 	 * while debugging. 
 	 * Note that this method should NOT be used to realize any business
