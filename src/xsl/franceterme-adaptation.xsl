@@ -45,6 +45,8 @@
 <xsl:stylesheet version="1.0" 
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:include href="common.xsl"/>
+
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
 	<!-- Defining the root of the new XML document -->
@@ -79,7 +81,11 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:element name="anglicisme">
-				<xsl:attribute 	name="id"><xsl:value-of select="$anglicisme"/></xsl:attribute>
+				<xsl:attribute 	name="id">
+					<xsl:call-template name="toLowerCase">
+						<xsl:with-param name="string" select="$anglicisme"/>
+					</xsl:call-template>
+				</xsl:attribute>
 				<xsl:choose>	
 					<xsl:when test="count(../Domaine) > 0">
 						<xsl:call-template name="make-domaines"/>
@@ -96,7 +102,12 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 				<xsl:variable name="variante" select="."/>
 				<xsl:message>Ajout de la variante <xsl:value-of select="string(normalize-space(text()))"/> pour <xsl:value-of select="$anglicisme"/></xsl:message>
 				<xsl:element name="anglicisme">
-					<xsl:attribute 	name="id"><xsl:value-of select="string(normalize-space(text()))"/></xsl:attribute>
+					<xsl:attribute 	name="id">
+						<xsl:call-template name="toLowerCase">
+							<xsl:with-param name="string" 
+									select="string(normalize-space(text()))"/>
+						</xsl:call-template>
+					</xsl:attribute>
 					<xsl:element name="domaines">
 						<xsl:for-each select="../../Domaine/Dom">
 							<xsl:call-template name="make-domain"/>
