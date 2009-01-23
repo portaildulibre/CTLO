@@ -49,30 +49,36 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	}
 
 	@Test
-	public void testPackage() throws IllegalArgumentException, RuntimeException {
+	public void testSomeSpecificWords() throws IllegalArgumentException, RuntimeException {
 		// 
+		XMeaning[]  reset = getSynonyme("reset");
+		assertTrue(reset != null && reset.length == 2);
 		XMeaning[]  www = getSynonyme("web");
-		
-		
+		assertTrue(www != null && www.length == 3);
 		XMeaning[]  paquet = getSynonyme("package");
-		
-		// No entry in dictionnary on 'spam'
-//		assertTrue(res != null && res.length == 8);
+		assertTrue(paquet != null && paquet.length == 7);
 	}
 	
 	@Test
 	public void testGetSynonymeWithSpace() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] res = getSynonyme("wild card");
-		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 2);
+		assertTrue(res != null && res.length == 2);
+		String[] synonyms = res[1].querySynonyms();
+		assertTrue(synonyms.length == 2);
 		// Should do the same
 		res = getSynonyme("wild-card");
-		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 2);
+		assertTrue(res != null && res.length == 2);
+		String[] wildcardSynonyms = res[0].querySynonyms();
+		assertTrue(wildcardSynonyms.length == 1);
 		// An other test		
 		res = getSynonyme("data-base");
-		assertTrue(res != null && res.length == 2 && res[0].querySynonyms().length == 1);
+		assertTrue(res != null && res.length == 1);
+		String[] databaseSynonyms = res[0].querySynonyms();
+		assertTrue(databaseSynonyms.length == 1);
 		res = getSynonyme("data base");
-		assertTrue(res != null && res.length == 1 && res[0].querySynonyms().length == 1);
-
+		assertTrue(res != null && res.length == 1);
+		databaseSynonyms = res[0].querySynonyms();
+		assertTrue(databaseSynonyms.length == 1);
 	}
 	
 	@Test
