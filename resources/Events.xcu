@@ -11,12 +11,11 @@
      <value>vnd.sun.star.script:Terminologie.libs.SetupKeyHandler?language=Basic&amp;location=application</value>
     </prop>
    </node>
-   <!--
-   <node oor:name="OnLoad" oor:op="replace">
+   <node oor:name="OnNew" oor:op="replace">
     <prop oor:name="BindingURL" oor:type="xs:string">
      <value>vnd.sun.star.script:Terminologie.libs.SetupKeyHandler?language=Basic&amp;location=application</value>
     </prop>
-   </node> -->
+   </node> 
   </node>
  </node>
 </oor:component-data>
