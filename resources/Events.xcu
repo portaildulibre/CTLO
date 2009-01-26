@@ -6,7 +6,7 @@
 	oor:package="org.openoffice.Office">
  <node oor:name="ApplicationEvents">
   <node oor:name="Bindings">
-   <node oor:name="onDocumentOpened" oor:op="replace">
+   <node oor:name="OnLoad" oor:op="replace">
     <prop oor:name="BindingURL" oor:type="xs:string">
      <value>vnd.sun.star.script:Terminologie.libs.SetupKeyHandler?language=Basic&amp;location=application</value>
     </prop>
