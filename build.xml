@@ -124,6 +124,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			out="${out}">
 		</xslt>
 	
+		<!-- Let's remove homographic terms (such as 'diffusion', spelled equally in french and in english)-->
+		<property name="database-without-homographies"
+			  value="${target}/database-without-homographies.xml"/>
+		<xslt 	in="${out}"
+			style="src/xsl/remove-homographies.xsl"
+			out="${out}.tmp">
+		</xslt>	
+		<copy file="${out}.tmp" tofile="${out}"/>
+	
 		<!-- We have double entry in this file let agregate their metadata (mostly domain) -->
 		<property name="inconsistent-database"	value="${target}/agregate-database.xml"/>
 		<xslt 	in="${out}"

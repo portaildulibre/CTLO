@@ -38,7 +38,9 @@
 		<xsl:variable name="id" select="@id"/> 
 			<xsl:choose>
 				<xsl:when test="count($ref-file/anglicismes/anglicisme[@id = $id]) > 1"> 
-					<xsl:message>Anglicisme en doublon <xsl:value-of select="$id"/> (<xsl:value-of select="count($ref-file/anglicismes/anglicisme[@id = $id])"/>).</xsl:message>
+<!--
+<xsl:message>Anglicisme en doublon <xsl:value-of select="$id"/> (<xsl:value-of select="count($ref-file/anglicismes/anglicisme[@id = $id])"/>).</xsl:message>
+-->
 					<xsl:element name="anglicisme">
 						<xsl:attribute name="id">
 							<xsl:value-of select="$id"/>
@@ -46,7 +48,9 @@
 						<xsl:element name="domaines">
 							<xsl:for-each select="$ref-file/anglicismes/anglicisme[@id = $id]">
 								<xsl:for-each select="domaines/domaine">
+<!--
 <xsl:message>Adding domain :<xsl:value-of select="@id"/>, for anglicism  <xsl:value-of select="$id"/>.</xsl:message>
+-->
 									<xsl:copy>
 										<xsl:apply-templates select="@*|node()"/>	
 									</xsl:copy>
@@ -56,7 +60,7 @@
 					</xsl:element>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:message>Pas de doublons pour <xsl:value-of select="$id"/>.</xsl:message>
+<!--					<xsl:message>Pas de doublons pour <xsl:value-of select="$id"/>.</xsl:message>	-->
 					<xsl:copy>
 						<xsl:apply-templates select="@*|node()"/>	
 					</xsl:copy>

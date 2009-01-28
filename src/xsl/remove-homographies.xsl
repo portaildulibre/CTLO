@@ -41,27 +41,21 @@ Les termes suivants ont été supprimés pour cause d'homographie :
 
     	<xsl:template match="anglicisme">
 		<xsl:variable name="label" select="@id"/>
-		<xsl:choose>
-			<xsl:when test="domaines/domaine/synonymes/synonyme[text() = $label]">
-				<!-- if there is only one synonym, we remove the entry, otherwise
-					we keep it -->
-				<xsl:choose>
-					<xsl:when test="count(domaines/domaine/synonymes/synonyme) > 1">
-						<xsl:copy>
-							<xsl:apply-templates select="@*|node()"/>	
-						</xsl:copy>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:message><xsl:value-of select="$label"/></xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
+			<!-- 	if there is at least one synonym that differs from french translation, 
+				we remove the entry, otherwise we keep it -->
+			<xsl:choose>
+				<xsl:when test="count(domaines/domaine/synonymes/synonyme[text() != $label]) > 1">
+					<xsl:copy>
+						<xsl:apply-templates select="@*|node()"/>	
+					</xsl:copy>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message><xsl:value-of select="$label"/></xsl:message>
+				</xsl:otherwise>
+			</xsl:choose> <!--
 				<xsl:copy>
 					<xsl:apply-templates select="@*|node()"/>	
-				</xsl:copy>
-			</xsl:otherwise>
-		</xsl:choose>
+				</xsl:copy> -->
     	</xsl:template>
 
 

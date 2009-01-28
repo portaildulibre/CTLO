@@ -62,6 +62,9 @@ Private IgnoreTermArray(NbTermIgnorer) As String
 &apos; état de la correction terminologique
 Private correctionEnFrappe As Boolean
 
+Sub Main
+&apos; test program
+End Sub
 
 &apos; 
 &apos; Cette routine change l'état de la correction en cours de frappe. Si cette
@@ -70,16 +73,14 @@ Private correctionEnFrappe As Boolean
 &apos;	romain.pelisse@atosorigin.com	
 &apos;	WORK IN PROGRESS !
 Sub BasculeCorrectionEnCoursDeFrappe
-	msgbox("before:" + correctionEnFrappe)
 	If NOT correctionEnFrappe Then
 		SetupKeyHandler
 	Else
 		RemoveKeyHandler
 	End if
-	msgbox("after:" + correctionEnFrappe)
 End Sub
 
-' Active le correcteur terminologique en cours de frappe
+&apos; Active le correcteur terminologique en cours de frappe
 Sub SetupKeyHandler
 REM	msgbox(&quot;Correcteur activé&quot;)
 	keyMutex(&quot;set&quot;,True)
@@ -346,7 +347,7 @@ End Function
 &apos; Cette fonction effectue la recherche dans la base terminologique
 &apos; embarqué dans l&apos;extension.
 &apos;
-&apos; @return XMeaning[]
+&apos; @return XMeaning()
 &apos; @author Manuel Odesser modesser@linagora.com
 Function GetThesaurusCandidates(s as String)
 	Dim oAnglicismeThesaurus as Object
@@ -658,25 +659,29 @@ End Sub
 
 &apos;======================================================================
 
-Sub Aide
-	ShowHelpDialog
+Sub Help
+	ShowHelpDialog(&quot;help_text&quot;)
 End Sub
+
+Sub About
+	ShowHelpDialog(&quot;help_dialog&quot;)
+End Sub
+
 
 &apos; Affiche la boîte de dialogue des anglicismes
 &apos; @author Manuel Odesser modesser@linagora.com
-Sub ShowHelpDialog()
+Sub ShowHelpDialog(dialog as String)
 	&apos; on créé la boîte
-	HelpDialogConstructor()
+	HelpDialogConstructor(dialog)
 	&apos; affiche la boîte de dialogue
-    	oHelpDialog.execute()
+    oHelpDialog.execute()
 End Sub
 
 &apos; Construit la boîte de dialogue de l&apos;aide
 &apos; @author Manuel Odesser modesser@linagora.com
-Sub HelpDialogConstructor()
+Sub HelpDialogConstructor(sDialogName as String)
     Dim oLibContainer As Object, oInputStreamProvider As Object, oLib As Object
     Const sLibName = &quot;Terminologie&quot;
-    Const sDialogName = &quot;help_text&quot;
     &apos; récupération de la librairie dans laquelle est définie la boîte
     oLibContainer = DialogLibraries
     oLibContainer.loadLibrary(sLibName)
@@ -955,8 +960,15 @@ on error resume next
     oDialogModel = oDialog.getModel()
     oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
 	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
+	&apos; FUTURE: When FranceTerme handle properly accentued character passed by Get
+&apos;	Const ILLICIT_CHARACTER = 	"àâéèêûù"
+&apos;	Const REPLACEMENTS = 		"aaeeeuu"
+&apos;	Dim nbChar = 0
+&apos;	For nbChar = 0 to len(ILLICIT_CHARACTER).length
+&apos;		
+&apos;Next
 	&apos; building the appropriate URL
-	adresse = convertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + anglicisme)
+	adresse = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + anglicisme)
 	&apos;  calling the external service
     handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
     objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)	
