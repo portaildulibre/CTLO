@@ -156,7 +156,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Activer le correcteur terminologique</value>
+							<value xml:lang="fr-FR">Activer la correction terminologique en cours de frappe</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
