@@ -121,4 +121,11 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	    in.close();
         assertFalse(fail);
 	}
+
+	@Test 
+	public void avoidHomographies() {
+		XMeaning[] results = getSynonyme("diffusion");
+		assertTrue(results != null && results.length == 0);
+		
+	}
 }
