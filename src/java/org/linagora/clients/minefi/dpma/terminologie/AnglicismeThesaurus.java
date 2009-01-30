@@ -50,7 +50,7 @@ import com.sun.star.uno.UnoRuntime;
 
 /**
  * 
- * FIXME: Cette classe fait trop de chose ! Elle représente à la fois le composant technique à intégrer dans
+ * FIXME: (FUTURE) Cette classe fait trop de chose ! Elle représente à la fois le composant technique à intégrer dans
  * OOo et les traitements spécifique au correcteur. Il faut la couper en deux.
  * 
  * @author Manuel Odesser modesser@linagora.com
