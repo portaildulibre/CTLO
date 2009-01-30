@@ -123,9 +123,8 @@ public class BasicUseCases extends AbstractAnglicismeThesaurusTest {
 	}
 
 	@Test 
-	public void avoidHomographies() {
+	public void avoidHomographies() throws IllegalArgumentException, RuntimeException {
 		XMeaning[] results = getSynonyme("diffusion");
 		assertTrue(results != null && results.length == 0);
-		
 	}
 }
