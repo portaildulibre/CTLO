@@ -62,27 +62,43 @@ Private IgnoreTermArray(NbTermIgnorer) As String
 &apos; état de la correction terminologique
 Private correctionEnFrappe As Boolean
 
-Sub Main
-&apos; test program
-End Sub
-
-&apos; 
-&apos; Cette routine change l'état de la correction en cours de frappe. Si cette
-&apos; dernière est activé, elle est désactivé, sinon elle est activé. 
+&apos; This routine allow the user to disable the extension default behavior 'autostart'
+&apos; on new or newly loaded event.
 &apos;
-&apos;	romain.pelisse@atosorigin.com	
-&apos;	WORK IN PROGRESS !
-Sub BasculeCorrectionEnCoursDeFrappe
-	If NOT correctionEnFrappe Then
-		SetupKeyHandler
-	Else
-		RemoveKeyHandler
-	End if
-End Sub
+&apos; @author Romain PELISSE, romain.pelisse@atosorigin.com
+&apos; WORK IN PROGRESS...
+&apos;Sub disableOnNewOrLoadAutoStart
+&apos;    Dim PysDoc as object
+&apos;	Dim PropValue(1) as new com.sun.star.beans.PropertyValue
+&apos;
+&apos;	PropValue(0).Name = &quot;EventType&quot;
+&apos;	PropValue(0).Value = &quot;Script&quot;
+&apos;	PropValue(1).Name = &quot;Script&quot;
+&apos;	PropValue(1).Value = &quot;&quot;
+&apos;
+&apos;	PysDoc = StarDesktop.CurrentComponent
+&apos;	PysDoc.Events.ReplaceByName(&quot;OnLoad&quot;, PropValue())
+&apos;	PysDoc.Events.ReplaceByName(&quot;OnNew&quot;, PropValue())
+
+&apos;    PysDoc=thiscomponent
+&apos;   BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
+&apos;    Dim events as Object
+ &apos;   x
+ &apos;   events =  StarDesktop.CurrentComponent.Events
+&apos;	xray StarDesktop.CurrentComponent.Events &apos;.getByName(&quot;OnNew&quot;)
+&apos;    for i = 0 to ubound(events.ElementNames)
+&apos;		xray events.getByName(events.ElementNames(i))
+ &apos;   next i
+
+&apos;    Dim PysListener as object
+ &apos;   PysDocView = ThisComponent.getCurrentController
+&apos;
+ &apos;   PysDocView.removeActivationEventListener(PysListener)
+
+&apos;End Sub
 
 &apos; Active le correcteur terminologique en cours de frappe
 Sub SetupKeyHandler
-REM	msgbox(&quot;Correcteur activé&quot;)
 	keyMutex(&quot;set&quot;,True)
 	If IsNull(TerminologieKeyHandler) Then
 		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
@@ -91,7 +107,7 @@ REM	msgbox(&quot;Correcteur activé&quot;)
 	addHook
 	keyMutex(&quot;set&quot;,False)
 	correctionEnFrappe = true
-End sub
+End Sub
 
 &apos; Désactive le correcteur terminologique
 Sub RemoveKeyHandler
@@ -492,15 +508,6 @@ noSelectedMeaningNext:
 		tmp = listeDeCandidats(j).getMeaning()
 		If sens = listeDeCandidats(j).getMeaning() Then
 			vSyns = listeDeCandidats(j).querySynonyms()
-			&apos; on ajoute une ligne blanche entre chaque entrée
-&apos;			Dim vSyns2(2*UBound(vSyns)) As Variant
-&apos;			l = 0
-&apos;			For k = LBound(vSyns) To UBound(vSyns)
-&apos;				vSyns2(l) = vSyns(k)
-&apos;				vSyns2(l+1) = &quot;&quot;
-&apos;				l = l + 2
-&apos;			Next k
-&apos;			oControlModel.StringItemList=vSyns2()
 			oControlModel.StringItemList=vSyns()
 			Exit For
 		EndIf
@@ -954,26 +961,55 @@ on error resume next
 	Dim objlancer, handleErrors
 	Dim adresse as String
     Dim oDialogModel As Object, oControlModel As Object
-    Dim anglicisme As String
+    Dim term As String
     
     &apos; retrieving the 'anglicisme' value
     oDialogModel = oDialog.getModel()
     oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
-	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
+	term = oControlModel.getPropertyValue(&quot;Text&quot;)
 	&apos; FUTURE: When FranceTerme handle properly accentued character passed by Get
-&apos;	Const ILLICIT_CHARACTER = 	"àâéèêûù"
-&apos;	Const REPLACEMENTS = 		"aaeeeuu"
-&apos;	Dim nbChar = 0
-&apos;	For nbChar = 0 to len(ILLICIT_CHARACTER).length
-&apos;		
-&apos;Next
+	&apos; this next call should be removed
+	term = replaceAccentedCharacter(term)
 	&apos; building the appropriate URL
-	adresse = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + anglicisme)
+	adresse = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + term)
 	&apos;  calling the external service
-    handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
-    objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)	
-    objlancer.execute(adresse, &quot;&quot;, handleErrors)
-
+   	handleErrors=com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE '=1 or DEFAULTS=0
+    	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)	
+    	objlancer.execute(adresse, &quot;&quot;, handleErrors)
 End Sub
+
+
+&apos;
+&apos; Cette fonction permet de remplacer les caractères accentués 
+&apos; dans une chaine.
+&apos;
+&apos; @author Romain PELISSE, romain.pelisse@atosorigin.com
+&apos;
+Function replaceAccentedCharacter(maChaine As String)
+  Dim RechRemp(1,6) As String
+  Dim i, j, place   As Integer
+  Dim arg(0) As String : arg(0) = maChaine
+
+   &apos; Caractères à remplacer.
+   rechRemp(0, 0) = &quot;&#225;&#226;&#227;&#228;&#229;&#230;&quot; : rechRemp(1, 0) = &quot;a&quot;
+   rechRemp(0, 1) = &quot;&#232;&#233;&#234;&#235;;&quot;  : rechRemp(1, 1) = &quot;e&quot;
+   rechRemp(0, 2) = &quot;&#236;&#237;&#238;&#239;&quot;  : rechRemp(1, 2) = &quot;i&quot;
+   rechRemp(0, 3) = &quot;&#243;&#244;&#245;&#246;&#248;&quot; : rechRemp(1, 3) = &quot;o&quot;
+   rechRemp(0, 4) = &quot;&#249;&#250;&#251;&#252;&quot;  : rechRemp(1, 4) = &quot;u&quot;
+   rechRemp(0, 5) = &quot;&#231;&quot;     : rechRemp(1, 5) = &quot;c&quot;
+   rechRemp(0, 6) = &quot;&#241;&quot;     : rechRemp(1, 6) = &quot;n&quot;
+   &apos; TODO: add the uppercase version ?
+
+  &apos; Moulinette sur les chaînes de caractères.
+  For i = 0 to 6
+   For j = 0 to (Len(rechRemp(0, i)) - 1)
+    While InStr(maChaine, mid(rechRemp(0, i), (j + 1), 1)) &lt;&gt; 0
+     place = InStr(maChaine, mid(rechRemp(0, i), (j + 1), 1))
+     maChaine = Left(maChaine, (place - 1)) &amp; rechRemp(1, i) &amp; Right(maChaine, (Len(maChaine) - place))
+    Wend
+   Next j
+  Next i
+  replaceAccentedCharacter = maChaine
+End Function
 
 </script:module>
