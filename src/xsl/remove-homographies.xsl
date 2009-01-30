@@ -44,7 +44,7 @@ Les termes suivants ont été supprimés pour cause d'homographie :
 			<!-- 	if there is at least one synonym that differs from french translation, 
 				we remove the entry, otherwise we keep it -->
 			<xsl:choose>
-				<xsl:when test="count(domaines/domaine/synonymes/synonyme[text() != $label]) > 1">
+				<xsl:when test="count(domaines/domaine/synonymes/synonyme[text() != $label]) > 0">
 					<xsl:copy>
 						<xsl:apply-templates select="@*|node()"/>	
 					</xsl:copy>
