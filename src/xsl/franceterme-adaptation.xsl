@@ -99,8 +99,10 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 			</xsl:element> 
 
 			<xsl:for-each select="variante">
+				<!--
 				<xsl:variable name="variante" select="."/>
 				<xsl:message>Ajout de la variante <xsl:value-of select="string(normalize-space(text()))"/> pour <xsl:value-of select="$anglicisme"/></xsl:message>
+				-->
 				<xsl:element name="anglicisme">
 					<xsl:attribute 	name="id">
 						<xsl:call-template name="toLowerCase">
@@ -112,6 +114,19 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 						<xsl:for-each select="../../Domaine/Dom">
 							<xsl:call-template name="make-domain"/>
 						</xsl:for-each>
+						<xsl:for-each select="../../Domaine/S-dom">
+							<xsl:call-template name="make-domain"/>
+						</xsl:for-each>
+						<xsl:if test="count(../../Equivalent/variante[@type = 'Abréviation']) > 0">
+							<xsl:element name="domaine">
+								<xsl:attribute name="id">
+									<xsl:value-of select="'abréviation'"/>
+								</xsl:attribute>
+								<xsl:for-each select="../../Equivalent/variante[@type = 'Abréviation']">
+									<xsl:value-of select="string(normalize-space(current()))"/>
+								</xsl:for-each>
+							</xsl:element>
+						</xsl:if>
 					</xsl:element>
 				</xsl:element>
 			</xsl:for-each>
@@ -135,7 +150,21 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 			<xsl:for-each select="../Domaine/S-dom">
 				<xsl:call-template name="make-domain"/>
 			</xsl:for-each>
+			<xsl:call-template name="make-abv"/>
 		</xsl:element>
+	</xsl:template>
+
+	<xsl:template name="make-abv">
+		<xsl:if test="count(../Equivalent/variante[@type = 'Abréviation']) > 0">
+			<xsl:element name="domaine">
+				<xsl:attribute name="id">
+					<xsl:value-of select="'abréviation'"/>
+				</xsl:attribute>
+				<xsl:for-each select="../Equivalent/variante[@type = 'Abréviation']">
+					<xsl:value-of select="string(normalize-space(current()))"/>
+				</xsl:for-each>
+			</xsl:element>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="make-domain">
