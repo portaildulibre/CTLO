@@ -182,8 +182,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			style="src/xsl/nb-anglicisms.xsl"
 			out="${dev.null}">
 		</xslt>
+		
+				
+		<!-- and then we factorize the domains of the remaining entries -->
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/factorize-domain.xsl"
+			out="${database-without-homographies}.factorized">
+		</xslt>
 
-		<move file="${database-without-homographies}" tofile="${dict.xml}"/>		
+		<move file="${database-without-homographies}.factorized" tofile="${dict.xml}"/>		
 	</target>
 	
 	<!-- Assembling the jar file -->
