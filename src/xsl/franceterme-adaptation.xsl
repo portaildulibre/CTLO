@@ -60,7 +60,8 @@
 			<xsl:apply-templates/>
 		</anglicismes>
 		<xsl:message>
-Nombre total d'anglicisme (sans leurs variantes): <xsl:value-of select="$total-angliscim-no-variation"/>
+Nombre total d'abréviations à ajouter aux domaines: 	<xsl:value-of select="count(//Article/Terme_Vedette/variante[@type='Abréviation'])"/>
+Nombre total de terme étranger (sans leurs variantes): 	<xsl:value-of select="$total-angliscim-no-variation"/>
 Nombre total de variantes: <xsl:value-of select="$addons-variations"/>
 TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 		</xsl:message>
@@ -97,12 +98,9 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 					</xsl:otherwise>
 				</xsl:choose> 
 			</xsl:element> 
+			
 
 			<xsl:for-each select="variante">
-				<!--
-				<xsl:variable name="variante" select="."/>
-				<xsl:message>Ajout de la variante <xsl:value-of select="string(normalize-space(text()))"/> pour <xsl:value-of select="$anglicisme"/></xsl:message>
-				-->
 				<xsl:element name="anglicisme">
 					<xsl:attribute 	name="id">
 						<xsl:call-template name="toLowerCase">
@@ -111,22 +109,31 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 						</xsl:call-template>
 					</xsl:attribute>
 					<xsl:element name="domaines">
+						<xsl:variable name="abreviations">
+							<xsl:element name="abreviations">
+								<xsl:if test="count(../../Terme_Vedette/variante[@type = 'Abréviation']) > 0">
+									<xsl:for-each select="../../Terme_Vedette/variante[@type = 'Abréviation']">
+										  <xsl:element name="abreviation">
+											  <xsl:value-of select="string(normalize-space(current()))"/>
+										  </xsl:element>
+									</xsl:for-each>
+								</xsl:if>
+							</xsl:element>
+						</xsl:variable>
 						<xsl:for-each select="../../Domaine/Dom">
-							<xsl:call-template name="make-domain"/>
+							<xsl:call-template name="make-domain">
+								<xsl:with-param 
+									name="abreviations"
+									select="$abreviations"/>
+							</xsl:call-template>
 						</xsl:for-each>
 						<xsl:for-each select="../../Domaine/S-dom">
-							<xsl:call-template name="make-domain"/>
+							<xsl:call-template name="make-domain">
+								<xsl:with-param 
+									name="abreviations"
+									select="$abreviations"/>
+							</xsl:call-template>
 						</xsl:for-each>
-						<xsl:if test="count(../../Equivalent/variante[@type = 'Abréviation']) > 0">
-							<xsl:element name="domaine">
-								<xsl:attribute name="id">
-									<xsl:value-of select="'abréviation'"/>
-								</xsl:attribute>
-								<xsl:for-each select="../../Equivalent/variante[@type = 'Abréviation']">
-									<xsl:value-of select="string(normalize-space(current()))"/>
-								</xsl:for-each>
-							</xsl:element>
-						</xsl:if>
 					</xsl:element>
 				</xsl:element>
 			</xsl:for-each>
@@ -143,31 +150,37 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 	<!-- No real need to have a template here, but it does help making
 		this stylesheet more human-readable... -->
 	<xsl:template name="make-domaines">
+		<xsl:variable name="abreviations">
+			<xsl:element name="abreviations">
+				<xsl:if test="count(../Terme_Vedette/variante[@type = 'Abréviation']) > 0">
+					<xsl:for-each select="../Terme_Vedette/variante[@type = 'Abréviation']">
+						<xsl:element name="abreviation">
+							<xsl:value-of select="string(normalize-space(current()))"/>
+						</xsl:element>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:element>
+		</xsl:variable>
+
 		<xsl:element name="domaines">
 			<xsl:for-each select="../Domaine/Dom">
-				<xsl:call-template name="make-domain"/>
+				<xsl:call-template name="make-domain">
+					<xsl:with-param name="abreviations"
+							select="$abreviations"/>
+				</xsl:call-template>
 			</xsl:for-each>
 			<xsl:for-each select="../Domaine/S-dom">
-				<xsl:call-template name="make-domain"/>
+				<xsl:call-template name="make-domain">
+					<xsl:with-param name="abreviations"
+							select="$abreviations"/>
+				</xsl:call-template>
 			</xsl:for-each>
-			<xsl:call-template name="make-abv"/>
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template name="make-abv">
-		<xsl:if test="count(../Equivalent/variante[@type = 'Abréviation']) > 0">
-			<xsl:element name="domaine">
-				<xsl:attribute name="id">
-					<xsl:value-of select="'abréviation'"/>
-				</xsl:attribute>
-				<xsl:for-each select="../Equivalent/variante[@type = 'Abréviation']">
-					<xsl:value-of select="string(normalize-space(current()))"/>
-				</xsl:for-each>
-			</xsl:element>
-		</xsl:if>
-	</xsl:template>
-
 	<xsl:template name="make-domain">
+		<xsl:param name="abreviations"/>
+
 		<xsl:element name="domaine">
 			<xsl:attribute name="id">
 				<xsl:value-of select="string(normalize-space(text()))"/>
@@ -183,6 +196,11 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 						<xsl:call-template name="make-synonyme"/>
 					</xsl:for-each>
 				</xsl:if>
+<!--				<xsl:if test="boolean($abreviations/abreviations)">
+					<xsl:for-each 	select="$abreviations/abreviations/abreviation">
+						<xsl:call-template name="make-synonyme"/>
+					</xsl:for-each>
+				</xsl:if> -->
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
