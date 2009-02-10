@@ -643,7 +643,7 @@ Sub ReplaceAllAnglicisme()
 		Dim viewCursor as Object
 		viewCursor = ThisComponent.currentController.ViewCursor
 		selectionText = viewCursor.String
-		&pos; now we either replace content in the all document...
+		&apos; now we either replace content in the all document...
 		If selectionText = &quot;&quot; Then
 			Doc.replaceAll(Replace)
 		Else &apos; or only in the selection (if any)
