@@ -34,21 +34,40 @@
 			<xsl:apply-templates select="@*|node()"/>	
 		</xsl:copy>
     	</xsl:template>
-<!--
 
-Disable, work still in progress.
-	<xsl:template match="domaine">
-		<xsl:variable name="entry-id" select="../../@id"/> // anglicisme id 
-		<xsl:variable name="domain-id" select="@id"/> 
-
-		<xsl:variable name="count"
-			      select="count($ref-file/anglicismes/anglicisme[@id = $entry-id]/domaines/domaine[@id = $domain-id])"/>
-<xsl:message><xsl:value-of select="$count"/></xsl:message>
-		<xsl:if test="count($ref-file/anglicismes/anglicisme[@id = $entry-id]/domaines/domain[@id = $domain-id]) > 1">
-			<xsl:message>
-Suspect is :<xsl:value-of select="$entry-id"/> with domain: <xsl:value-of select="$domain-id"/>, that appears <xsl:value-of select="$count"/>
-			</xsl:message>
-		</xsl:if>
+	<xsl:template match="domaines">
+		<xsl:element name="domaines">
+			<xsl:for-each select="domaine">
+				<xsl:variable name="id" select="@id"/>
+				<xsl:if test="(count(./following-sibling::domaine[@id = $id]) = 0) and (count(./preceding-sibling::domaine[@id = $id]) = 0) ">
+					<xsl:copy>
+						<xsl:apply-templates select="@*|node()"/>	
+					</xsl:copy>
+				</xsl:if>
+			</xsl:for-each>
+				
+			<xsl:for-each select="domaine">
+				<xsl:variable name="id" select="@id"/>
+				<xsl:if test="(count(./following-sibling::domaine[@id = $id]) > 0) and (count(preceding-sibling::domaine[@id = $id]) = 0)">
+					<xsl:element name="domaine">
+						<xsl:attribute name="id">
+							<xsl:value-of select="$id"/>
+						</xsl:attribute>
+						<xsl:element name="synonymes">
+							<xsl:for-each select="synonymes/synonyme">
+								<xsl:copy>
+									<xsl:apply-templates select="@*|node()"/>	
+								</xsl:copy>
+							</xsl:for-each>
+							<xsl:for-each select="./following-sibling::domaine[@id = $id]/synonymes/synonyme">
+								<xsl:copy>
+									<xsl:apply-templates select="@*|node()"/>	
+								</xsl:copy>
+							</xsl:for-each>
+						</xsl:element>
+					</xsl:element>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:element>
 	</xsl:template>
-	-->
 </xsl:stylesheet>
