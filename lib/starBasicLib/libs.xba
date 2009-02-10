@@ -153,12 +153,14 @@ End Sub
 &apos; Il ne faut pas modifier le nom de cette méthode.
 &apos; @return boolean
 Function KeyHandler_keyPressed(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+&apos; Don't really see the point of the double add/remove here... As it lead to some
+&apos; side effect bug with the start by default feature, it has been disabled.
 	If Not keyMutex(&quot;get&quot;) Then
-		removeHook
+&apos;		removeHook
 		appuiSurUneTouche(oKeyEvent)
-		addHook
-	Else
-		removeHook
+&apos;		addHook
+&apos;	Else
+&apos;		removeHook
 	End If
 	KeyHandler_keyPressed = False
 End Function
@@ -618,13 +620,13 @@ End Sub
 Sub ReplaceAllAnglicisme()
 	Dim Doc As Object
 	Dim Replace As Object
-    Dim oDialogModel As Object, oControlModel As Object
-    Dim remplacement As String
-    Dim anglicisme As String
+	Dim oDialogModel As Object, oControlModel As Object
+	Dim remplacement As String
+	Dim anglicisme As String
     
-    oDialogModel = oDialog.getModel()
-    &apos; on récupère le terme cliqué et le terme à remplacer
-    oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
+	oDialogModel = oDialog.getModel()	
+	&apos; on récupère le terme cliqué et le terme à remplacer
+	oControlModel = oDialogModel.getByName(&quot;remplacement&quot;)
 	remplacement = oControlModel.getPropertyValue(&quot;Text&quot;)
 	oControlModel = oDialogModel.getByName(&quot;anglicisme&quot;)
 	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
