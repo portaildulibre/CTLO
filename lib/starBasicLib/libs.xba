@@ -632,14 +632,56 @@ Sub ReplaceAllAnglicisme()
 	anglicisme = oControlModel.getPropertyValue(&quot;Text&quot;)
 
 	If remplacement &lt;&gt; &quot;&quot; Then
-		Doc = StarDesktop.CurrentComponent
+		&apos; let build the replace descriptor with appropriate data
+		Doc = ThisComponent
 		Replace = Doc.createReplaceDescriptor
 		Replace.SearchWords = True
 	  	Replace.SearchString = anglicisme
 		Replace.ReplaceString = remplacement
-		Doc.replaceAll(Replace)
+		&apos; now let find out if the user did selected something
+		Dim selectionText as String
+		Dim viewCursor as Object
+		viewCursor = ThisComponent.currentController.ViewCursor
+		selectionText = viewCursor.String
+		&pos; now we either replace content in the all document...
+		If selectionText = &quot;&quot; Then
+			Doc.replaceAll(Replace)
+		Else &apos; or only in the selection (if any)
+			RemplaceInSelection(Replace)
+		End If
 		oDialog.endExecute()
 	End If
+End Sub
+
+&apos; 
+&apos; Routine to replace text only in the current selection.
+&apos; This code is heavily inspired by Bernard Marcelly'one
+&apos; in his book &quot;Programmation Open Office&quot;. It seems to
+&apos; be the &quot;best solution&quot; availaible even if it requires
+&apos; to parse the ALL document just to check the current 
+&apos; selection...
+&apos;
+Sub RemplaceInSelection(replace as Object)
+	Dim monDocument As Object
+	Dim monTexte As Object
+	Dim posTrouve As Object
+	Dim monCurseur  As Object
+	Dim Curseur2 As Object
+	
+	monDocument = ThisComponent
+	monTexte = monDocument.Text
+	monCurseur = monDocument.CurrentController.ViewCursor
+	posTrouve = monDocument.findNext(monCurseur.Start, replace)
+	Do Until isNull(posTrouve)
+	    If monTexte.compareRegionEnds(posTrouve, monCurseur) &lt; 0 then Exit Do
+    	&apos; L'occurrence est dans la zone de recherche
+    	Curseur2 = monTexte.createTextCursorByRange(posTrouve)
+    	&apos; Curseur2 sélectionne le texte trouvé
+    	If Curseur2.String = replace.SearchString Then 
+    		Curseur2.String = replace.ReplaceString &apos; changer le texte
+  		End if
+	  	posTrouve = monDocument.findNext(posTrouve.End,  replace)
+	Loop
 End Sub
 
 &apos;
