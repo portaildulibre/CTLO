@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<!-- Regular project property -->
 	<property name="out.path" 		value="bin/ant" 					/>
-	<property name="version" 		value="0.3-rc3" 					/>
+	<property name="version" 		value="0.3" 						/>
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
 	
@@ -209,7 +209,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			destfile="${target}/${ant.project.name}-${version}.jar">
 			<manifest>
 				<attribute 	name="RegistrationClassName" 		
-						value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
+						 value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
 			</manifest>
 			<fileset dir="${target}">
 				<include name="terminologie.xml"/>
@@ -249,6 +249,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
 		</zip>
 		<delete dir="${package}" />
+		
+		<delete file="${target}/META-INF/manifest.xml"/>
+		<copy file="${basedir}/resources/META-INF/manifest-noevent.xml" tofile="${target}/META-INF/manifest.xml"/>
+		<replace file="${target}/META-INF/manifest.xml" token="@@VERSION@@" value="${version}"/>
+		<!-- Extension without activation -->
+		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
+		<zip 	destfile="${target}/${ant.project.name}-${version}-noactivation.oxt"
+		     	basedir="${package}">
+			<fileset dir="${target}/"		includes="META-INF/manifest.xml"		/>
+			<fileset dir="${basedir}" 		includes="README"				/>
+			<fileset dir="${basedir}" 		includes="COPYING"				/>
+			<fileset dir="${basedir}"		includes="resources/ChangeLog"			/>
+			<fileset dir="${basedir}/lib"		includes="dialogLib/"				/>
+			<fileset dir="${basedir}/lib"		includes="starBasicLib/"			/>
+			<fileset dir="${basedir}/resources"	includes="images/"				/>
+			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
+                        <fileset dir="${basedir}/resources"     includes="StartupJob.xcu"       		/>
+			<fileset dir="${classes}"								/>
+			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
+		</zip>
+		<delete dir="${package}" />
+
 	</target>
 
 	<!-- Unit test execution -->
