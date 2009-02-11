@@ -231,9 +231,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<prop oor:name="ImageIdentifier" oor:type="xs:string">
 							<value />
 						</prop>
+						<!--
 						<prop oor:name="Title" oor:type="xs:string">
 							<value xml:lang="fr-FR">Supprimer de l'activation automatique au démarrage</value>
 						</prop>
+						-->
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
 						</prop>
