@@ -43,6 +43,7 @@
 	...
 -->
 <xsl:stylesheet version="1.0" 
+		xmlns:exsl="http://exslt.org/common"
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:include href="common.xsl"/>
@@ -147,8 +148,6 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 		Below this limit there is only template called (~ functions)
 	-->
 	
-	<!-- No real need to have a template here, but it does help making
-		this stylesheet more human-readable... -->
 	<xsl:template name="make-domaines">
 		<xsl:variable name="abreviations">
 			<xsl:element name="abreviations">
@@ -196,11 +195,9 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 						<xsl:call-template name="make-synonyme"/>
 					</xsl:for-each>
 				</xsl:if>
-<!--				<xsl:if test="boolean($abreviations/abreviations)">
-					<xsl:for-each 	select="$abreviations/abreviations/abreviation">
-						<xsl:call-template name="make-synonyme"/>
-					</xsl:for-each>
-				</xsl:if> -->
+				<xsl:for-each 	select="exsl:node-set($abreviations)/abreviations/abreviation">
+					<xsl:call-template name="make-synonyme"/>
+				</xsl:for-each>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
