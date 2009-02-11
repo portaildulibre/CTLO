@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 <project name="terminologie" default="package">
 	<description>This ant file is only to package the AnglicismeThesaurus component</description>
 	
-	
 	<!--
 **********************************************************************************************************	    
 	    Warning, those variable are SYSTEM SPECIFIC, you should set them properly
@@ -190,7 +189,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			out="${database-without-homographies}.factorized">
 		</xslt>
 
-		<move file="${database-without-homographies}.factorized" tofile="${dict.xml}"/>		
+		<!-- Synonyms may have some double entry in a domain... let's remove them. -->
+		<xslt 	in="${database-without-homographies}.factorized"
+			style="src/xsl/remove-double-synonym-entry.xsl"
+			out="${database-without-homographies}.nodoubleentries">
+		</xslt>
+
+		<move file="${database-without-homographies}.nodoubleentries" tofile="${dict.xml}"/>		
 	</target>
 	
 	<!-- Assembling the jar file -->
