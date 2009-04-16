@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="libs" script:language="StarBasic">REM  *****  BASIC  *****
+Option Explicit
+Private maxwords as Integer
+Private parser as Object
+
+Sub Main
+REM disable bridge to Java
+REM parser = createUnoService( &quot;org.atosorigin.ctOO.CtOO3&quot; )
+REM
+ Dim parser as Object
+ maxwords=parser.maxwords
+xray parser
+ maxwords = 3
+ &apos; TODO maxwords=parser.maxwords
+&apos; on error goto TraitementErreur
+ Dim portionCursor as Object
+ Dim portion as String
+ Dim results as Object
+ 
+ portionCursor=SelectPortion(maxwords)
+ portion=portionCursor.string
+ results=Search(portion)
+ ThisComponent.currentController.select(portionCursor) &apos; Affiche la selection
+ if (results = null) then
+  msgbox &quot;pas de resultat&quot;
+ else
+  xray results
+  dim i as integer
+  for i=LBound(results) to UBound(results)
+   xray results(i)
+  next
+ endif
+
+ &apos; TODO : pour aider au debug 
+ ThisComponent.currentController.select(portionCursor) &apos; Affiche la selection
+ Exit sub
+TraitementErreur:
+ print &quot;Erreur &quot; &amp; erl,erreur
+ resume next
+End Sub
+
+&apos; Selection d&apos;une portion limité à n mots avant et après la selection, 
+&apos; bornée au paragraphe courant.
+Function SelectPortion(maxwords as integer) as Object
+ Dim theText as Object
+ Dim portionCursor as Object 
+ Dim startWordCursor as Object
+ Dim endWordCursor as Object
+ Dim paragraphCursor as Object
+ Dim i as integer
+ &apos;theDocument=StarDesktop.CurrentComponent
+ theText=ThisComponent.text
+ startWordCursor=theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+ endWordCursor=theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+ paragraphCursor=theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+ portionCursor=theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+ 
+ paragraphCursor.gotoStartOfParagraph(false)
+ paragraphCursor.gotoEndOfParagraph(true)
+ 
+ startWordCursor.gotoStartOfWord(false)
+ for i=1 to maxwords
+  startWordCursor.gotoPreviousWord(false)
+ next
+ for i=1 to maxwords-1
+  endWordCursor.gotoNextWord(true) 
+ next
+ endWordCursor.gotoEndOfWord(false)
+ 
+ portionCursor=theText.createTextCursor()
+ if (theText.compareRegionStarts(startWordCursor,paragraphCursor) &gt; 0) then
+  portionCursor.gotoRange(endWordCursor.end,true)
+ else
+  portionCursor.gotoRange(paragraphCursor.end,true)
+ end if
+ SelectPortion=portionCursor
+End Function
+
+&apos; Recherche, via le code Java, les anglicismes
+Function Search(portion as string) as Object
+ Dim rc as Object &apos; Array of Result
+ &apos; TODO : recupération du singleton
+ Search=parser.search(portion)
+End Function
+
+&apos; Pour tous le text, paragraphe par paragraphe
+&apos; TODO: gérer equalement les tableaux, et autres textes
+Sub forAllParagraph()
+ Dim listParagraph as Object
+ listParagraph = theDocument.text.createEnumeration()
+ do while listParagraph.hasMoreElements
+  elementText = listParagraph.nextElement
+  if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
+   &apos; ici elementText est le paragraphe
+  end if
+ loop
+End sub
+
+Sub SetupKeyHandler                                                                                                                                                       
+End Sub                                                                                                                                                                   
+Sub RemoveKeyHandler                                                                                                                                                      
+End Sub                                                                                                                                                                   
+Sub addHook                                                                                                                                                               
+End Sub                                                                                                                                                                   
+Sub removeHook                                                                                                                                                            
+End Sub                                                                                                                                                                   
+Sub KeyHandler_disposing                                                                                                                                                  
+End Sub                                                                                                                                                                   
+Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean                                                                                       
+End Sub                                                                                                                                                                   
+Sub rechercheTerminologique()                                                                                                                                             
+End Sub                                                                                                                                                                   
+Sub CheckEachWord()                                                                                                                                                       
+                                                                                          
+End Sub                                                                                                                                                                   
+Sub CheckSelection()                                                                                                                                                      
+End Sub                                                                                                                                                                   
+Sub ShowDialog()                                                                                                                                                          
+End Sub                                                                                                                                                                   
+Sub DialogConstructor                                                                                                                                                     
+End Sub                                                                                                                                                                   
+Sub DialogClose                                                                                                                                                           
+End Sub                                                                                                                                                                   
+Sub UpdateTermsList()                                                                                                                                                     
+End Sub                                                                                                                                                                   
+Sub UpdateSelectedTerm()                                                                                                                                                                                                                                                                                                         
+End Sub                                                                                                                                                                   
+Sub ActivateReplaceButton()                                                                                                                                               
+End Sub                                                                                                                                                                   
+Sub KeyPressedInDialog(Event As Object)                                                                                                                                   
+End Sub
+Sub ReplaceAnglicisme()
+End Sub
+Sub ReplaceAllAnglicisme()
+End Sub
+Sub RemplaceInSelection(replace as Object)
+End Sub
+Sub IgnoreAll()
+End Sub
+Sub Help
+End Sub
+Sub About
+End Sub
+Sub ShowHelpDialog(dialog as String)
+End Sub
+Sub HelpDialogConstructor(sDialogName as String)
+End Sub
+Sub DescribeWithMsgBox(oObj)
+End Sub
+Sub installTerminologie ()
+End Sub
+Sub addAutomaticLaunch( toAddStr , addonKey, filePath )
+End Sub
+Sub OpenCriterURL()
+End Sub
+
+</script:module>
