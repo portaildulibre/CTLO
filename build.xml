@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="version" 		value="0.3" 						/>
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
+	<property name="src.idl"		value="src/idl"						/>
 	
 	<property name="target"			value="target"						/>
 	<property name="classes"		value="${target}/classes"				/>
@@ -80,6 +81,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		description="Compile project source code">
 		
 		<mkdir dir="${classes}"/>
+		<!-- TODO -->
+		<!-- invoquer javamaker -->
+		<!--
+		javamaker
+		-->
 		<javac srcdir="${src.java}"
 		       destdir="${classes}"
 		       debug="true"> <!-- FIXME: should not be debug for release-->
