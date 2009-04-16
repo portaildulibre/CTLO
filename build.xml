@@ -31,10 +31,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="unopkg.exe"		value="${OOo_HOME}/ure/bin/uno.bin"			/>
 	<property name="project.lib"		value="${OOo_HOME}/basis3.0/program/classes/"		/>
 	<property name="plugin.lib"		value="${OOo_HOME}/ure/share/java/"			/>
+	<property name="artifacts"		value="${basedir}/artifact/"/>
 
 	<!-- Regular project property -->
 	<property name="out.path" 		value="bin/ant" 					/>
-	<property name="version" 		value="0.3" 						/>
+	<property name="version" 		value="0.4" 						/>
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
 	<property name="src.idl"		value="src/idl"						/>
@@ -55,6 +56,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	
 	<!-- Project classpath : contains anything required to build the plugin -->
 	
+	
 	<path id="project.classpath">
 		<fileset dir="${project.lib}">
 			<include name="*.jar"/>
@@ -62,8 +64,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<fileset dir="${plugin.lib}">
 			<include name="*.jar"/>
 		</fileset>
+	      <pathelement path="${artifacts}"/>
 	</path>
-	
+
 	<!-- Targets -->
 
 	<target name="clean"
@@ -86,9 +89,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<!--
 		javamaker
 		-->
-		<javac srcdir="${src.java}"
+		<javac srcdir="${src.java}:${artifacts}"
 		       destdir="${classes}"
 		       debug="true"> <!-- FIXME: should not be debug for release-->
+			
 			<classpath refid="project.classpath"/>
 		</javac>
 	</target>
@@ -221,8 +225,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			destfile="${target}/${ant.project.name}-${version}.jar">
 			<manifest>
 				<attribute 	name="RegistrationClassName" 		
-						 value="org.linagora.clients.minefi.dpma.terminologie.AnglicismeThesaurus" />
+						 value="org.atosorigin.ctOO.comp.CtOO3Impl" />
 			</manifest>
+			<fileset dir="${artifacts}" includes="**/*.class"/>
 			<fileset dir="${target}">
 				<include name="terminologie.xml"/>
 			</fileset>
@@ -239,34 +244,54 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	</target>
 
 	<!-- Building the pkg file for OOo -->
-	
+	<!-- FIXME: depends="version,jars" !!! -->
 	<target name="package" 
-		depends="jar,version"
+		depends="version" 
 		description="Package application for OOo">
 	
+		
+		<mkdir dir="${target}/starbasic"/>
+		<copy file="src/starbasic/libs.xba" todir="${target}/starbasic"/>
+		<copy file="src/starbasic/script.xlb" todir="${target}/starbasic"/>
+		<mkdir dir="${target}/dialogues"/>
+		<copy file="src/starbasic/dialog.xlb" todir="${target}/dialogues"/>
+		<copy todir="${target}/dialogues">
+			<fileset dir="src/starbasic">
+				<include name="**/*.xdl"/>
+			</fileset>
+		</copy>
+
+
+
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
 		<zip 	destfile="${target}/${ant.project.name}-${version}.oxt"
 		     	basedir="${package}">
-			<fileset dir="${target}/"		includes="META-INF/manifest.xml"		/>
-			<fileset dir="${basedir}" 		includes="README"				/>
-			<fileset dir="${basedir}" 		includes="COPYING"				/>
-			<fileset dir="${basedir}"		includes="resources/ChangeLog"			/>
-			<fileset dir="${basedir}/lib"		includes="dialogLib/"				/>
-			<fileset dir="${basedir}/lib"		includes="starBasicLib/"			/>
-			<fileset dir="${basedir}/resources"	includes="images/"				/>
-			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
-			<fileset dir="${basedir}/resources"     includes="Events.xcu"   			/>
-                        <fileset dir="${basedir}/resources"     includes="StartupJob.xcu"       		/>
-			<fileset dir="${classes}"								/>
-			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
+			<fileset dir="${target}/"				includes="META-INF/manifest.xml"		/>
+			<fileset dir="${basedir}" 				includes="README"				/>
+			<fileset dir="${basedir}" 				includes="COPYING"				/>
+			<fileset dir="${basedir}"				includes="resources/ChangeLog"			/>
+		
+			<fileset dir="src/starbasic" file="dialog.xlb"								/>
+			<fileset dir="src/starbasic" file="libs.xba"								/>
+			<fileset dir="src/starbasic" file="script.xlb"								/>
+
+			<fileset dir="${target}"			includes="dialogues/**/*"				/>
+			<fileset dir="${target}"			includes="starbasic/**/*"				/>
+				
+			<fileset dir="${basedir}/resources"		includes="images/"					/>
+			<fileset dir="${basedir}/resources"     	includes="Addons.xcu"   				/>
+			<fileset dir="${basedir}/resources"     	includes="Events.xcu"   				/> 
+			<fileset dir="${artifacts}"			includes="types.rdb"						/> 
+			<fileset dir="${target}"			includes="${ant.project.name}-${version}.jar"			/>
 		</zip>
 		<delete dir="${package}" />
-		
+	
 		<delete file="${target}/META-INF/manifest.xml"/>
+		<!--
 		<copy file="${basedir}/resources/META-INF/manifest-noevent.xml" tofile="${target}/META-INF/manifest.xml"/>
 		<replace file="${target}/META-INF/manifest.xml" token="@@VERSION@@" value="${version}"/>
-		<!-- Extension without activation -->
-		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
+		Extension without activation
+		<mkdir  dir="${package}"/> we just need an empty directory as a basedir 
 		<zip 	destfile="${target}/${ant.project.name}-${version}-noactivation.oxt"
 		     	basedir="${package}">
 			<fileset dir="${target}/"		includes="META-INF/manifest.xml"		/>
@@ -280,7 +305,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
                         <fileset dir="${basedir}/resources"     includes="StartupJob.xcu"       		/>
 			<fileset dir="${classes}"								/>
 			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
-		</zip>
+		</zip> -->
 		<delete dir="${package}" />
 
 	</target>
