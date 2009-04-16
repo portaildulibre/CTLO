@@ -22,18 +22,11 @@ public final class CtOO3Impl extends WeakBase
     private final XComponentContext m_xContext;
     private static final String m_implementationName = CtOO3Impl.class.getName();
     private static final String[] m_serviceNames = {
-        "org.atosorigin.ctOO.CtOO3" };
+        "org.atosorigin.ctOO.comp.CtOO3" };
 
     private URL foreignTerms;
     {
-    	try
-    	{
-    		foreignTerms=new URL("file:///home/pprados/workspace/ctOO2/target/terminologie.xml");
-    	}
-    	catch (MalformedURLException e)
-    	{
-    		// Ignore
-    	}
+		foreignTerms = CtOO3Impl.class.getResource("/terminologie.xml");
     }
     private WordsParser parser;
     
