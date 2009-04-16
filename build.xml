@@ -195,6 +195,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			out="${database-without-homographies}.nodoubleentries">
 		</xslt>
 
+		<!-- Add on PPrados, check with LT. -->
+		<xslt 	in="${database-without-homographies}.nodoubleentries"
+			style="src/xsl/to-LangageTool.xsl"
+			out="${target}/partial-grammar.xml">
+		</xslt>
+
 		<move file="${database-without-homographies}.nodoubleentries" tofile="${dict.xml}"/>		
 	</target>
 	

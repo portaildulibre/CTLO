@@ -4,33 +4,7 @@
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/agenda.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/classes.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/commonwizards.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/fax.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/form.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/jut.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/letter.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/officebean.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/query.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/report.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/ScriptFramework.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/ScriptProviderForJava.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/table.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/unoil.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/web.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/XMergeBridge.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/xmerge.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/XSLTFilter.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/basis3.0/program/classes/XSLTValidate.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/ure/share/java/java_uno.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/ure/share/java/juh.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/ure/share/java/jurt.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/ure/share/java/ridl.jar"/>
-	<classpathentry kind="var" path="OOo_HOME/ure/share/java/unoloader.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="var" path="ECLIPSE_HOME"/>
-	<classpathentry kind="var" path="OOo_HOME"/>
-	<classpathentry kind="lib" path="/usr/lib/openoffice/basis3.0/sdk/classes"/>
+	<classpathentry kind="con" path="org.openoffice.ide.eclipse.java.OOO_CONTAINER/OpenOffice.org 3.0"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
