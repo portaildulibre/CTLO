@@ -1,0 +1,19 @@
+#ifndef __org_atosorigin_ctOO_result_idl__
+#define __org_atosorigin_ctOO_result_idl__
+
+module org { module atosorigin { module ctOO {  	
+
+	struct Domaine {
+		string name;
+		sequence<string> synonymes;
+	};
+	struct ForeignTerm {
+		sequence<Domaine> domaines;
+	};
+	struct Result {
+		long start;
+		long stop;
+		ForeignTerm foreignTerm;
+	};
+ }; }; };
+#endif
