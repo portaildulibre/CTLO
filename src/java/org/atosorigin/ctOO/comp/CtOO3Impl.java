@@ -92,13 +92,13 @@ public final class CtOO3Impl extends WeakBase
     	return parser.find(sentence);
     }
 
-	@Override
+//	@Override // FIXME
 	public String[] getdomaines()
 	{
 		return parser.getDomains();
 	}
 
-	@Override
+//	@Override
 	public int getmaxwords()
 	{
 		return parser.getMaxWords();
