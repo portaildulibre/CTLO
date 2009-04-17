@@ -1,6 +1,7 @@
 #ifndef __org_atosorigin_ctoo_ctoo3_idl__
 #define __org_atosorigin_ctoo_ctoo3_idl__
 
+#include <com/sun/star/uno/XInterface.idl>
 #include "org/atosorigin/ctOO/XCtOO3.idl"
 module org { module atosorigin { module ctOO { 	
 
