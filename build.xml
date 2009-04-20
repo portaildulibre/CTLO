@@ -79,8 +79,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<mkdir dir="${basedir}/${target}"/>
 	</target>
 
+	<target name="idl">
+
+<!--
+# Compilation des idl
+idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd
+${src/idl}org/atosorigin/ctOO/*.idl
+
+# Création de la base de registre 'types.rdb'
+ export LD_LIBRARY_PATH="/usr/lib/openoffice.org/ure/lib/"; /usr/lib/openoffice.org/basis3.0/sdk/bin/regmerge target/types.rdb /UCR target/urd/*.urd
+
+
+# Création des classes
+/usr/lib/openoffice.org/basis3.0/sdk/bin/javamaker -BUCR -nD -Torg.atosorigin.ctOO.* -O ./target/classes target/types.rdb /usr/lib/openoffice.org/ure/share/misc/types.rdb
+
+      <exec executable="${unopkg.exe}"
+		      failonerror="yes"
+		      failifexecutionfails="yes">
+			<arg value="add"/>
+			<arg value="-v"/>
+			<arg file="${target}/${ant.project.name}-${version}.oxt"/>
+		</exec>
+
+-->
+	</target>
 	<target name="compile" 
-		depends="init"
+		depends="init,idl"
 		description="Compile project source code">
 		
 		<mkdir dir="${classes}"/>
@@ -246,7 +270,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<!-- Building the pkg file for OOo -->
 	<!-- FIXME: depends="version,jars" !!! -->
 	<target name="package" 
-		depends="version" 
+		depends="jar,version" 
 		description="Package application for OOo">
 	
 		
