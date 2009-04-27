@@ -8,6 +8,13 @@ REM
 Private maxwords as Integer
 Private parser as Object
 
+REM data for the functionnality part
+Private results as Object &apos; Array of results from the last search for foreign term
+Private currentResult as Integer &apos; index of the current row in the results table
+Private cursor as Object &apos; Cursor on the current selection
+Private ignoresTerms as Integer &apos; TODO:index dans le tbl (le &quot;run&quot;)
+Private tab as Object &apos; TODO:ingoreALl liste de TERM
+
 REM 
 REM data for the HMI layer
 REM
@@ -21,56 +28,51 @@ REM ****************************************************************************
 REM		UNIT TEST PART
 REM 
 
+
+
 Sub Main
+	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
+	CheckSelection()
+	Dim part as Object
+&apos;	part = selectPart( ThisComponent.currentController.ViewCursor.Text,2,5)	
+&apos;	xray( part)
+
 	&apos;If isNull(  getTerminologieService() ) Then
 	&apos;	msgbox(&quot;failed&quot;)
 	&apos;End If
 
 	Dim results as Object
-	dim i as integer
+	Dim i as integer
+	Dim selectCursor as Object
+	Dim curs As Object
+	Dim visualCursor As Object
+	Dim currentText As Object
+	Dim selectionCursor As Object
 	
 	parser = createUnoService( &quot;org.atosorigin.ctOO.comp.CtOO3&quot; )
 	&apos;FIXME: this should be far more better : maxwords=parser.maxwords
 	maxwords = 7 
-	results = parser.search(&quot;web&quot;)
-	ShowDialog(results(0).foreignTerm.domaines,&quot;web&quot;)
-	
-	
-	&apos;for i = LBound(results) to UBound(results)
-	&apos;	msgbox( results(i) )
-	&apos;next
-
-	&apos; on error goto TraitementErreur
-	Dim portionCursor as Object
-	Dim portion as String
-	Dim o As Object
-	Dim visualCursor As Object
-	Dim currentText As Object
 	
 	visualCursor = ThisComponent.currentController.ViewCursor
 	currentText = visualCursor.Text
+	selectionCursor = currentText.createTextCursorByRange(visualCursor)
+	msgbox( selectionCursor.String)
+	results = parser.search(selectionCursor.String)
+	part =  selectPartOfText(ThisComponent.currentController.ViewCursor,results(0).start,results(0).stop)
+	msgbox(part.String)
+&apos;	ShowDialog(results(0).foreignTerm.domaines,&quot;web&quot;)
+	selectCursor =  ThisComponent.currentController.ViewCursor
 	
-	portionCursor= selectPart(currentText,maxwords)
-	portion=portionCursor.string
-&apos;	results=Search(portion)
-	ThisComponent.currentController.select(portionCursor) &apos; Affiche la selection
-	if (results = null) then
-		msgbox &quot;pas de resultat&quot;
-	else
-		xray results
-		
-		for i=LBound(results) to UBound(results)
-			xray results(i)
-		next
- 	endif
-
-	&apos; TODO : pour aider au debug 
-	ThisComponent.currentController.select(portionCursor) &apos; Affiche la selection
-	Exit sub
-	TraitementErreur:
-	print &quot;Erreur &quot; &amp; erl,erreur
-	resume next
 End Sub
+
+REM TO DELETE
+
+REM Sub addAutomaticLaunch( toAddStr , addonKey, filePath )
+REM End Sub
+REM Sub rechercheTerminologique()                                                                                                                                             
+REM End Sub    
+
+
 REM
 REM 
 REM ****************************************************************************************
@@ -83,8 +85,18 @@ REM 	FUNCTIONNALITY METHODS
 REM **********************************************************************************************
 REM **********************************************************************************************
 
-
-
+REM Select part of the  
+REM  Selection d&apos;une portion limité à n mots avant et après la selection, 
+&apos; bornée au paragraphe courant.
+Function selectPartOfText(cursor as Object,start as Integer,maxwords as Integer) as Object	
+	Dim selectionCursor as Object
+	
+	selectionCursor = cursor.Text.createTextCursorByRange(cursor)
+	selectionCursor.collapseToStart()
+	selectionCursor.goRight(start,false)
+	selectionCursor.goRight(maxwords + 1,true) 
+	selectPartOfText = selectionCursor
+End Function
 
 REM
 REM Retrieve and build the Uno Service associated with this plugin, if and
@@ -106,11 +118,9 @@ REM @author Romain PELISSE romain.pelisse@atosorigin.com
 REM
 REM                                                                                                                                                                  
 Sub CheckSelection()                                                                                                                                                      
-	Dim cursor as Object
 	Dim visualCursor as Object
 	Dim currentText as Object
 	Dim selectedText as String
-	Dim results as Object
 	
 	visualCursor = ThisComponent.currentController.ViewCursor
 	currentText = visualCursor.Text
@@ -120,26 +130,19 @@ Sub CheckSelection()
 	If NOT isNull(selectedText) AND selectedText &lt;&gt; &quot;&quot; Then
 		Dim serviceTerminologie as Object
 		serviceTerminologie = getTerminologieService
-		
 		results = serviceTerminologie.search(selectedText)
-		&apos; if results -&gt; screen
-		Dim str As String
-		str = selectPart(currentText,results(0).stop).String
-		&apos;ShowDialog(results(0),&quot;todo!&quot;)
-		&apos; si replace
-		&apos; else loop on remaining results...
-		CheckSelection
-		visualCursor.collapseToStart
-		visualCursor.goRight(results(0).start, false)
-		visualCursor.goRight(results(0).stop,true)
-		cursor = currentText.createTextCursorByRange(visualCursor)
-		selectedText = cursor.String
+
+		If ( UBound(results) &gt;= 0 ) Then
+			currentResult = 0
+			ShowDialog(results(currentResult).foreignTerm.domaines,selectPartOfText(cursor,results(currentResult).start,results(currentResult).stop).getString()) REM FIXME: Add foreign term to results structure
+		End If
 	end if
 End Sub     
 
+REM TODO: not really used for the moment...
 &apos; Selection d&apos;une portion limité à n mots avant et après la selection, 
 &apos; bornée au paragraphe courant.
-Function selectPart(theText as Object,maxwords as integer) as Object
+Function selectPart(theText as Object,maxwords as Integer) as Object
 	Dim portionCursor as Object 
 	Dim startWordCursor as Object
 	Dim endWordCursor as Object
@@ -187,23 +190,103 @@ Sub checkDocument()
   end if
  loop
 End sub
-
                                                                                                                                   
 Sub ActivateReplaceButton()                                                                                                                                               
 End Sub                                                                                                                                                                   
 Sub KeyPressedInDialog(Event As Object)                                                                                                                                   
 End Sub
-Sub ReplaceAnglicisme()
+
+REM 
+REM This routine implements the ignore functionnality. Basicly, it
+REM just move to the next word
+Sub Ignore()
+	REM We have to keep an record of ignore term for this run
+	
+	REM first we close the dialog
+	DialogClose()
+	currentResult = currentResult + 1
+	REM if there is still results to be dealt with...
+	If (currentResult &lt; UBound(results) ) Then		
+		currentResult = currentResult + 1
+		ShowDialog(results(currentResult).foreignTerm.domaines,selectPartOfText(cursor,results(currentResult).start,results(currentResult).stop).getString())
+	Else
+		REM otherwise, we&apos;re done here
+		currentResult = -1
+	End If
 End Sub
+
+REM
+REM	This routine replace a word, inside a target&apos;s text, by the selected
+REM	term.
+REM
+REM @author Romain PELISSE romain.pelisse@atosorigin.com
+REM
+REM    
+Sub ReplaceAnglicisme()
+	Dim result as Object
+	Dim replaceCursor as Object
+	
+	result = results(currentResult)
+	replaceCursor = selectPartOfText(cursor,result.start,result.stop)
+	Dim remplacement as String
+	
+	
+  	REM Next lines to move into an other routine as it 
+  	REM belong to the IHM layer
+  	REM ...
+  	Dim controlModel as Object
+  	controlModel = mainDialog.getModel().getByName(&quot;remplacement&quot;)
+	remplacement = controlModel.getPropertyValue(&quot;Text&quot;)
+	REM ...
+	REM
+	
+	REM NOTE: We should never have an empty remplacement...
+	&apos; If remplacement &lt;&gt; &quot;&quot; Then
+	replaceCursor.String = remplacement
+	DialogClose()
+	REM We modify the target&apos;s text, we need to recheck it
+	CheckSelection()
+	&apos;End If	
+End Sub
+
 Sub ReplaceAllAnglicisme()
 End Sub
 Sub RemplaceInSelection(replace as Object)
 End Sub
-Sub IgnoreAll()
+REM
+REM Ignore un anglicisme  sélectionné par l&apos;utilisateur 
+REM	jusqu&apos;à la fin de la vérification.
+REM
+REM @author Romain PELISSE, romain.pelisse@atosorigin.com
+REM
+Sub IgnoreAll()	 
+	Dim foreignTerm as String
+    REM TODO: move to an appropriate IHM method
+	controlModel = mainDialog.getModel().getByName(&quot;anglicisme&quot;)
+	foreignTerm = oControlModel.getPropertyValue(&quot;Text&quot;)
+	REM 
+	&apos; Resize ignore term array
+	NbTermIgnorer = NbTermIgnorer + 1
+	ReDim IgnoreTermArray(NbTermIgnorer)
+	&apos; Change casse to lower	
+	anglicisme = SetCasse(CasseLower,anglicisme)
+	&apos; Add to array
+	IgnoreTermArray(NbTermIgnorer) = anglicisme
+	oDialog.endExecute()
 End Sub
+Sub SetupKeyHandler                                                                                                                                                       
+End Sub                                                                                                                                                                   
+Sub RemoveKeyHandler                                                                                                                                                      
+End Sub                                                                                                                                                                   
+Sub addHook                                                                                                                                                               
+End Sub                                                                                                                                                                   
+Sub removeHook                                                                                                                                                            
+End Sub                                                                                                                                                                   
+Sub KeyHandler_disposing                                                                                                                                                  
+End Sub                                                                                                                                                                   
+Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean                                                                                       
+End Sub                                                                                                                                                                   
 
-Sub addAutomaticLaunch( toAddStr , addonKey, filePath )
-End Sub
 
 REM
 REM Open the appropriate URL from the mainDialog
@@ -231,32 +314,12 @@ Sub OpenExternalDatasourceURL()
 	objlancer.execute(adresse, &quot;&quot;, handleErrors)
 End Sub
 
-
-Sub SetupKeyHandler                                                                                                                                                       
-End Sub                                                                                                                                                                   
-Sub RemoveKeyHandler                                                                                                                                                      
-End Sub                                                                                                                                                                   
-Sub addHook                                                                                                                                                               
-End Sub                                                                                                                                                                   
-Sub removeHook                                                                                                                                                            
-End Sub                                                                                                                                                                   
-Sub KeyHandler_disposing                                                                                                                                                  
-End Sub                                                                                                                                                                   
-Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean                                                                                       
-End Sub                                                                                                                                                                   
-Sub rechercheTerminologique()                                                                                                                                             
-End Sub                                                                                                                                                                   
-
-
 REM **********************************************************************************************
 REM **********************************************************************************************
 REM 	IHM METHODS
 REM **********************************************************************************************
 REM **********************************************************************************************
-
-
-                                                                                                                                                              
-
+                                                                                                                                   
 REM
 REM	This routine display the main dialog. 
 REM
@@ -405,8 +468,14 @@ Function TextDialogConstructor(sDialogName as String)
     TextDialogConstructor = CreateUnoDialog(dialog.getByName(sDialogName))
 End Function
                                                                                                                                                               
-Sub DialogClose                                                                                                                                                           
-End Sub                                                                                                                                                                   
+REM
+REM Close the mainDialog box
+REM
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Sub DialogClose
+	mainDialog.endExecute()
+End Sub                                                                                                                                                                  
                                                                                                                                                                    
 REM Update the displayed term with the appropriate value
 REM
