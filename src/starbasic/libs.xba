@@ -16,7 +16,7 @@ Private ignoresTerms as Integer 	&apos; TODO:index dans le tbl (le &quot;run&quo
 Private tab as Object 				&apos; TODO:ingoreALl liste de TERM
 Private mode as String 				&apos; selection, all, etc.
 Private IgnoreTermArray as Object
-
+REM Private forceRecalculate as boolean	&apos; after we alter the target (replace/replace all), we must force recalculate
 REM 
 REM data for the HMI layer
 REM
@@ -103,10 +103,11 @@ REM ****************************************************************************
 REM
 REM	This function must be run at the start of any kind of verification, 
 REM	to initialize properly global variables
-REM
+REM REMOVE THIS !!! 
 Sub initializeRun()
 	Redim results(0)
 	currentResult = -1
+	forceRecalculate = false
 End Sub
 
 Sub SelectionOpen()
@@ -115,30 +116,39 @@ Sub SelectionOpen()
 	if IsNull(mainDialog) then
 		mainDialog=Dialog_ctr()
 	end if
-	if Dialog_FSM(mode,&quot;open&quot;)=true then
+	REM We keep running the dialog until we end
+	if Dialog_FSM(mode,&quot;open&quot;) = true Then
 		mainDialog.execute()
 	end if
 End Sub
 
 Sub Iterator_init()
-	currentResult=0
+	currentResult=-1
 End Sub
 
 Function Iterator_next()
-	do while (currentResult &lt; UBound(results) )
+	do 		
 		currentResult = currentResult + 1
 		Iterator_next=currentResult
-		if (not isIgnoreTerm(results(currentResult))) then
-			exit do
+		REM FIXME: tune the algorithm 
+		if ( currentResult &lt;= UBound(results) ) then
+			if ( NOT isIgnoreTerm(results(currentResult))) then
+				exit do
+REM			else if word to replace...
+			REM is this result a replaced word ?
+			REM Loop until proper word or 
+			REM otherwise, we go on...
+			end if
 		end if
-	loop
-	if (currentResult = UBound(results) ) then
+	Loop While (currentResult &lt;= UBound(results) )
+	if (currentResult &gt; UBound(results) ) then
 		Iterator_next=-1
 	end if
 End Function
 
 Function IsIgnoreTerm(result as object) as boolean
 	IsIgnoreTerm=false
+	
 	&apos; Check ignore term
 	if not isNull(IgnoreTermArray) then
 		Dim index as Integer
@@ -158,13 +168,37 @@ Function Iterator_HasNext() as boolean
 	elseif  UBound(results)=-1 then
 		Iterator_HasNext=false
 	else
-		Iterator_HasNext=(currentResult&lt;&gt;-1) and (currentResult &lt;= UBound(results))
+		Dim i as Integer
+		i = UBound(results)
+		dim b as boolean
+		b=(currentResult &lt;= UBound(results))
+		Iterator_HasNext=b
 	end if
 End Function
 
 Function Iterator_cur() as Integer
 	Iterator_cur=currentResult
 End Function
+Function getWorkload(reset as boolean) as Boolean
+	getWorkload = true
+	if isNull(results) then
+		results=checkSelection(cursor)
+		REM if nothing is returned...
+		REM TODO: detect &apos;null&apos;
+		Dim i as Integer
+		i = Iterator_cur
+		if (reset) then
+			Iterator_init()
+		end if
+		if not Iterator_hasNext() then
+			Dialog_Close()
+			getWorkload = false &apos; It&apos;s necessary to open the dialog
+		Else
+			Dialog_set(results(Iterator_cur+1))
+		end if
+	end if
+End Function
+
 
 REM Finite state machine for dialog
 function Dialog_FSM(state as String, event as String) as boolean
@@ -172,22 +206,14 @@ function Dialog_FSM(state as String, event as String) as boolean
 	Dim replaceCursor as Object
 	Dim remplacement as String
 	Dim foreignTerm as String
-	Dialog_FSM=true
+	Dialog_FSM = true
+
 	select case state
 		case &quot;selection&quot;
-			if isNull(results) then
-				results=checkSelection(cursor)
-				Iterator_init()
-				if not Iterator_hasNext() then
-					Dialog_Close()
-					Dialog_FSM=false &apos; It&apos;s necessary to open the dialog
-				Else
-					Dialog_set(results(Iterator_cur))
-				end if
+			Dialog_FSM = getWorkload(true)
+			if ( Dialog_FSM ) Then
+				result = results(Iterator_cur)
 			end if
-&apos;			result = results(Iterator_cur) &apos; failed at runtime
-			redim results(0)	
-			
 			select case event
 				case &quot;ignore&quot;
 					REM if there is still results to be dealt with...
@@ -201,14 +227,26 @@ function Dialog_FSM(state as String, event as String) as boolean
 						results = nothing
 						Dialog_Close()
 					End If
-					
 				case &quot;replace&quot;
-					replaceCursor = selectPartOfText(cursor,result)
+					replaceCursor = selectPartOfText(cursor,results(currentResult+1))
 					remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
 					replaceCursor.String = remplacement
 					REM We modify the target&apos;s text, we need to recheck it
-&apos;					results=null &apos; this failed at runtime
-					currentResult = -1
+					REM so back to square one... except for the already ignore term
+					results = nothing					
+					
+					
+					if isNull(results) then
+						results=checkSelection(cursor)
+						Dim i as Integer
+						i = Iterator_cur
+						if not Iterator_hasNext() then
+							Dialog_Close()
+							Dialog_FSM = false
+						Else
+							Dialog_set(results(Iterator_cur))
+						end if
+					end if
 					
 				case &quot;ignoreall&quot;
 					foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
@@ -226,6 +264,32 @@ function Dialog_FSM(state as String, event as String) as boolean
 					Dialog_FSM(state,&quot;ignore&quot;) &apos; FIXME: boucle avec state end ?
 
 				case &quot;replaceall&quot;
+					Dim Doc As Object
+					Dim Replace As Object
+				    
+					REM on récupère le terme cliqué et le terme à remplacer
+					remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
+					foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
+
+					If remplacement &lt;&gt; &quot;&quot; Then
+						REM let build the replace descriptor with appropriate data
+						Doc = ThisComponent
+						Replace = Doc.createReplaceDescriptor
+						Replace.SearchWords = True
+					  	Replace.SearchString = foreignTerm
+						Replace.ReplaceString = remplacement
+						REM now let find out if the user did selected something
+						Dim selectionText as String
+						Dim viewCursor as Object
+						viewCursor = ThisComponent.currentController.ViewCursor
+						selectionText = viewCursor.String
+						REM now we either replace content in the all document...
+						If selectionText = &quot;&quot; Then
+							Doc.replaceAll(Replace)
+						Else REM or only in the selection (if any)
+							ReplaceInSelection(Replace)
+						End If
+					End If	
 			end select
 		case &quot;alldoc&quot; &apos; Utilisation d&apos;un iterateur all doc ?
 			select case event
@@ -235,10 +299,10 @@ function Dialog_FSM(state as String, event as String) as boolean
 				case &quot;replaceall&quot;
 			end select
 	end select
-	if not Iterator_hasNext() then
-		Dialog_Close()
-		Dialog_FSM=false &apos; Is it necessary to open the dialog ? no
-	end if
+REM	if not Iterator_hasNext() then
+REM		Dialog_Close()
+REM		Dialog_FSM=false &apos; Is it necessary to open the dialog ? no
+REM	end if
 End function
 
 REM
@@ -335,7 +399,39 @@ Sub ReplaceAllAnglicisme()
 	Dialog_FSM(mode,&quot;replaceall&quot;)
 End Sub
 
-Sub RemplaceInSelection(replace as Object)
+REM  
+REM 
+REM  Routine to replace text only in the current selection.
+REM  This code is heavily inspired by Bernard Marcelly&apos;one
+REM  in his book &apos;Programmation Open Office&apos;. It seems to
+REM  be the 4best solution&apos; availaible even if it requires
+REM  to parse the ALL document just to check the current 
+REM  selection...
+REM
+REM	@author Bernard Marcelly
+REM	@author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
+REM 
+Sub ReplaceInSelection(replace as Object)
+	Dim monDocument As Object
+	Dim monTexte As Object
+	Dim posTrouve As Object
+	Dim monCurseur  As Object
+	Dim writeCursorText As Object
+	
+	monDocument = ThisComponent
+	monTexte = monDocument.Text
+	monCurseur = monDocument.CurrentController.ViewCursor
+	posTrouve = monDocument.findNext(monCurseur.Start, replace)
+	Do Until isNull(posTrouve)
+	    If monTexte.compareRegionEnds(posTrouve, monCurseur) &lt; 0 then Exit Do
+    	REM L&apos;occurrence est dans la zone de recherche
+    	writeCursorText = monTexte.createTextCursorByRange(posTrouve)
+    	REM writeCursorText select the discriminated text
+    	If writeCursorText.String = replace.SearchString Then 
+    		writeCursorText.String = replace.ReplaceString 
+  		End if
+	  	posTrouve = monDocument.findNext(posTrouve.End,  replace)
+	Loop
 End Sub
 
 Sub IgnoreAll()	 
@@ -377,7 +473,7 @@ Sub Dialog_set(result as Object)
 	Dim domains as Object
 	Dim term as String
 	domains=result.foreignTerm.domaines
-	term=selectPartOfText(cursor,results(currentResult)).getString()
+	term=selectPartOfText(cursor,result).getString()
     Dim DialogModel As Object
     Dim ControlModel As Object
 		
@@ -446,17 +542,19 @@ Sub UpdateTermsList(domains as Object)
 	meaning = ControlModel.StringItemList(ControlModel.SelectedItems(0))
 
 noSelectedMeaningNext:
-    on error resume next
+	on error resume next
     &apos; updating the list
     ControlModel = mainDialog.getModel().getByName(&quot;Termes&quot;)
     Dim indexDomain as Integer
-	For indexDomain = LBound(domains) To UBound(domains)
-		&apos; Does this meaning match with the one we&apos;re looking for ? 
-		If meaning = domains(indexDomain).name Then
-			ControlModel.StringItemList = domains(indexDomain).synonymes
-			Exit For
-		EndIf
-	Next
+    if ( NOT IsNull(domains) ) Then
+		For indexDomain = LBound(domains) To UBound(domains)
+			&apos; Does this meaning match with the one we&apos;re looking for ? 
+			If meaning = domains(indexDomain).name Then
+				ControlModel.StringItemList = domains(indexDomain).synonymes
+				Exit For
+			EndIf
+		Next
+	End If
 	definePreselectedItem(ControlModel)
 	UpdateSelectedTerm
 	Exit Sub
@@ -578,12 +676,15 @@ REM  Selection d&apos;une portion limité à n mots avant et après la selection
 &apos; bornée au paragraphe courant.
 Function selectPartOfText(cursor as Object,result as Object) as Object	
 	Dim selectionCursor as Object
-
-	selectionCursor = cursor.Text.createTextCursorByRange(cursor)
-	selectionCursor.collapseToStart()
-	selectionCursor.goRight(result.start,false)
-	selectionCursor.goRight(result.stop,true) 
-	selectPartOfText = selectionCursor
+	If not IsNull(cursor) AND not IsNull(result) then
+		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
+		selectionCursor.collapseToStart()
+		selectionCursor.goRight(result.start,false)
+		selectionCursor.goRight(result.stop,true) 
+		selectPartOfText = selectionCursor
+	Else
+		selectPartOfText = cursor
+	End If
 End Function
 
 
