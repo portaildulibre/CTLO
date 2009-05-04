@@ -9,12 +9,12 @@ REM
 
 
 REM data for the functionnality part
-Private results as Object &apos; Array of results from the last search for foreign term
-Private currentResult as Integer &apos; index of the current row in the results table
-Private cursor as Object &apos; Cursor on the current selection
-Private ignoresTerms as Integer &apos; TODO:index dans le tbl (le &quot;run&quot;)
-Private tab as Object &apos; TODO:ingoreALl liste de TERM
-Private mode as String &apos; selection, all, etc.
+Private results as Object 			&apos; Array of results from the last search for foreign term
+Private currentResult as Integer 	&apos; index of the current row in the results table
+Private cursor as Object 			&apos; Cursor on the current selection
+Private ignoresTerms as Integer 	&apos; TODO:index dans le tbl (le &quot;run&quot;)
+Private tab as Object 				&apos; TODO:ingoreALl liste de TERM
+Private mode as String 				&apos; selection, all, etc.
 Private IgnoreTermArray as Object
 
 REM 
@@ -24,6 +24,13 @@ Private Const dialogueLibraryName = &quot;terminologie&quot;
 Private Const sDialogName = &quot;dialogues&quot;
 Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 Private mainDialog as Object
+
+Sub Main
+&apos;	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
+	SelectionOpen
+&apos;	testPPrados
+End Sub
+
 
 REM
 REM Retrieve and build the Uno Service associated with this plugin, if and
@@ -46,13 +53,6 @@ REM ****************************************************************************
 REM		UNIT TEST PART
 REM 
 
-
-
-Sub Main
-	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
-	Selection_Open
-End Sub
-
 Sub testPPrados
 	Dim i as integer
 	Dim selectCursor as Object
@@ -60,6 +60,8 @@ Sub testPPrados
 	Dim visualCursor As Object
 	Dim currentText As Object
 	Dim selectionCursor As Object
+	Dim parser As Object
+	Dim maxwords As Integer
 	
 	parser = createUnoService( &quot;org.atosorigin.ctOO.comp.CtOO3&quot; )
 	&apos;FIXME: this should be far more better : maxwords=parser.maxwords
@@ -98,7 +100,16 @@ REM ****************************************************************************
 REM **********************************************************************************************
 
 
-Sub Selection_Open()
+REM
+REM	This function must be run at the start of any kind of verification, 
+REM	to initialize properly global variables
+REM
+Sub initializeRun()
+	Redim results(0)
+	currentResult = -1
+End Sub
+
+Sub SelectionOpen()
 	mode=&quot;selection&quot;
 	cursor=ThisComponent.currentController.viewCursor
 	if IsNull(mainDialog) then
@@ -147,7 +158,7 @@ Function Iterator_HasNext() as boolean
 	elseif  UBound(results)=-1 then
 		Iterator_HasNext=false
 	else
-		Iterator_HasNext=(currentResult&lt;&gt;-1) and (currentResult &lt; UBound(results))
+		Iterator_HasNext=(currentResult&lt;&gt;-1) and (currentResult &lt;= UBound(results))
 	end if
 End Function
 
@@ -174,7 +185,8 @@ function Dialog_FSM(state as String, event as String) as boolean
 					Dialog_set(results(Iterator_cur))
 				end if
 			end if
-			result = results(Iterator_cur)
+&apos;			result = results(Iterator_cur) &apos; failed at runtime
+			redim results(0)	
 			
 			select case event
 				case &quot;ignore&quot;
@@ -195,7 +207,8 @@ function Dialog_FSM(state as String, event as String) as boolean
 					remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
 					replaceCursor.String = remplacement
 					REM We modify the target&apos;s text, we need to recheck it
-					results=null
+&apos;					results=null &apos; this failed at runtime
+					currentResult = -1
 					
 				case &quot;ignoreall&quot;
 					foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
