@@ -10,12 +10,19 @@ REM
 
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
+Private result as Object 			&apos; Current result to manage
+
 Private currentResult as Integer 	&apos; index of the current row in the results table
 Private cursor as Object 			&apos; Cursor on the current selection
 Private ignoresTerms as Integer 	&apos; TODO:index dans le tbl (le &quot;run&quot;)
 Private tab as Object 				&apos; TODO:ingoreALl liste de TERM
 Private mode as String 				&apos; selection, all, etc.
-Private IgnoreTermArray as Object
+Private IgnoreTermArray(0) as String
+Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
+
+Private ReplaceArray(0) as String
+Private ReplacementArray(0) as String
+
 REM Private forceRecalculate as boolean	&apos; after we alter the target (replace/replace all), we must force recalculate
 REM 
 REM data for the HMI layer
@@ -43,6 +50,9 @@ Dim terminologieService_ as Object
 Function terminologieService() as Object
 	if  isNull(terminologieService_) then
 		terminologieService_ = createUnoService( &quot;org.atosorigin.ctOO.comp.CtOO3&quot; )
+	end if
+	if (isnull(terminologieService_)) then
+		msgbox(&quot;not found&quot;)
 	end if
 	terminologieService=terminologieService_
 End Function
@@ -117,32 +127,83 @@ Sub SelectionOpen()
 		mainDialog=Dialog_ctr()
 	end if
 	REM We keep running the dialog until we end
-	if Dialog_FSM(mode,&quot;open&quot;) = true Then
+	if ( getWorkload() ) Then
 		mainDialog.execute()
 	end if
 End Sub
-
+&apos; -----------------------------------------------------
 Sub Iterator_init()
 	currentResult=-1
 End Sub
 
-Function Iterator_next()
-	do 		
-		currentResult = currentResult + 1
-		Iterator_next=currentResult
-		REM FIXME: tune the algorithm 
-		if ( currentResult &lt;= UBound(results) ) then
-			if ( NOT isIgnoreTerm(results(currentResult))) then
+Function Iterator_next() as Integer
+	currentResult = currentResult + 1
+	if (currentResult &gt; UBound(results) ) then
+		currentResult=-1
+	end if
+	Iterator_next=currentResult
+End Function
+
+Function Iterator_HasNext() as boolean
+	if isNull(results) then
+		Iterator_HasNext=false
+	elseif  UBound(results)=-1 then
+		Iterator_HasNext=false
+	else
+		Dim i as Integer
+		i = UBound(results)
+		dim b as boolean
+		b=(currentResult &lt; UBound(results))
+		Iterator_HasNext=b
+	end if
+End Function
+
+Function Iterator_cur() as Integer
+	Iterator_cur=currentResult
+End Function
+&apos; -----------------------------------------------------
+
+Rem reset le curseur avant le debut et retourne true s&apos;il y a qq chose
+Function getWorkload() as Boolean
+	Dim replaceCursor as Object
+	getWorkload = true
+	if isNull(results) then
+		results=checkSelection(cursor)
+		Iterator_init()
+		currentResult =currentResult + ignoreIdx
+	end if
+
+
+	do 	
+		Iterator_next()
+		if (Iterator_cur &lt;&gt; -1) then
+			Dim remplacement as String
+			result=results(Iterator_cur)
+			remplacement = getReplacementTerm(result)
+			if (remplacement&lt;&gt; &quot;&quot;) then
+				replaceCursor = selectPartOfText(cursor,result)
+				REM Case where replace by himself
+				if (replaceCursor.String = remplacement) then
+					ignoreIdx= IgnoreIdx + 1
+				else
+					replaceCursor.String = remplacement
+				end if
+				REM We modify the target&apos;s text, we need to recheck it
+				REM so back to square one... except for the already ignore term
+				results=checkSelection(cursor)
+				Iterator_init()
+				currentResult =currentResult + ignoreIdx
+			elseif ( NOT isIgnoreTerm(result)) then
 				exit do
-REM			else if word to replace...
-			REM is this result a replaced word ?
-			REM Loop until proper word or 
-			REM otherwise, we go on...
 			end if
 		end if
-	Loop While (currentResult &lt;= UBound(results) )
-	if (currentResult &gt; UBound(results) ) then
-		Iterator_next=-1
+	loop while Iterator_HasNext()
+
+	if Iterator_cur = -1 or Iterator_cur &gt; UBound(results) then
+		Dialog_Close()
+		getWorkload = false &apos; It&apos;s necessary to open the dialog
+	Else
+		Dialog_set(result)
 	end if
 End Function
 
@@ -155,142 +216,94 @@ Function IsIgnoreTerm(result as object) as boolean
 		for index = LBound(IgnoreTermArray) to UBound(IgnoreTermArray)
 			Dim word as string
 			word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
-			if IgnoreTermArray(index).String = word then 
+			if IgnoreTermArray(index) = word then 
 				IsIgnoreTerm=true
 			end if
 		next
 	end if
 End Function			
 
-Function Iterator_HasNext() as boolean
-	if isNull(results) then
-		Iterator_HasNext=false
-	elseif  UBound(results)=-1 then
-		Iterator_HasNext=false
-	else
-		Dim i as Integer
-		i = UBound(results)
-		dim b as boolean
-		b=(currentResult &lt;= UBound(results))
-		Iterator_HasNext=b
+Function getReplacementTerm(result as object) as string
+	getReplacementTerm=&quot;&quot;
+	
+	&apos; Check ignore term
+	if not isNull(ReplaceArray) then
+		Dim index as Integer
+		for index = LBound(ReplaceArray) to UBound(ReplaceArray)
+			Dim word as string
+			word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
+			if ReplaceArray(index) = word then 
+				getReplacementTerm=ReplacementArray(index)
+			end if
+		next
 	end if
-End Function
+End Function			
 
-Function Iterator_cur() as Integer
-	Iterator_cur=currentResult
-End Function
-Function getWorkload(reset as boolean) as Boolean
-	getWorkload = true
-	if isNull(results) then
-		results=checkSelection(cursor)
-		REM if nothing is returned...
-		REM TODO: detect &apos;null&apos;
-		Dim i as Integer
-		i = Iterator_cur
-		if (reset) then
-			Iterator_init()
-		end if
-		if not Iterator_hasNext() then
-			Dialog_Close()
-			getWorkload = false &apos; It&apos;s necessary to open the dialog
-		Else
-			Dialog_set(results(Iterator_cur+1))
-		end if
-	end if
-End Function
 
 
 REM Finite state machine for dialog
 function Dialog_FSM(state as String, event as String) as boolean
-	Dim result as Object
 	Dim replaceCursor as Object
 	Dim remplacement as String
 	Dim foreignTerm as String
+	Dim l as Integer
 	Dialog_FSM = true
 
 	select case state
 		case &quot;selection&quot;
-			Dialog_FSM = getWorkload(true)
-			if ( Dialog_FSM ) Then
-				result = results(Iterator_cur)
-			end if
 			select case event
 				case &quot;ignore&quot;
 					REM if there is still results to be dealt with...
-					dim n as integer
-					n=Iterator_next()
-					If (n &lt;&gt; -1) Then		
-						Dialog_set(results(n))
-					Else
-						REM otherwise, we&apos;re done here
-						Iterator_init()
-						results = nothing
-						Dialog_Close()
-					End If
-				case &quot;replace&quot;
-					replaceCursor = selectPartOfText(cursor,results(currentResult+1))
-					remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
-					replaceCursor.String = remplacement
-					REM We modify the target&apos;s text, we need to recheck it
-					REM so back to square one... except for the already ignore term
-					results = nothing					
-					
-					
-					if isNull(results) then
-						results=checkSelection(cursor)
-						Dim i as Integer
-						i = Iterator_cur
-						if not Iterator_hasNext() then
-							Dialog_Close()
-							Dialog_FSM = false
-						Else
-							Dialog_set(results(Iterator_cur))
-						end if
-					end if
+					ignoreIdx = ignoreIdx + 1
+					getWorkload()
 					
 				case &quot;ignoreall&quot;
 					foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
 					REM 
 					&apos; Resize ignore term array
-					Dim l as Integer
 					if (isNull(IgnoreTermArray)) then
 						l=0
 					else
 						l=UBound(IgnoreTermArray)+1
 					end if
-					ReDim IgnoreTermArray(l)
+					ReDim preserve IgnoreTermArray(l)
 					&apos; Add to array
-					IgnoreTermArray(UBound(IgnoreTermArray)) = selectPartOfText(cursor,result)
-					Dialog_FSM(state,&quot;ignore&quot;) &apos; FIXME: boucle avec state end ?
+					IgnoreTermArray(UBound(IgnoreTermArray)) = selectPartOfText(cursor,result).String
+					Dialog_FSM(state,&quot;ignore&quot;)
 
-				case &quot;replaceall&quot;
-					Dim Doc As Object
-					Dim Replace As Object
-				    
-					REM on récupère le terme cliqué et le terme à remplacer
+				case &quot;replace&quot;
+					replaceCursor = selectPartOfText(cursor,result)
 					remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
+					REM Case where replace by himself
+					if (replaceCursor.String = remplacement) then
+						ignoreIdx= IgnoreIdx + 1
+					else
+						replaceCursor.String = remplacement
+					end if
+				&apos;TODO	cursor.goLeft(Len(remplacement),true)
+					REM We modify the target&apos;s text, we need to recheck it
+					REM so back to square one... except for the already ignore term
+					results = nothing					
+					getWorkload()
+					
+				case &quot;replaceall&quot;
 					foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
-
-					If remplacement &lt;&gt; &quot;&quot; Then
-						REM let build the replace descriptor with appropriate data
-						Doc = ThisComponent
-						Replace = Doc.createReplaceDescriptor
-						Replace.SearchWords = True
-					  	Replace.SearchString = foreignTerm
-						Replace.ReplaceString = remplacement
-						REM now let find out if the user did selected something
-						Dim selectionText as String
-						Dim viewCursor as Object
-						viewCursor = ThisComponent.currentController.ViewCursor
-						selectionText = viewCursor.String
-						REM now we either replace content in the all document...
-						If selectionText = &quot;&quot; Then
-							Doc.replaceAll(Replace)
-						Else REM or only in the selection (if any)
-							ReplaceInSelection(Replace)
-						End If
-					End If	
+					remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
+					REM 
+					&apos; Resize ignore term array
+					if (isNull(ReplaceArray)) then
+						l=0
+					else
+						l=UBound(ReplaceArray)+1
+					end if
+					ReDim preserve ReplaceArray(l)
+					ReDim preserve ReplacementArray(l)
+					&apos; Add to array
+					ReplaceArray(UBound(ReplaceArray)) = selectPartOfText(cursor,result).String
+					ReplacementArray(UBound(ReplacementArray)) = remplacement
+					Dialog_FSM(state,&quot;replace&quot;)
 			end select
+			
 		case &quot;alldoc&quot; &apos; Utilisation d&apos;un iterateur all doc ?
 			select case event
 				case &quot;ignore&quot;
@@ -322,7 +335,7 @@ Function CheckSelection(cursor as Object) as Object
 	If NOT isNull(selectedText) AND selectedText &lt;&gt; &quot;&quot; Then
 		dim a as object
 		results = terminologieService.search(selectedText)
-		currentResult = 0
+		currentResult = -1
 		CheckSelection=results
 	end if
 End Function    
