@@ -289,10 +289,6 @@ ${src/idl}org/atosorigin/ctOO/*.idl
 			<fileset dir="${basedir}" 				includes="README"				/>
 			<fileset dir="${basedir}" 				includes="COPYING"				/>
 			<fileset dir="${basedir}"				includes="resources/ChangeLog"			/>
-		
-			<fileset dir="src/starbasic" file="dialog.xlb"								/>
-			<fileset dir="src/starbasic" file="libs.xba"								/>
-			<fileset dir="src/starbasic" file="script.xlb"								/>
 
 			<fileset dir="${target}"			includes="dialogues/**/*"				/>
 			<fileset dir="${target}"			includes="starbasic/**/*"				/>
