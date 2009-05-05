@@ -36,11 +36,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.basic-library"
-		manifest:full-path="starbasic" />
-		
-	<manifest:file-entry
-		manifest:media-type="application/vnd.sun.star.dialog-library"
-		manifest:full-path="dialogues" />  
+		manifest:full-path="terminologie" />
+	
 	<manifest:file-entry
 		manifest:media-type="application/vnd.sun.star.package-bundle-description"
 		manifest:full-path="README" /> 
