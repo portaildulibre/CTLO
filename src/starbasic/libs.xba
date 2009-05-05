@@ -13,6 +13,7 @@ Private results as Object 			&apos; Array of results from the last search for fo
 Private result as Object 			&apos; Current result to manage
 
 Private currentResult as Integer 	&apos; index of the current row in the results table
+Private oldViewCursor as Object 	&apos; Cursor on the current selection
 Private cursor as Object 			&apos; Cursor on the current selection
 Private ignoresTerms as Integer 	&apos; TODO:index dans le tbl (le &quot;run&quot;)
 Private tab as Object 				&apos; TODO:ingoreALl liste de TERM
@@ -122,13 +123,18 @@ End Sub
 
 Sub SelectionOpen()
 	mode=&quot;selection&quot;
-	cursor=ThisComponent.currentController.viewCursor
+	Dim visualCursor as object
+	visualCursor=ThisComponent.currentController.viewCursor
+	oldViewCursor=ThisComponent.Text.createTextCursorByRange(visualCursor)
+	cursor=ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+
 	if IsNull(mainDialog) then
 		mainDialog=Dialog_ctr()
 	end if
 	REM We keep running the dialog until we end
 	if ( getWorkload() ) Then
 		mainDialog.execute()
+		ThisComponent.CurrentController.select(oldViewCursor)
 	end if
 End Sub
 &apos; -----------------------------------------------------
@@ -138,9 +144,9 @@ End Sub
 
 Function Iterator_next() as Integer
 	currentResult = currentResult + 1
-	if (currentResult &gt; UBound(results) ) then
-		currentResult=-1
-	end if
+&apos;	if (currentResult &gt; UBound(results) ) then
+&apos;		currentResult=-1
+&apos;	end if
 	Iterator_next=currentResult
 End Function
 
@@ -170,13 +176,12 @@ Function getWorkload() as Boolean
 	if isNull(results) then
 		results=checkSelection(cursor)
 		Iterator_init()
-		currentResult =currentResult + ignoreIdx
+		currentResult = currentResult + ignoreIdx 
 	end if
 
 
 	do 	
-		Iterator_next()
-		if (Iterator_cur &lt;&gt; -1) then
+		if (Iterator_next() &lt;= UBound(results) ) then
 			Dim remplacement as String
 			result=results(Iterator_cur)
 			remplacement = getReplacementTerm(result)
@@ -195,6 +200,9 @@ Function getWorkload() as Boolean
 				currentResult =currentResult + ignoreIdx
 			elseif ( NOT isIgnoreTerm(result)) then
 				exit do
+			else
+					ignoreIdx= IgnoreIdx + 1
+					Iterator_next()
 			end if
 		end if
 	loop while Iterator_HasNext()
@@ -203,6 +211,7 @@ Function getWorkload() as Boolean
 		Dialog_Close()
 		getWorkload = false &apos; It&apos;s necessary to open the dialog
 	Else
+		ThisComponent.CurrentController.select(selectPartOfText(cursor,result))
 		Dialog_set(result)
 	end if
 End Function
@@ -280,7 +289,11 @@ function Dialog_FSM(state as String, event as String) as boolean
 					else
 						replaceCursor.String = remplacement
 					end if
-				&apos;TODO	cursor.goLeft(Len(remplacement),true)
+					if (ThisComponent.Text.compareRegionStarts(replaceCursor,oldViewCursor) &gt; 0) then
+						oldViewCursor.gotoRange(replaceCursor.start,true)
+						&apos;cursor=ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+					end if
+					
 					REM We modify the target&apos;s text, we need to recheck it
 					REM so back to square one... except for the already ignore term
 					results = nothing					
