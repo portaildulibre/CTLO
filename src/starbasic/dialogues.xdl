@@ -45,6 +45,5 @@
   <dlg:text dlg:style-id="1" dlg:id="Label1" dlg:tab-index="15" dlg:left="74" dlg:top="71" dlg:width="86" dlg:height="36" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="http://franceterme.culture.fr/">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenExternalDatasourceURL?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:text>
-  <dlg:combobox dlg:id="ComboBox" dlg:tab-index="16" dlg:left="38" dlg:top="26" dlg:width="53" dlg:height="39" dlg:page="-2" dlg:value="Hello" dlg:spin="true"/>
  </dlg:bulletinboard>
 </dlg:window>

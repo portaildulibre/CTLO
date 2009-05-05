@@ -34,7 +34,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="src.java"		value="src/java"					/>
 	<property name="src.xsl"		value="src/xsl"						/>
 	<property name="src.idl"		value="src/idl"						/>
-	
+	<property name="src.starbasic"		value="src/starbasic"					/>
+
 	<property name="target"			value="target"						/>
 	<property name="classes"		value="${target}/classes"				/>
 	<property name="package"		value="${target}/package"				/>	
@@ -263,64 +264,31 @@ ${src/idl}org/atosorigin/ctOO/*.idl
 	</target>
 
 	<!-- Building the pkg file for OOo -->
-	<!-- FIXME: depends="version,jars" !!! -->
 	<target name="package" 
 		depends="jar,version" 
 		description="Package application for OOo">
 	
-		
-		<mkdir dir="${target}/starbasic"/>
-		<copy file="src/starbasic/libs.xba" todir="${target}/starbasic"/>
-		<copy file="src/starbasic/script.xlb" todir="${target}/starbasic"/>
-		<mkdir dir="${target}/dialogues"/>
-		<copy file="src/starbasic/dialog.xlb" todir="${target}/dialogues"/>
-		<copy todir="${target}/dialogues">
-			<fileset dir="src/starbasic">
-				<include name="**/*.xdl"/>
-			</fileset>
+		<copy todir="${target}/${ant.project.name}/">
+			<fileset dir="${src.starbasic}"/>
 		</copy>
-
-
 
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
 		<zip 	destfile="${target}/${ant.project.name}-${version}.oxt"
 		     	basedir="${package}">
-			<fileset dir="${target}/"				includes="META-INF/manifest.xml"		/>
-			<fileset dir="${basedir}" 				includes="README"				/>
-			<fileset dir="${basedir}" 				includes="COPYING"				/>
-			<fileset dir="${basedir}"				includes="resources/ChangeLog"			/>
-
-			<fileset dir="${target}"			includes="dialogues/**/*"				/>
-			<fileset dir="${target}"			includes="starbasic/**/*"				/>
-				
-			<fileset dir="${basedir}/resources"		includes="images/"					/>
-			<fileset dir="${basedir}/resources"     	includes="Addons.xcu"   				/>
-			<fileset dir="${basedir}/resources"     	includes="Events.xcu"   				/> 
-			<fileset dir="${artifacts}"			includes="types.rdb"						/> 
-			<fileset dir="${target}"			includes="${ant.project.name}-${version}.jar"			/>
+			<fileset dir="${target}/"			includes="META-INF/manifest.xml"		/>
+			<fileset dir="${basedir}" 			includes="README"				/>
+			<fileset dir="${basedir}" 			includes="COPYING"				/>
+			<fileset dir="${basedir}"			includes="resources/ChangeLog"			/>
+			<fileset dir="${target}"			includes="terminologie/**/*"			/>
+			<fileset dir="${basedir}/resources"		includes="images/"				/>
+			<fileset dir="${basedir}/resources"     	includes="Addons.xcu"   			/>
+			<fileset dir="${basedir}/resources"     	includes="Events.xcu"   			/> 
+			<fileset dir="${artifacts}"			includes="types.rdb"				/> 
+			<fileset dir="${target}"			includes="${ant.project.name}-${version}.jar"	/>
 		</zip>
 		<delete dir="${package}" />
 	
 		<delete file="${target}/META-INF/manifest.xml"/>
-		<!--
-		<copy file="${basedir}/resources/META-INF/manifest-noevent.xml" tofile="${target}/META-INF/manifest.xml"/>
-		<replace file="${target}/META-INF/manifest.xml" token="@@VERSION@@" value="${version}"/>
-		Extension without activation
-		<mkdir  dir="${package}"/> we just need an empty directory as a basedir 
-		<zip 	destfile="${target}/${ant.project.name}-${version}-noactivation.oxt"
-		     	basedir="${package}">
-			<fileset dir="${target}/"		includes="META-INF/manifest.xml"		/>
-			<fileset dir="${basedir}" 		includes="README"				/>
-			<fileset dir="${basedir}" 		includes="COPYING"				/>
-			<fileset dir="${basedir}"		includes="resources/ChangeLog"			/>
-			<fileset dir="${basedir}/lib"		includes="dialogLib/"				/>
-			<fileset dir="${basedir}/lib"		includes="starBasicLib/"			/>
-			<fileset dir="${basedir}/resources"	includes="images/"				/>
-			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
-                        <fileset dir="${basedir}/resources"     includes="StartupJob.xcu"       		/>
-			<fileset dir="${classes}"								/>
-			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
-		</zip> -->
 		<delete dir="${package}" />
 
 	</target>
