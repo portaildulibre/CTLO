@@ -445,7 +445,7 @@ public class WordsParser
 			char c=sentence.charAt(i);
 			if (Character.isLetterOrDigit(c))
 			{
-				builder.append(c);
+				builder.append(Character.toLowerCase(c));
 			}
 			else 
 			{
