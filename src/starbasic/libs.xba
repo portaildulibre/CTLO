@@ -181,38 +181,46 @@ Function getWorkload() as Boolean
 
 
 	do 	
-		if (Iterator_next() &lt;= UBound(results) ) then
-			Dim remplacement as String
-			result=results(Iterator_cur)
-			remplacement = getReplacementTerm(result)
-			if (remplacement&lt;&gt; &quot;&quot;) then
-				replaceCursor = selectPartOfText(cursor,result)
-				REM Case where replace by himself
-				if (replaceCursor.String = remplacement) then
-					ignoreIdx= IgnoreIdx + 1
+		if isArray(results) then
+			if (Iterator_next() &lt;= UBound(results)  )  then
+				Dim remplacement as String
+				result=results(Iterator_cur)
+				remplacement = getReplacementTerm(result)
+				if (remplacement&lt;&gt; &quot;&quot;) then
+					replaceCursor = selectPartOfText(cursor,result)
+					REM Case where replace by himself
+					if (replaceCursor.String = remplacement) then
+						ignoreIdx= IgnoreIdx + 1
+					else
+						replaceCursor.String = remplacement
+					end if
+					REM We modify the target&apos;s text, we need to recheck it
+					REM so back to square one... except for the already ignore term
+					results=checkSelection(cursor)
+					Iterator_init()
+					currentResult =currentResult + ignoreIdx
+				elseif ( NOT isIgnoreTerm(result)) then
+					exit do
 				else
-					replaceCursor.String = remplacement
+						ignoreIdx= IgnoreIdx + 1
+						Iterator_next()
 				end if
-				REM We modify the target&apos;s text, we need to recheck it
-				REM so back to square one... except for the already ignore term
-				results=checkSelection(cursor)
-				Iterator_init()
-				currentResult =currentResult + ignoreIdx
-			elseif ( NOT isIgnoreTerm(result)) then
-				exit do
-			else
-					ignoreIdx= IgnoreIdx + 1
-					Iterator_next()
 			end if
 		end if
 	loop while Iterator_HasNext()
 
-	if Iterator_cur = -1 or Iterator_cur &gt; UBound(results) then
+
+	if isArray(results) then
+		if Iterator_cur = -1 or Iterator_cur &gt; UBound(results) then
+			Dialog_Close()
+			getWorkload = false &apos; It&apos;s necessary to open the dialog
+		Else
+			ThisComponent.CurrentController.select(selectPartOfText(cursor,result))
+			Dialog_set(result)
+		end if
+	else
 		Dialog_Close()
 		getWorkload = false &apos; It&apos;s necessary to open the dialog
-	Else
-		ThisComponent.CurrentController.select(selectPartOfText(cursor,result))
-		Dialog_set(result)
 	end if
 End Function
 
