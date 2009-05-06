@@ -9,20 +9,19 @@ REM
 
 
 REM data for the functionnality part
-Private results as Object 			&apos; Array of results from the last search for foreign term
-Private result as Object 			&apos; Current result to manage
-
-Private currentResult as Integer 	&apos; index of the current row in the results table
-Private oldViewCursor as Object 	&apos; Cursor on the current selection
-Private cursor as Object 			&apos; Cursor on the current selection
-Private ignoresTerms as Integer 	&apos; TODO:index dans le tbl (le &quot;run&quot;)
-Private tab as Object 				&apos; TODO:ingoreALl liste de TERM
-Private mode as String 				&apos; selection, all, etc.
+Private results as Object 				&apos; Array of results from the last search for foreign term
+Private result as Object 				&apos; Current result to manage
+Private maxwords as Integer				&apos; maxwords supported by the service
+Private currentResult as Integer 		&apos; index of the current row in the results table
+Private oldViewCursor as Object 		&apos; Cursor on the current selection
+Private cursor as Object 				&apos; Cursor on the current selection
+Private mode as String 					&apos; selection, all, etc.
 Private IgnoreTermArray(0) as String
-Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
+Private ignoreIdx as integer			&apos; Index courrant des mots à ignorer
 
 Private ReplaceArray(0) as String
 Private ReplacementArray(0) as String
+Global TerminologieKeyHandler As Object 
 
 REM Private forceRecalculate as boolean	&apos; after we alter the target (replace/replace all), we must force recalculate
 REM 
@@ -46,11 +45,12 @@ REM only if the service as not already be fetched.
 REM
 REM @author Romain PELISSE romain.pelisse@atosorigin.com
 REM
-Dim terminologieService_ as Object
+Global terminologieService_ as Object
 
 Function terminologieService() as Object
 	if  isNull(terminologieService_) then
 		terminologieService_ = createUnoService( &quot;org.atosorigin.ctOO.comp.CtOO3&quot; )
+		maxwords = terminologieService_.maxwords
 	end if
 	if (isnull(terminologieService_)) then
 		msgbox(&quot;not found&quot;)
@@ -110,29 +110,17 @@ REM 	FUNCTIONNALITY METHODS
 REM **********************************************************************************************
 REM **********************************************************************************************
 
-
-REM
-REM	This function must be run at the start of any kind of verification, 
-REM	to initialize properly global variables
-REM REMOVE THIS !!! 
-Sub initializeRun()
-	Redim results(0)
-	currentResult = -1
-	forceRecalculate = false
-End Sub
-
 Sub SelectionOpen()
 	mode=&quot;selection&quot;
 	Dim visualCursor as object
-	visualCursor=ThisComponent.currentController.viewCursor
-	oldViewCursor=ThisComponent.Text.createTextCursorByRange(visualCursor)
-	cursor=ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
-
-	if IsNull(mainDialog) then
-		mainDialog=Dialog_ctr()
-	end if
+	visualCursor = ThisComponent.currentController.viewCursor
+	oldViewCursor = ThisComponent.Text.createTextCursorByRange(visualCursor)
+	cursor = ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
 	REM We keep running the dialog until we end
 	if ( getWorkload() ) Then
+		if IsNull(mainDialog) then
+			mainDialog=Dialog_ctr()
+		end if
 		mainDialog.execute()
 		ThisComponent.CurrentController.select(oldViewCursor)
 	end if
@@ -179,7 +167,6 @@ Function getWorkload() as Boolean
 		currentResult = currentResult + ignoreIdx 
 	end if
 
-
 	do 	
 		if isArray(results) then
 			if (Iterator_next() &lt;= UBound(results)  )  then
@@ -198,7 +185,7 @@ Function getWorkload() as Boolean
 					REM so back to square one... except for the already ignore term
 					results=checkSelection(cursor)
 					Iterator_init()
-					currentResult =currentResult + ignoreIdx
+					currentResult = currentResult + ignoreIdx
 				elseif ( NOT isIgnoreTerm(result)) then
 					exit do
 				else
@@ -257,8 +244,10 @@ Function getReplacementTerm(result as object) as string
 End Function			
 
 
-
-REM Finite state machine for dialog
+REM
+REM Finite state machine for the main dialog.
+REM
+REM 
 function Dialog_FSM(state as String, event as String) as boolean
 	Dim replaceCursor as Object
 	Dim remplacement as String
@@ -377,10 +366,12 @@ Sub checkDocument()
  loop
 End sub
 
-
 REM TODO: not really used for the moment...
-&apos; Selection d&apos;une portion limité à n mots avant et après la selection, 
-&apos; bornée au paragraphe courant.
+REM Select text limited to n mots before and after the current
+REM cursor position, within the limit of the current paragraph
+REM
+REM	@author Philippe Prados &lt;philippe.prados@atosorigin.com&gt;
+REM
 Function selectPart(theText as Object,maxwords as Integer) as Object
 	Dim portionCursor as Object 
 	Dim startWordCursor as Object
@@ -414,7 +405,13 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	selectPart=portionCursor
 End Function
 
-REM Events call back                                                                                                                                  
+
+
+REM	***************************************************************************************************** 
+REM 	Events call back                                                                                                                                  
+REM		
+REM 
+REM	***************************************************************************************************** 
 Sub ActivateReplaceButton()                                                                                                                                               
 End Sub                    
                                                                                                                                                
@@ -433,7 +430,6 @@ Sub ReplaceAllAnglicisme()
 	Dialog_FSM(mode,&quot;replaceall&quot;)
 End Sub
 
-REM  
 REM 
 REM  Routine to replace text only in the current selection.
 REM  This code is heavily inspired by Bernard Marcelly&apos;one
@@ -472,19 +468,208 @@ Sub IgnoreAll()
 	Dialog_FSM(mode,&quot;ignoreall&quot;)
 End Sub
 
-Sub SetupKeyHandler                                                                                                                                                       
-End Sub                                                                                                                                                                   
+
+
+REM	***************************************************************************************************** 
+REM 
+REM Routines related to the &quot;check during input&quot; part of this extension
+REM
+REM	***************************************************************************************************** 
+
+REM
+REM	Set up the key handler.
+REM	
+REM	@author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
+REM 
+Sub SetupKeyHandler  
+	keyMutex(&quot;set&quot;,True)
+	If IsNull(TerminologieKeyHandler) Then
+		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
+	End If
+	removeHook
+	addHook         
+	keyMutex(&quot;set&quot;,False)                                                                                                                                 
+End Sub    
+
+REM
+REM	Opposite of set up key handler
+REM                                                                                                                                                                
 Sub RemoveKeyHandler                                                                                                                                                      
-End Sub                                                                                                                                                                   
-Sub addHook                                                                                                                                                               
-End Sub                                                                                                                                                                   
-Sub removeHook                                                                                                                                                            
-End Sub                                                                                                                                                                   
-Sub KeyHandler_disposing                                                                                                                                                  
-End Sub                                                                                                                                                                   
-Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean                                                                                       
+	keyMutex(&quot;set&quot;,True)
+	removeHook
+	keyMutex(&quot;set&quot;,False)
+End Sub 
+
+REM
+REM	Automatically called by OOo at close.
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM                                                                                                                                                                  
+Sub addHook
+	Dim doc As Object
+	doc =  StarDesktop.CurrentComponent   
+	REM can&apos;t use thisComponent here, operation would be call on any open files, 
+	REM including the librairies, which is far away from what we need.
+	If HasUnoInterfaces(doc, &quot;com.sun.star.frame.XModel&quot;) Then
+		If doc.supportsService(&quot;com.sun.star.text.TextDocument&quot;) Then
+			doc.currentController.addKeyHandler(TerminologieKeyHandler) 
+		End If
+	End If                                                                                                                                                               
+End Sub     
+       
+REM
+REM	Automatically called by OOo at close.
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM                                                                                                                                                              
+Sub removeHook    
+	ON ERROR RESUME NEXT 
+	REM If this procedure is launched by the quick start, no document has been defined
+	StarDesktop.CurrentComponent.currentController.removeKeyHandler(TerminologieKeyHandler)                                                                                              
+End Sub
+
+REM
+REM	Automatically called by OOo at close.
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Sub KeyHandler_disposing
+	removeHook
 End Sub                                                                                                                                                                   
 
+REM
+REM	Automatically called by OOo
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	REM nothing to do here...
+	KeyHandler_keyReleased = False
+End Sub
+
+REM
+REM	Manually written Mutex... far from being safe
+REM WARN: - won&apos;t support multi-proc
+REM
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Function keyMutex(operation As String, Optional state As Boolean)
+	Static mutex As Boolean
+	If operation = &quot;set&quot; Then
+		If state = True Then
+			While mutex 
+				Wait 100
+			Wend
+		End If
+		REM WARN: Here is a gap in this mutex
+		mutex = state
+		keyMutex = True
+	End If
+	If operation = &quot;get&quot; Then
+		keyMutex = mutex
+	End If
+End Function
+
+
+
+
+REM
+REM	Automatically called by OOo
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	If Not keyMutex(&quot;get&quot;) Then
+		handlingKeyPressedEvent(keyEvent)
+	End If
+	KeyHandler_keyPressed = False
+End Function
+
+REM
+REM Handles the event &apos;key pressed by user&apos;.
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Global count as Integer
+Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
+	
+	Dim visualCursor as object
+	visualCursor = ThisComponent.currentController.viewCursor
+	oldViewCursor = ThisComponent.Text.createTextCursorByRange(visualCursor)
+	cursor = ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+&apos;	cursor = selectPart(cursor.getText(),maxwords)
+	REM We keep running the dialog until we end
+	if ( getWorkload() ) Then
+		if IsNull(mainDialog) then
+			mainDialog=Dialog_ctr()
+		end if
+		mainDialog.execute()
+		ThisComponent.CurrentController.select(oldViewCursor)
+	end if
+	handlingKeyPressedEvent = False REM let the event propagate to other event handler
+End Function
+
+REM
+REM Does the character is a word boundary ?
+REM
+REM @return boolean
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Global oCharacterClassification as Object
+Function isWordBoundary(sKeyChar as String) as Boolean
+        dim oCharacterClassification as Object, nUnicodeType as integer
+        oCharacterClassification = CreateUnoService(&quot;com.sun.star.i18n.CharacterClassification&quot;)
+        nUnicodeType = oCharacterClassification.getType(sKeyChar,0)
+        If _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.SPACE_SEPARATOR Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.LINE_SEPARATOR Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.PARAGRAPH_SEPARATOR Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.INITIAL_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.FINAL_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.CONNECTOR_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.START_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.END_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.MATH_SYMBOL Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.CURRENCY_SYMBOL Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.MODIFIER_SYMBOL Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_SYMBOL Then
+                isWordBoundary = true
+        Else
+                isWordBoundary = false
+        Endif
+End Function
+
+REM
+REM Retrieve and build the Uno Service CharacterClassification
+REM only if the service as not already be fetched.
+REM
+REM @author Romain PELISSE romain.pelisse@atosorigin.com
+REM
+Dim characterClassificationService_ as Object
+Function characterClassificationService() as Object
+	Dim service as String
+	service = &quot;com.sun.star.i18n.CharacterClassification&quot;
+	REM TODO: Factorize this part...
+	if  isNull(characterClassificationService_) then
+		characterClassificationService_ = CreateUnoService(service)
+	end if
+	if (isnull(characterClassificationService_)) then
+		msgbox(&quot;Problème: service &quot; &amp; service &amp; &quot; introuvable&quot;)
+	end if
+	REM ...
+	characterClassificationService=characterClassificationService_
+End Function
 
 REM **********************************************************************************************
 REM **********************************************************************************************
@@ -502,12 +687,12 @@ REM
 
 Sub Dialog_set(result as Object)
 	if IsNull(mainDialog) then
-		mainDialog=Dialog_ctr()
+		mainDialog = Dialog_ctr()
 	end if
 	Dim domains as Object
 	Dim term as String
-	domains=result.foreignTerm.domaines
-	term=selectPartOfText(cursor,result).getString()
+	domains = result.foreignTerm.domaines
+	term = selectPartOfText(cursor,result).getString()
     Dim DialogModel As Object
     Dim ControlModel As Object
 		
@@ -651,7 +836,9 @@ REM
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Sub Dialog_Close
-	mainDialog.endExecute()
+	if NOT isNull(mainDialog) Then
+		mainDialog.endExecute()
+	end if
 End Sub                                                                                                                                                                  
                                                                                                                                                                    
 REM Update the displayed term with the appropriate value
