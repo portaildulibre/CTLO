@@ -21,8 +21,8 @@ Private currentResult as Integer 	&apos; index of the current row in the results
 Private oldViewCursor as Object 	&apos; Cursor on the current selection
 Private cursor as Object 			&apos; Cursor on the current selection
 Private IgnoreTermArray(0) as String
-Private ignoreIdx as integer		&apos; Index courrant des mots à ignorer
-Private exitCode as integer 		&apos; OK or Cancel
+Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
+Private exitCode as integer &apos; OK or Cancel
 Private maxwords as Long
 
 Private ReplaceArray(0) as String
