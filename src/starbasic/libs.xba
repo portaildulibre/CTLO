@@ -21,8 +21,9 @@ Private currentResult as Integer 	&apos; index of the current row in the results
 Private oldViewCursor as Object 	&apos; Cursor on the current selection
 Private cursor as Object 			&apos; Cursor on the current selection
 Private IgnoreTermArray(0) as String
-Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
-Private exitCode as integer &apos; OK or Cancel
+Private ignoreIdx as integer		&apos; Index courrant des mots à ignorer
+Private exitCode as integer 		&apos; OK or Cancel
+Private maxwords as Long
 
 Private ReplaceArray(0) as String
 Private ReplacementArray(0) as String
@@ -243,8 +244,11 @@ Function getWorkload() as Boolean
 			end if
 		end if
 	loop while Iterator_HasNext()
-
-
+	REM Following test required when we come from the KeyEventHandler
+	if IsNull(mainDialog) then
+		mainDialog=Dialog_ctr()
+	end if
+	REM ...
 	if isArray(results) then
 		if Iterator_cur &gt; UBound(results) then REM Iterator_cur = -1 or Iterator_cur &gt; UBound(results) then
 			Dialog_Close()
@@ -423,7 +427,68 @@ End Sub
 
 REM	***************************************************************************************************** 
 REM 
-REM Routines related to the &quot;check during input&quot; part of this extension
+REM Routines related to the &quot;at start&quot; activation (or not) of the extension
+REM
+REM	***************************************************************************************************** 
+
+Const packageName = &quot;org.atosorigin.ctOO.terminologie&quot;
+Const keyName = packageName &amp; &quot;.noActivationAtStart&quot;
+Sub checkForDefaultActivation
+	Dim vRegistry as Object 
+	Dim vRootKey as Object
+	Dim vMyKey as Object 
+	
+	vRegistry = getRegistry()
+	vRootKey = vRegistry.getRootKey()
+	vMyKey = vRootKey.openKey(keyName)
+	If isNull(vMyKey) Then
+		REM no key means activation@start
+		SetupKeyHandler
+	else
+		REM if the value is not &quot;no&quot;, we also activate...
+		if ( vMyKey.getStringValue &lt;&gt; &quot;no&quot; ) Then
+			SetupKeyHandler	
+		End if
+	End if	
+	REM otherwise, we do nothing, the checker is not activated
+End Sub
+
+Function getRegistry() As Object
+	Dim vRegistry as Object
+	Dim pathSubstitutionService as Object
+	Dim fileURL as String
+	
+	vRegistry = createUnoService(&quot;com.sun.star.registry.SimpleRegistry&quot;)
+	pathSubstitutionService = createUnoService(&quot;com.sun.star.util.PathSubstitution&quot;) 
+
+  	fileURL = pathSubstitutionService.getSubstituteVariableValue(&quot;$(user)&quot;) &amp; &quot;/store/&quot; &amp; packageName &amp; &quot;terminologie.rdb&quot;
+	vRegistry.open(convertToURL(fileURL), FALSE, TRUE )
+	getRegistry = vRegistry
+End Function
+
+sub setDefaultActivationToFalse
+	Dim vRegistry as Object 
+	Dim vRootKey as Object
+	Dim vMyKey as Object
+	
+	vRegistry = getRegistry()
+	vRootKey = vRegistry.getRootKey()
+
+	vMyKey = vRootKey.openKey(keyName)
+	If IsNull (vMyKey) Then
+		REM Key is missing, we add it
+		vMyKey = vRootKey.createKey( keyName ,TRUE)
+	End If
+	vMyKey.setStringValue( &quot;yes&quot; )
+	msgbox(&quot;La vérification terminologique automatique a été désactivé&quot;,0,&quot;terminologie&quot;)		
+	removeHook()
+	vMyKey.closeKey()
+	vRegistry.close()
+end sub 
+
+REM	***************************************************************************************************** 
+REM 
+REM Routines related to the &quot;cheking while typing&quot; functionnality
 REM
 REM	***************************************************************************************************** 
 
@@ -553,20 +618,17 @@ REM @author Manuel Odesser modesser@linagora.com
 REM
 Global count as Integer
 Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
-	
-	Dim visualCursor as object
-	visualCursor = ThisComponent.currentController.viewCursor
-	oldViewCursor = ThisComponent.Text.createTextCursorByRange(visualCursor)
-	cursor = ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
-&apos;	cursor = selectPart(cursor.getText(),maxwords)
-	REM We keep running the dialog until we end
-	if ( getWorkload() ) Then
-		if IsNull(mainDialog) then
-			mainDialog=Dialog_ctr()
+	If ( isWordBoundary(keyEvent.keyChar) ) Then
+		Dim visualCursor as Object
+		oldViewCursor = ThisComponent.Text.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+		cursor = ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+	&apos;	cursor = selectPart(cursor.getText(),maxwords)
+		REM We keep running the dialog until we end
+		if ( getWorkload() ) Then
+			mainDialog.execute()
+			ThisComponent.CurrentController.select(oldViewCursor)
 		end if
-		mainDialog.execute()
-		ThisComponent.CurrentController.select(oldViewCursor)
-	end if
+	End If
 	handlingKeyPressedEvent = False REM let the event propagate to other event handler
 End Function
 
