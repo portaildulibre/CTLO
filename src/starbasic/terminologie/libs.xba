@@ -38,6 +38,7 @@ Private Const sDialogName = &quot;dialogues&quot;
 Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 
 Sub Main
+ 	checkForDefaultActivation
 	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
 	terminologieService()
 	mainDialog=Dialog_ctr()
@@ -445,8 +446,8 @@ Sub checkForDefaultActivation
 		REM no key means activation@start
 		SetupKeyHandler
 	else
-		REM if the value is not &quot;no&quot;, we also activate...
-		if ( vMyKey.getStringValue &lt;&gt; &quot;no&quot; ) Then
+		REM if the value is not &quot;yes&quot;, we also activate...
+		if ( vMyKey.getStringValue &lt;&gt; &quot;yes&quot; ) Then
 			SetupKeyHandler	
 		End if
 	End if	
@@ -712,6 +713,8 @@ Sub Dialog_set(result as Object)
     DialogModel = mainDialog.getModel()
     ControlModel = DialogModel.getByName(&quot;anglicisme&quot;)
     ControlModel.setPropertyValue(&quot;Text&quot;, term)
+    ControlModel = DialogModel.getByName(&quot;ForeignTermInContext&quot;)
+    ControlModel.setPropertyValue(&quot;Text&quot;, selectSentence(cursor,result,20))
     ControlModel = DialogModel.getByName(&quot;Domaines&quot;)
 	&apos; Building the domains list from results
 	Dim domainsList(UBound(domains) - LBound(domains)) As String
@@ -919,6 +922,44 @@ Function selectPartOfText(cursor as Object,result as Object) as Object
 	End If
 End Function
 
+REM  Selection d&apos;une portion limité à n mots avant et après la selection, 
+&apos; bornée au paragraphe courant.
+Function selectSentence(cursor as Object, result as Object, offset as Integer) as String
+	Dim selectionCursor as Object
+	Dim start as Integer
+	Dim prefix as String
+	Dim suffix as String
+	
+	prefix = &quot;&quot;
+	suffix = &quot;&quot; 
+		
+	start = result.start - offset
+	If start &lt;= 0 Then
+		start = 0
+	Else 
+		prefix = &quot;...&quot;
+	End If
+	
+	If not IsNull(cursor) AND not IsNull(result) then
+		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
+		selectionCursor.collapseToStart()
+		selectionCursor.goRight(start,false)
+		If ( NOT (selectionCursor.goRight(result.stop + (offset *2) ,true) ) ) Then
+			selectionCursor = cursor.Text.createTextCursorByRange(cursor)
+			selectionCursor.collapseToStart()
+			selectionCursor.goRight(start,false)
+REM			selectionCursor.goRight(result.stop)
+			selectionCursor.gotoEndOfParagraph(true)
+		Else
+			suffix = &quot;...&quot;
+		End if 
+
+		selectSentence = prefix + selectionCursor.String + suffix
+	Else
+		selectSentence = cursor.String
+	End If
+End Function
+
 &apos; This routine is a wrapper for java component
 Function CheckSelection(cursor as Object) as Object                                                                                                                                                    
 	Dim currentText as Object
@@ -934,6 +975,6 @@ Function CheckSelection(cursor as Object) as Object
 		currentResult = -1
 		CheckSelection=results
 	end if
-End Function    
+End Function 
 
 </script:module>
