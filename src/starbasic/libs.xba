@@ -387,7 +387,30 @@ Sub IgnoreAll()
 	Dialog_FSM(&quot;ignoreall&quot;)
 End Sub
 
-&apos; -----------------------------------------------------
+REM	***************************************************************************************************** 
+REM 
+REM Routines related to the &quot;check during input&quot; part of this extension
+REM
+REM	***************************************************************************************************** 
+
+REM
+REM	Set up the key handler.
+REM	
+REM	@author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
+REM 
+Sub SetupKeyHandler  
+	keyMutex(&quot;set&quot;,True)
+	If IsNull(TerminologieKeyHandler) Then
+		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
+	End If
+	removeHook
+	addHook         
+	keyMutex(&quot;set&quot;,False)                                                                                                                                 
+End Sub    
+
+REM
+REM	Opposite of set up key handler
+REM                                                                                                                                                                
 Sub RemoveKeyHandler                                                                                                                                                      
 End Sub                                                                                                                                                                   
 Sub addHook                                                                                                                                                               
@@ -399,6 +422,133 @@ End Sub
 Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean                                                                                       
 End Sub                                                                                                                                                                   
 
+REM
+REM	Automatically called by OOo
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	REM nothing to do here...
+	KeyHandler_keyReleased = False
+End Sub
+
+REM
+REM	Manually written Mutex... far from being safe
+REM WARN: - won&apos;t support multi-proc
+REM
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Function keyMutex(operation As String, Optional state As Boolean)
+	Static mutex As Boolean
+	If operation = &quot;set&quot; Then
+		If state = True Then
+			While mutex 
+				Wait 100
+			Wend
+		End If
+		REM WARN: Here is a gap in this mutex
+		mutex = state
+		keyMutex = True
+	End If
+	If operation = &quot;get&quot; Then
+		keyMutex = mutex
+	End If
+End Function
+
+
+
+
+REM
+REM	Automatically called by OOo
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	If Not keyMutex(&quot;get&quot;) Then
+		handlingKeyPressedEvent(keyEvent)
+	End If
+	KeyHandler_keyPressed = False
+End Function
+
+REM
+REM Handles the event &apos;key pressed by user&apos;.
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Global count as Integer
+Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
+	
+	Dim visualCursor as object
+	visualCursor = ThisComponent.currentController.viewCursor
+	oldViewCursor = ThisComponent.Text.createTextCursorByRange(visualCursor)
+	cursor = ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+&apos;	cursor = selectPart(cursor.getText(),maxwords)
+	REM We keep running the dialog until we end
+	if ( getWorkload() ) Then
+		if IsNull(mainDialog) then
+			mainDialog=Dialog_ctr()
+		end if
+		mainDialog.execute()
+		ThisComponent.CurrentController.select(oldViewCursor)
+	end if
+	handlingKeyPressedEvent = False REM let the event propagate to other event handler
+End Function
+
+REM
+REM Does the character is a word boundary ?
+REM
+REM @return boolean
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Global oCharacterClassification as Object
+Function isWordBoundary(sKeyChar as String) as Boolean
+        dim oCharacterClassification as Object, nUnicodeType as integer
+        oCharacterClassification = CreateUnoService(&quot;com.sun.star.i18n.CharacterClassification&quot;)
+        nUnicodeType = oCharacterClassification.getType(sKeyChar,0)
+        If _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.SPACE_SEPARATOR Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.LINE_SEPARATOR Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.PARAGRAPH_SEPARATOR Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.INITIAL_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.FINAL_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.CONNECTOR_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.START_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.END_PUNCTUATION Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.MATH_SYMBOL Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.CURRENCY_SYMBOL Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.MODIFIER_SYMBOL Or _
+                nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_SYMBOL Then
+                isWordBoundary = true
+        Else
+                isWordBoundary = false
+        Endif
+End Function
+
+REM
+REM Retrieve and build the Uno Service CharacterClassification
+REM only if the service as not already be fetched.
+REM
+REM @author Romain PELISSE romain.pelisse@atosorigin.com
+REM
+Dim characterClassificationService_ as Object
+Function characterClassificationService() as Object
+	Dim service as String
+	service = &quot;com.sun.star.i18n.CharacterClassification&quot;
+	REM TODO: Factorize this part...
+	if  isNull(characterClassificationService_) then
+		characterClassificationService_ = CreateUnoService(service)
+	end if
+	if (isnull(characterClassificationService_)) then
+		msgbox(&quot;Problème: service &quot; &amp; service &amp; &quot; introuvable&quot;)
+	end if
+	REM ...
+	characterClassificationService=characterClassificationService_
+End Function
 
 REM **********************************************************************************************
 REM **********************************************************************************************
@@ -416,12 +566,12 @@ REM
 
 Sub Dialog_set(result as Object)
 	if IsNull(mainDialog) then
-		mainDialog=Dialog_ctr()
+		mainDialog = Dialog_ctr()
 	end if
 	Dim domains as Object
 	Dim term as String
-	domains=result.foreignTerm.domaines
-	term=selectPartOfText(cursor,result).getString()
+	domains = result.foreignTerm.domaines
+	term = selectPartOfText(cursor,result).getString()
     Dim DialogModel As Object
     Dim ControlModel As Object
 		
