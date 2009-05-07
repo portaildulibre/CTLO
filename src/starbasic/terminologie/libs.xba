@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="libs" script:language="StarBasic">REM  *****  BASIC  *****
+REM @author Manuel Odesser modesser@linagora.com
+REM	@author Romain Pelisse romain.pelisse@atosorigin.com
+REM	@author Philippe Prados philippe.prados@atosorigin.com
+REM @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
+
+Option Explicit
+REM
+REM Data for the service layer
+REM
+&apos;Private maxwords as Integer
+
+
+REM data for the functionnality part
+Private results as Object 			&apos; Array of results from the last search for foreign term
+Private result as Object 			&apos; Current result to manage
+
+Private currentResult as Integer 	&apos; index of the current row in the results table
+Private oldViewCursor as Object 	&apos; Cursor on the current selection
+Private cursor as Object 			&apos; Cursor on the current selection
+Private ignoresTerms as Integer 	&apos; TODO:index dans le tbl (le &quot;run&quot;)
+Private tab as Object 				&apos; TODO:ingoreALl liste de TERM
+Private IgnoreTermArray(0) as String
+Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
+
+Private exitCode as integer &apos; OK or Cancel
+
+Private ReplaceArray(0) as String
+Private ReplacementArray(0) as String
+
+REM 
+REM data for the HMI layer
+REM
+Dim mainDialog as Object &apos; Current dialog objet
+Private Const dialogueLibraryName = &quot;terminologie&quot;
+Private Const sDialogName = &quot;dialogues&quot;
+Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
+
+Sub Main
+	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
+	terminologieService()
+	mainDialog=Dialog_ctr()
+End Sub
+
+
+REM
+REM Retrieve and build the Uno Service associated with this plugin, if and
+REM only if the service as not already be fetched.
+REM
+REM @author Romain PELISSE romain.pelisse@atosorigin.com
+REM
+Dim terminologieService_ as Object &apos; Singleton
+Function terminologieService() as Object
+	if  isNull(terminologieService_) then
+		terminologieService_ = createUnoService( &quot;org.atosorigin.ctOO.comp.CtOO3&quot; )
+	end if
+	if (isnull(terminologieService_)) then
+		msgbox(&quot;not found&quot;)
+	end if
+	terminologieService=terminologieService_
+End Function
+
+
+
+REM ****************************************************************************************
+
+&apos; -------------------------------------------------------
+
+&apos; Setup key handler button
+Sub SetupKeyHandler                                                                                                                                                       
+End Sub                                                                                                                                                                   
+
+&apos; Manage current selection
+Sub ManageSelection()
+	Dim visualCursor as object
+
+	Redim IgnoreTermArray(0)
+	Redim ReplaceArray(0)
+	Redim ReplacementArray(0)
+	
+	visualCursor=ThisComponent.currentController.viewCursor
+	oldViewCursor=ThisComponent.Text.createTextCursorByRange(visualCursor)
+	cursor=ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+
+	ManageCursor(cursor)
+	ThisComponent.CurrentController.select(oldViewCursor)
+End Sub
+
+&apos; Manage all document
+Sub ManageDocument()
+	Dim listParagraph as Object
+	Dim paraCursor as Object
+	Dim elementText as Object
+
+	Redim IgnoreTermArray(0)
+	Redim ReplaceArray(0)
+	Redim ReplacementArray(0)
+	
+	listParagraph = ThisComponent.text.createEnumeration()
+	do while listParagraph.hasMoreElements
+		elementText = listParagraph.nextElement
+		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
+			paraCursor=ThisComponent.text.createTextCursorByRange(elementText)
+			cursor=paraCursor
+			oldViewCursor=paraCursor
+			if (not ManageCursor(paraCursor)) then
+				exit do
+			end if
+		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
+      		&apos; FIXME
+		end if
+	loop
+End sub
+
+&apos; -------------------------------------------------------
+&apos; Execute engine for a cursor
+Function ManageCursor(cursor as Object) as boolean
+	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.CANCEL
+	results=nothing
+	ignoreIdx=0
+	if IsNull(mainDialog) then
+		mainDialog=Dialog_ctr()
+	end if
+	REM We keep running the dialog until we end
+	if ( getWorkload() ) Then
+		mainDialog.execute()
+		if (exitCode = com.sun.star.ui.dialogs.ExecutableDialogResults.OK) then
+			ManageCursor=true
+		end if
+	else
+		ManageCursor=true	
+	end if
+End Function
+
+
+&apos; -----------------------------------------------------
+&apos; Iterator in text
+Sub Iterator_init()
+	currentResult=-1
+End Sub
+
+Function Iterator_next() as Integer
+	currentResult = currentResult + 1
+	Iterator_next=currentResult
+End Function
+
+Function Iterator_HasNext() as boolean
+	if isNull(results) then
+		Iterator_HasNext=false
+	elseif  UBound(results)=-1 then
+		Iterator_HasNext=false
+	else
+		Dim i as Integer
+		i = UBound(results)
+		dim b as boolean
+		b=(currentResult &lt; UBound(results))
+		Iterator_HasNext=b
+	end if
+End Function
+
+Function Iterator_cur() as Integer
+	Iterator_cur=currentResult
+End Function
+&apos; -----------------------------------------------------
+
+&apos; Engine to find next words to manage, and auto ignore/replace or ask user
+Function getWorkload() as Boolean
+	Dim replaceCursor as Object
+	Dim continue as boolean
+	Dim breakloop as boolean
+	Dim remplacement as String
+	
+	getWorkload = true
+	if isNull(results) then
+		results=checkSelection(cursor)
+		Iterator_init()
+		currentResult = currentResult + ignoreIdx 
+	end if
+
+	do 	
+		breakloop=false
+		if isArray(results) then
+			do
+				continue=false
+				if (Iterator_next() &lt;= UBound(results)  )  then
+					result=results(Iterator_cur)
+					remplacement = getReplacementTerm(result)
+					if (remplacement&lt;&gt; &quot;&quot;) then
+						replaceCursor = selectPartOfText(cursor,result)
+						REM Case where replace by himself
+						if (StrComp(replaceCursor.String, remplacement,0)=0) then
+							ignoreIdx = IgnoreIdx + 1
+						else
+							replaceCursor.String = remplacement
+						end if
+						results=checkSelection(cursor)
+						Iterator_init()
+						currentResult = currentResult + ignoreIdx
+						continue=true
+					elseif ( NOT isIgnoreTerm(result)) then
+						breakloop=true
+					else
+						ignoreIdx= IgnoreIdx + 1
+						continue=true
+					end if
+				end if
+			loop while continue		
+
+			if (breakloop) then
+				exit do
+			end if
+		end if
+	loop while Iterator_HasNext()
+
+
+	if isArray(results) then
+		if Iterator_cur &gt; UBound(results) then &apos;Iterator_cur = -1 or Iterator_cur &gt; UBound(results) then
+			Dialog_Close()
+			getWorkload = false &apos; It&apos;s necessary to open the dialog
+		Else
+			ThisComponent.CurrentController.select(selectPartOfText(cursor,result))
+			Dialog_set(result)
+		end if
+	else
+		Dialog_Close()
+		getWorkload = false &apos; It&apos;s necessary to open the dialog
+	end if
+End Function
+
+&apos; Return true if the term must be ignored
+Function IsIgnoreTerm(result as object) as boolean
+	IsIgnoreTerm=false
+	
+	&apos; Check ignore term
+	Dim word as string
+	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
+	if not isNull(IgnoreTermArray) then
+		Dim index as Integer
+		for index = LBound(IgnoreTermArray)  to UBound(IgnoreTermArray)
+			if StrComp(IgnoreTermArray(index),word,0)=0 then 
+				IsIgnoreTerm=true
+				exit for
+			end if
+		next
+	end if
+End Function			
+
+&apos; Return empty string or the replacement term
+Function getReplacementTerm(result as object) as string
+	getReplacementTerm=&quot;&quot;
+	
+	&apos; Check ignore term
+	Dim word as string
+	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
+	if not isNull(ReplaceArray) then
+		Dim index as Integer
+		for index = LBound(ReplaceArray) to UBound(ReplaceArray)
+			Dim word2 as string
+			word2=ReplaceArray(index)
+			if StrComp(word2,word,0)=0 then 
+				getReplacementTerm=ReplacementArray(index)
+			end if
+		next
+	end if
+End Function			
+
+&apos; Finite state machine for dialog
+function Dialog_FSM(event as String) as boolean
+	Dim replaceCursor as Object
+	Dim remplacement as String
+	Dim foreignTerm as String
+	Dim l as Integer
+	Dialog_FSM = true
+
+	select case event
+		case &quot;ignore&quot;
+			REM if there is still results to be dealt with...
+			ignoreIdx = ignoreIdx + 1
+			getWorkload()
+			
+		case &quot;ignoreall&quot;
+			foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
+			REM 
+			&apos; Resize ignore term array
+			if (isNull(IgnoreTermArray)) then
+				l=0
+			else
+				l=UBound(IgnoreTermArray)+1
+			end if
+			ReDim preserve IgnoreTermArray(l)
+			&apos; Add to array
+			IgnoreTermArray(UBound(IgnoreTermArray)) = selectPartOfText(cursor,result).String
+			Dialog_FSM(&quot;ignore&quot;)
+
+		case &quot;replace&quot;
+			replaceCursor = selectPartOfText(cursor,result)
+			remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
+			REM Case where replace by himself
+			if (ThisComponent.Text.compareRegionStarts(replaceCursor,oldViewCursor) &gt; 0) then
+				oldViewCursor.gotoRange(replaceCursor.start,true)
+			end if
+			if (StrComp(replaceCursor.String,remplacement,0)=0) then
+				ignoreIdx= IgnoreIdx + 1
+			else
+				replaceCursor.String = remplacement
+			end if
+			
+			REM We modify the target&apos;s text, we need to recheck it
+			REM so back to square one... except for the already ignore term
+			results = nothing					
+			getWorkload()
+			
+		case &quot;replaceall&quot;
+			foreignTerm =  mainDialog.getModel().getByName(&quot;anglicisme&quot;).getPropertyValue(&quot;Text&quot;)
+			remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
+			REM 
+			&apos; Resize ignore term array
+			if (isNull(ReplaceArray)) then
+				l=0
+			else
+				l=UBound(ReplaceArray)+1
+			end if
+			ReDim preserve ReplaceArray(l)
+			ReDim preserve ReplacementArray(l)
+			&apos; Add to array
+			ReplaceArray(UBound(ReplaceArray)) = selectPartOfText(cursor,result).String
+			ReplacementArray(UBound(ReplacementArray)) = remplacement
+			Dialog_FSM(&quot;replace&quot;)
+	end select
+End function
+
+
+
+&apos; Selection d&apos;une portion limité à n mots avant et après la selection, 
+&apos; bornée au paragraphe courant.
+REM TODO: not really used for the moment...
+Function selectPart(theText as Object,maxwords as Integer) as Object
+	Dim portionCursor as Object 
+	Dim startWordCursor as Object
+	Dim endWordCursor as Object
+	Dim paragraphCursor as Object
+	Dim nbCharacter as integer
+	
+	startWordCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+	endWordCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+	paragraphCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+	portionCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+	
+	paragraphCursor.gotoStartOfParagraph(false)
+	paragraphCursor.gotoEndOfParagraph(true)
+	
+	startWordCursor.gotoStartOfWord(false)
+	for nbCharacter = 1 to maxwords
+		startWordCursor.gotoPreviousWord(false)
+	next
+	for nbCharacter = 1 to maxwords - 1
+		endWordCursor.gotoNextWord(true) 
+	next
+	endWordCursor.gotoEndOfWord(false)
+	
+	portionCursor = theText.createTextCursor()
+	if (theText.compareRegionStarts(startWordCursor,paragraphCursor) &gt; 0) then
+		portionCursor.gotoRange(endWordCursor.end,true)
+	else
+		portionCursor.gotoRange(paragraphCursor.end,true)
+	end if
+	selectPart=portionCursor
+End Function
+
+&apos; -----------------------------------------------------
+&apos; Events call back                                                                                                                                  
+Sub ActivateReplaceButton()                                                                                                                                               
+End Sub                    
+                                                                                                                                               
+Sub Ignore()
+	Dialog_FSM(&quot;ignore&quot;)
+End Sub
+
+Sub ReplaceAnglicisme()
+	Dialog_FSM(&quot;replace&quot;)
+End Sub
+
+Sub ReplaceAllAnglicisme()
+	Dialog_FSM(&quot;replaceall&quot;)
+End Sub
+
+Sub IgnoreAll()	 
+	Dialog_FSM(&quot;ignoreall&quot;)
+End Sub
+
+&apos; -----------------------------------------------------
+Sub RemoveKeyHandler                                                                                                                                                      
+End Sub                                                                                                                                                                   
+Sub addHook                                                                                                                                                               
+End Sub                                                                                                                                                                   
+Sub removeHook                                                                                                                                                            
+End Sub                                                                                                                                                                   
+Sub KeyHandler_disposing                                                                                                                                                  
+End Sub                                                                                                                                                                   
+Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean                                                                                       
+End Sub                                                                                                                                                                   
+
+
+REM **********************************************************************************************
+REM **********************************************************************************************
+REM 	IHM METHODS
+REM **********************************************************************************************
+REM **********************************************************************************************
+                                                                                       
+&apos; This routine set the main dialog. 
+&apos; @arg : an identified foreignTerm with its metadata
+Sub Dialog_set(result as Object)
+	if IsNull(mainDialog) then
+		mainDialog=Dialog_ctr()
+	end if
+	Dim domains as Object
+	Dim term as String
+	domains=result.foreignTerm.domaines
+	term=selectPartOfText(cursor,result).getString()
+    Dim DialogModel As Object
+    Dim ControlModel As Object
+		
+    DialogModel = mainDialog.getModel()
+    ControlModel = DialogModel.getByName(&quot;anglicisme&quot;)
+    ControlModel.setPropertyValue(&quot;Text&quot;, term)
+    ControlModel = DialogModel.getByName(&quot;Domaines&quot;)
+	&apos; Building the domains list from results
+	Dim domainsList(UBound(domains) - LBound(domains)) As String
+	Dim indexDomain As Integer	
+	for indexDomain = LBound(domains) to UBound(domains)
+		domainsList(indexDomain) = domains(indexDomain).name
+	next	
+	ControlModel.StringItemList = domainsList()
+	&apos; Preselection of the first item
+	definePreselectedItem(ControlModel)
+	UpdateTermsList(domains)
+End Sub                                                                                                                                                                   
+
+&apos; Handy routine to preselect the appropriate term of any list box
+&apos; TODO: Is this necessary ? Aren&apos;t there any other (better) way to do this ?
+Sub definePreselectedItem(ControlModel as Object) &apos; FUTURE: add this param &quot;index as Integer&apos;
+	Dim preselectionItems(1) As Integer
+	preselectionItems(0) = 0
+	ControlModel.SelectedItems = preselectionItems()	
+End Sub
+
+&apos; Create dialog objet
+Function Dialog_ctr
+    Dim oLibContainer As Object
+    Dim oInputStreamProvider As Object
+    Dim oLib As Object
+    &apos; retrieving from lib, the dialog descriptor
+    DialogLibraries.loadLibrary(dialogueLibraryName)
+    &apos; Let&apos;s build the dialog box
+    oInputStreamProvider = DialogLibraries.getByName(dialogueLibraryName).getByName(sDialogName)
+    Dialog_ctr = CreateUnoDialog(oInputStreamProvider)
+End Function
+
+&apos; Update synonyms list on the main dialog
+Sub UpdateTermsList(domains as Object)
+    Dim DialogModel As Object
+    Dim ControlModel As Object
+    Dim meaning as String
+	Dim synonyms As Variant
+
+	If IsNull(mainDialog) OR isNull(domains) Then
+		&apos; Should never happens...
+		Exit Sub
+	End If
+	&apos; Getting back the selected &apos;domain&apos;
+    ControlModel = mainDialog.getModel().getByName(&quot;Domaines&quot;)
+    on error goto noSelectedMeaning
+	meaning = ControlModel.StringItemList(ControlModel.SelectedItems(0))
+
+noSelectedMeaningNext:
+	on error resume next
+    &apos; updating the list
+    ControlModel = mainDialog.getModel().getByName(&quot;Termes&quot;)
+    Dim indexDomain as Integer
+    if ( NOT IsNull(domains) ) Then
+		For indexDomain = LBound(domains) To UBound(domains)
+			&apos; Does this meaning match with the one we&apos;re looking for ? 
+			If meaning = domains(indexDomain).name Then
+				ControlModel.StringItemList = domains(indexDomain).synonymes
+				Exit For
+			EndIf
+		Next
+	End If
+	definePreselectedItem(ControlModel)
+	UpdateSelectedTerm
+	Exit Sub
+
+noSelectedMeaning:
+	meaning = 0
+	goto noSelectedMeaningNext
+
+End Sub
+
+&apos; Display a text box
+Sub ShowTextDialog(dialog as String)
+	TextDialog_ctr(dialog).execute()
+End Sub
+
+&apos; Display the help text
+Sub Help
+	ShowTextDialog(&quot;help_text&quot;)
+End Sub
+
+&apos; Display the about text
+Sub About
+	ShowTextDialog(&quot;help_dialog&quot;)
+End Sub
+
+
+&apos; Buid a text dialog
+Function TextDialog_ctr(sDialogName as String)
+    Dim inputStreamProvider As Object
+    Dim dialog As Object
+   
+    &apos; récupération de la librairie dans laquelle est définie la boîte
+    DialogLibraries.loadLibrary(dialogueLibraryName)
+    dialog = DialogLibraries.getByName(dialogueLibraryName)
+    &apos; crée la boîte proprement dite
+    TextDialog_ctr = CreateUnoDialog(dialog.getByName(sDialogName))
+End Function
+                                                                                                                                                              
+&apos; Close the mainDialog box
+Sub Dialog_Close
+	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.OK
+	mainDialog.endExecute(com.sun.star.ui.dialogs.ExecutableDialogResults.OK)
+End Sub                                                                                                                                                                  
+                                                                                                                                                                   
+&apos; Update the displayed term with the appropriate value
+Sub UpdateSelectedTerm()
+    Dim ControlModel As Object
+    Dim term as String
+    
+    &apos; on récupère le terme cliqué
+    ControlModel = mainDialog.getModel().getByName(&quot;Termes&quot;)
+    on error goto noSelectedWord
+    term = ControlModel.StringItemList(ControlModel.SelectedItems(0))
+noSelectedWordNext:
+    on error resume next
+    &apos; et on met à jour la liste des synonymes
+    ControlModel = mainDialog.getModel().getByName(&quot;remplacement&quot;)
+	ControlModel.setPropertyValue(&quot;Text&quot;,term)
+	Exit Sub
+
+noSelectedWord:
+	term = &quot;&quot;
+	goto noSelectedWordNext
+End Sub                    
+
+&apos; Open the appropriate URL from the mainDialog
+Sub OpenExternalDatasourceURL()
+	on error resume next
+	Dim objlancer
+	Dim handleErrors
+	Dim adress as String
+	Dim ControlModel As Object
+	Dim term As String
+
+	&apos; retrieving the foreign term value
+	ControlModel =  oDialog.getModel().getByName(REMPLACEMENT_FIELD_NAME)
+	&apos; FUTURE: When FranceTerme handle properly accentued character passed by Get
+	&apos; this next call should be removed
+	term = replaceAccentedCharacter( ControlModel.getPropertyValue(&quot;Text&quot;) )
+	&apos; building the appropriate URL
+	adress = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + term)
+	&apos; calling the external service
+	handleErrors = com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE &apos;=1 or DEFAULTS=0
+	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)
+	objlancer.execute(adresse, &quot;&quot;, handleErrors)
+End Sub
+
+&apos; Selection d&apos;une portion limité à n mots avant et après la selection, 
+&apos; bornée au paragraphe courant.
+Function selectPartOfText(cursor as Object,result as Object) as Object	
+	Dim selectionCursor as Object
+	If not IsNull(cursor) AND not IsNull(result) then
+		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
+		selectionCursor.collapseToStart()
+		selectionCursor.goRight(result.start,false)
+		selectionCursor.goRight(result.stop,true) 
+		selectPartOfText = selectionCursor
+	Else
+		selectPartOfText = cursor
+	End If
+End Function
+
+&apos; This routine is a wrapper for java component
+Function CheckSelection(cursor as Object) as Object                                                                                                                                                    
+	Dim currentText as Object
+	Dim selectedText as String
+	
+	currentText = cursor.Text
+	&apos; cursor will keep all text selected
+	cursor = currentText.createTextCursorByRange(cursor)
+	selectedText = cursor.String
+	If NOT isNull(selectedText) AND selectedText &lt;&gt; &quot;&quot; Then
+		dim a as object
+		results = terminologieService.search(selectedText)
+		currentResult = -1
+		CheckSelection=results
+	end if
+End Function    
+
+</script:module>
