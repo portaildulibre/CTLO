@@ -37,6 +37,16 @@ public class UnitTest
 	@org.junit.Test
 	public void testCase()
 	{
+		Result[] r;
+		r=parser.find("back-up");
+		Assert.assertEquals(1, r.length);
+		Assert.assertEquals(0,r[0].start);
+		Assert.assertEquals(7,r[0].stop);
+
+		r=parser.find("database database");
+		Assert.assertEquals(2,r.length);
+		Assert.assertEquals(0,r[0].start);
+		Assert.assertEquals(9,r[1].start);
 		Assert.assertEquals(2,parser.find("bit et bit").length);
 	}
 

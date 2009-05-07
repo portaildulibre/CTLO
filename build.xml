@@ -79,8 +79,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 <!--
 # Compilation des idl
-idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd
-${src/idl}org/atosorigin/ctOO/*.idl
+idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd ${src/idl}org/atosorigin/ctOO/*.idl
 
 # Création de la base de registre 'types.rdb'
  export LD_LIBRARY_PATH="/usr/lib/openoffice.org/ure/lib/"; /usr/lib/openoffice.org/basis3.0/sdk/bin/regmerge target/types.rdb /UCR target/urd/*.urd

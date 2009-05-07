@@ -22,6 +22,11 @@ public class WordsParser
 	{
 		int pos;
 		String word;
+		public Word(int pos,String word)
+		{
+			this.pos=pos;
+			this.word=word;
+		}
 		public String toString()
 		{
 			return pos+":"+word;
@@ -348,6 +353,7 @@ public class WordsParser
 			List<Result> results = new ArrayList<Result>();
 			Node cur = this;
 			final int max = words.size();
+			int start=-1;
 			here: for (int i = 0; i < max; ++i)
 			{
 				// System.out.println(cur.candidates.dump());
@@ -357,11 +363,13 @@ public class WordsParser
 				{
 					if (log)
 						System.out.println("FIND \"" + find.word + "\"");
+					if (start==-1)
+						start=word.pos;
 					if (find.foreignTerm != null)
 					{
 						final Result result=new Result();
-						result.start=word.pos;
-						result.stop=word.word.length();
+						result.start=start;
+						result.stop=word.pos+word.word.length()-start;
 						result.foreignTerm=find.foreignTerm;
 						results.add(result);
 						if (log)
@@ -374,7 +382,7 @@ public class WordsParser
 				if (cur != this)
 				{
 					cur = this;
-//					start = i;
+					start = -1;
 					--i;
 					continue here;
 				}
@@ -451,25 +459,14 @@ public class WordsParser
 			{
 				if (builder.length()!=0)
 				{
-					
-					Word w=new Word();
-					w.pos=start+1;
-					w.word=builder.toString();
-					words.add(w);
+					words.add(new Word(start+1,builder.toString()));
 					builder.setLength(0);
 				}
 				start=i;
 			}
 		}
 		if (builder.length()!=0)
-		{
-			
-			Word w=new Word();
-			w.pos=start+1;
-			w.word=builder.toString();
-			words.add(w);
-			builder.setLength(0);
-		}
+			words.add(new Word(start+1,builder.toString()));
 		return words;//sentence.split("[ -,.:!?]");
 	}
 	public String[] getDomains()
