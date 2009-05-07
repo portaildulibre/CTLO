@@ -123,7 +123,6 @@ Sub ManageDocument()
 			Dim x as Long
 			Dim y as Long
 			
-      		xray elementText
       		rows=elementText.rows
       		cols=elementText.Columns
       		for x = 0 to rows.count-1
