@@ -169,7 +169,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						oor:name="org.linagora.clients.minefi.dpma.terminologie.x2"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
-							<value>macro:///terminologie.libs.RemoveKeyHandler</value>
+							<value>macro:///terminologie.libs.setDefaultActivationToFalse</value>
 						</prop>
 						<prop oor:name="ImageIdentifier" oor:type="xs:string">
 							<value />

@@ -6,12 +6,12 @@
   <dlg:style dlg:style-id="1" dlg:text-color="0x80" dlg:font-underline="single"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:text dlg:id="TexteExplicatif" dlg:tab-index="6" dlg:left="3" dlg:top="6" dlg:width="157" dlg:height="65" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr" dlg:value="Sélectionnez un domaine, un terme français, puis cliquez sur Remplacer. Pour garder le terme étranger cliquez sur Ignorer." dlg:multiline="true"/>
-  <dlg:text dlg:id="LienSurFranceTerme" dlg:tab-index="7" dlg:left="3" dlg:top="71" dlg:width="71" dlg:height="36" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="Pour plus d&apos;informations : ">
+  <dlg:text dlg:id="TexteExplicatif" dlg:tab-index="6" dlg:left="3" dlg:top="6" dlg:width="157" dlg:height="47" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr" dlg:value="Sélectionnez un domaine, un terme français, puis cliquez sur Remplacer. Pour garder le terme étranger cliquez sur Ignorer." dlg:multiline="true"/>
+  <dlg:text dlg:id="LienSurFranceTerme" dlg:tab-index="7" dlg:left="3" dlg:top="53" dlg:width="71" dlg:height="15" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="Pour plus d&apos;informations : ">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenExternalDatasourceURL?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:text>
-  <dlg:text dlg:id="LabelTermeEtranger" dlg:tab-index="11" dlg:left="2" dlg:top="115" dlg:width="120" dlg:height="9" dlg:value="Terme étranger :"/>
-  <dlg:textfield dlg:style-id="0" dlg:id="anglicisme" dlg:tab-index="13" dlg:left="2" dlg:top="127" dlg:width="118" dlg:height="15" dlg:tabstop="false" dlg:readonly="true"/>
+  <dlg:text dlg:id="LabelTermeEtranger" dlg:tab-index="11" dlg:left="2" dlg:top="69" dlg:width="120" dlg:height="9" dlg:value="Terme étranger :"/>
+  <dlg:textfield dlg:style-id="0" dlg:id="anglicisme" dlg:tab-index="13" dlg:left="3" dlg:top="80" dlg:width="118" dlg:height="15" dlg:tabstop="false" dlg:readonly="true"/>
   <dlg:text dlg:id="LabelRemplacerPar" dlg:tab-index="14" dlg:left="125" dlg:top="115" dlg:width="119" dlg:height="9" dlg:value="Remplacer par :"/>
   <dlg:textfield dlg:id="remplacement" dlg:tab-index="12" dlg:left="125" dlg:top="125" dlg:width="119" dlg:height="15" dlg:tabstop="false"/>
   <dlg:text dlg:id="LabelDomaine" dlg:tab-index="0" dlg:left="2" dlg:top="145" dlg:width="120" dlg:height="9" dlg:value="Domaines :"/>
@@ -42,8 +42,9 @@
   <dlg:button dlg:id="BoutonAide" dlg:tab-index="10" dlg:left="175" dlg:top="91" dlg:width="70" dlg:height="16" dlg:value="Aide">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:terminologie.libs.Help?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:style-id="1" dlg:id="Label1" dlg:tab-index="15" dlg:left="74" dlg:top="71" dlg:width="86" dlg:height="36" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="http://franceterme.culture.fr/">
+  <dlg:text dlg:style-id="1" dlg:id="Label1" dlg:tab-index="15" dlg:left="74" dlg:top="53" dlg:width="86" dlg:height="15" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="http://franceterme.culture.fr/">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenExternalDatasourceURL?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:text>
+  <dlg:textfield dlg:id="ForeignTermInContext" dlg:tab-index="16" dlg:left="3" dlg:top="98" dlg:width="119" dlg:height="43" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true"/>
  </dlg:bulletinboard>
 </dlg:window>
