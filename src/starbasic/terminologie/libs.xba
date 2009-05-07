@@ -74,6 +74,7 @@ End Sub
 
 &apos; Manage current selection
 Sub ManageSelection()
+	&apos; FIXME : Travailler paragraphe par paragraphe dans la sélection
 	Dim visualCursor as object
 
 	Redim IgnoreTermArray(0)
@@ -81,10 +82,12 @@ Sub ManageSelection()
 	Redim ReplacementArray(0)
 	
 	visualCursor=ThisComponent.currentController.viewCursor
-	oldViewCursor=ThisComponent.Text.createTextCursorByRange(visualCursor)
-	cursor=ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
+	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)	
 
-	ManageCursor(cursor)
+	if ManageCursor then
+		msgbox &quot;La vérification de la sélection a été effectuée.&quot;
+	end if
 	ThisComponent.CurrentController.select(oldViewCursor)
 End Sub
 
@@ -98,6 +101,10 @@ Sub ManageDocument()
 	Redim ReplaceArray(0)
 	Redim ReplacementArray(0)
 	
+	Dim abort as boolean
+	abort=false
+	
+	&apos; Paragraphe
 	listParagraph = ThisComponent.text.createEnumeration()
 	do while listParagraph.hasMoreElements
 		elementText = listParagraph.nextElement
@@ -105,18 +112,86 @@ Sub ManageDocument()
 			paraCursor=ThisComponent.text.createTextCursorByRange(elementText)
 			cursor=paraCursor
 			oldViewCursor=paraCursor
-			if (not ManageCursor(paraCursor)) then
+			if (not ManageCursor) then
+				abort=true
 				exit do
 			end if
 		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
-      		&apos; FIXME
+			Dim rows as Object
+			Dim cols as Object
+			Dim cell as Object
+			Dim x as Long
+			Dim y as Long
+			
+      		xray elementText
+      		rows=elementText.rows
+      		cols=elementText.Columns
+      		for x = 0 to rows.count-1
+      			for y = 0 to cols.count -1
+      				cell=elementText.getCellByPosition(y,x)
+      				cursor=cell.createTextCursor()
+					cursor.gotoStart(false)
+					cursor.gotoEnd(true)
+					if (not ManageCursor) then
+						abort=true
+						exit for
+					end if
+      			next
+      			if (abort) then
+      				exit for
+      			end if
+      		next
+		end if
+		if (abort) then
+			exit do
 		end if
 	loop
+	
+	&apos; Header &amp; footer
+	if (not abort) then
+		Dim pagesStyles as Object
+		Dim pageStyle as Object
+		Dim i as Integer
+		Dim headerCursor
+		Dim footerCursor
+		
+		pagesStyles=ThisComponent.StyleFamilies.getByName(&quot;PageStyles&quot;)
+		
+		for i = 0 to pagesStyles.count-1
+			pageStyle=pagesStyles.getByIndex(i)
+			if pageStyle.headerIsOn then
+				headerCursor=pageStyle.headerText.createTextCursor
+				headerCursor.gotoStart(false)
+				headerCursor.gotoEnd(true)
+				cursor=headerCursor
+				if (not ManageCursor) then
+					abort=true
+					exit for
+				end if
+			end if
+			if pageStyle.footerIsOn then
+				footerCursor=pageStyle.footerText.createTextCursor
+				footerCursor.gotoStart(false)
+				footerCursor.gotoEnd(true)
+				cursor=headerCursor
+				if (not ManageCursor) then
+					abort=true
+					exit for
+				end if
+			end if
+		next
+	end if
+
+	&apos; End
+	if not abort then
+		msgbox &quot;La vérification du document a été effectuée.&quot;
+	end if
+
 End sub
 
 &apos; -------------------------------------------------------
 &apos; Execute engine for a cursor
-Function ManageCursor(cursor as Object) as boolean
+Function ManageCursor() as boolean
 	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.CANCEL
 	results=nothing
 	ignoreIdx=0

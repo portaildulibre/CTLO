@@ -3,6 +3,8 @@ package org.atosorigin.ctOO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -359,6 +361,11 @@ public class WordsParser
 				// System.out.println(cur.candidates.dump());
 				Word word=words.get(i);
 				Node find = cur.candidates.get(word.word);
+				// Hock pour gérer la forme fléchie avec un pluriel simple
+				if ((find==null) && word.word.charAt(word.word.length()-1)=='s') 
+				{
+					find=cur.candidates.get(word.word.substring(0,word.word.length()-1));
+				}
 				if (find != null)
 				{
 					if (log)
@@ -389,6 +396,21 @@ public class WordsParser
 //				else
 //					start = i + 1;
 			}
+			
+			Collections.sort(results,new Comparator<Result>()
+			{
+				@Override
+				public int compare(Result o1, Result o2)
+				{
+					if (o1.start==o2.start)
+					{
+						return o2.stop-o1.stop;
+					}
+					else
+						return o1.start-o2.start;
+				}
+			});
+				
 			return results.toArray(new Result[results.size()]);
 		}
 	}
