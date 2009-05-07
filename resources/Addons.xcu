@@ -38,7 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			</node>
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.checkAll" oor:op="replace">
 				<prop oor:name="URL">
-					<value>macro:///terminologie.libs.checkDocument</value>
+					<value>macro:///terminologie.libs.ManageDocument</value>
 				</prop>
 				<node oor:name="UserDefinedImages">
 					<prop oor:name="ImageSmallURL" oor:type="xs:string">
@@ -48,7 +48,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			</node>
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.checkSelection" oor:op="replace">
 				<prop oor:name="URL">
-					<value>macro:///terminologie.libs.SelectionOpen</value>
+					<value>macro:///terminologie.libs.ManageSelection</value>
 				</prop>
 				<node oor:name="UserDefinedImages">
 					<prop oor:name="ImageSmallURL" oor:type="xs:string">
@@ -82,7 +82,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				</node>
 				<node oor:name="checkAll" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
-						<value>macro:///terminologie.libs.checkDocument</value>
+						<value>macro:///terminologie.libs.ManageDocument</value>
 					</prop>
 					<prop oor:name="ImageIdentifier" oor:type="xs:string">
 						<value />
@@ -99,7 +99,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				</node>
 				<node oor:name="checkSelection" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
-						<value>macro:///terminologie.libs.SelectionOpen</value>
+						<value>macro:///terminologie.libs.ManageSelection</value>
 					</prop>
 					<prop oor:name="ImageIdentifier" oor:type="xs:string">
 						<value />

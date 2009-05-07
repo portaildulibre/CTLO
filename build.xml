@@ -29,26 +29,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property file="build.properties"/>
 
 	<!-- Regular project property -->
-	<property name="out.path" 		value="bin/ant" 					/>
-	<property name="version" 		value="0.4" 						/>
-	<property name="src.java"		value="src/java"					/>
-	<property name="src.xsl"		value="src/xsl"						/>
-	<property name="src.idl"		value="src/idl"						/>
-	<property name="src.starbasic"		value="src/starbasic"					/>
+	<property name="out.path" 			value="bin/ant" 					/>
+	<property name="version" 			value="0.4" 						/>
+	<property name="src.java"			value="src/java"					/>
+	<property name="src.xsl"			value="src/xsl"						/>
+	<property name="src.idl"			value="src/idl"						/>
+	<property name="src.starbasic"		value="src/starbasic"				/>
 
-	<property name="target"			value="target"						/>
-	<property name="classes"		value="${target}/classes"				/>
-	<property name="package"		value="${target}/package"				/>	
-	<property name="dict"			value="data"						/>
-	<property name="dict.xml"		value="${target}/terminologie.xml"			/>
-	<property name="dict.exclusion"		value="liste.exclusion.txt"				/>
-	<property name="dict.exclusion.xml"	value="${target}/exclusions.xml"			/>
-	<property name="tests"			value="tests"						/>
-	<property name="tests.classes"		value="${target}/tests/classes"				/>
-	<property name="tests.reports"		value="${target}/reports/test"				/>
-	<property name="tests.coverage"		value="${target}/coverage/"				/>
-	<property name="REPO"			value="/home/rpelisse/.m2/repository"			/>
-	<property name="rulesets"		value="resources/pmd.xml"				/>
+	<property name="target"				value="target"						/>
+	<property name="classes"			value="${target}/classes"			/>
+	<property name="package"			value="${target}/package"			/>	
+	<property name="dict"				value="data"						/>
+	<property name="dict.xml"			value="${target}/terminologie.xml"	/>
+	<property name="dict.exclusion"		value="liste.exclusion.txt"			/>
+	<property name="dict.exclusion.xml"	value="${target}/exclusions.xml"	/>
+	<property name="tests"				value="tests"						/>
+	<property name="tests.classes"		value="${target}/tests/classes"		/>
+	<property name="tests.reports"		value="${target}/reports/test"		/>
+	<property name="tests.coverage"		value="${target}/coverage/"			/>
+	<property name="REPO"				value="/home/rpelisse/.m2/repository"/>
+	<property name="rulesets"			value="resources/pmd.xml"			/>
 	
 	<!-- Project classpath : contains anything required to build the plugin -->
 	
@@ -275,16 +275,16 @@ ${src/idl}org/atosorigin/ctOO/*.idl
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
 		<zip 	destfile="${target}/${ant.project.name}-${version}.oxt"
 		     	basedir="${package}">
-			<fileset dir="${target}/"			includes="META-INF/manifest.xml"		/>
-			<fileset dir="${basedir}" 			includes="README"				/>
-			<fileset dir="${basedir}" 			includes="COPYING"				/>
-			<fileset dir="${basedir}"			includes="resources/ChangeLog"			/>
-			<fileset dir="${target}"			includes="terminologie/**/*"			/>
-			<fileset dir="${basedir}/resources"		includes="images/"				/>
-			<fileset dir="${basedir}/resources"     	includes="Addons.xcu"   			/>
-			<fileset dir="${basedir}/resources"     	includes="Events.xcu"   			/> 
-			<fileset dir="${artifacts}"			includes="types.rdb"				/> 
-			<fileset dir="${target}"			includes="${ant.project.name}-${version}.jar"	/>
+			<fileset dir="${target}/"				includes="META-INF/manifest.xml"	/>
+			<fileset dir="${basedir}" 				includes="README"					/>
+			<fileset dir="${basedir}" 				includes="COPYING"					/>
+			<fileset dir="${basedir}"				includes="resources/ChangeLog"		/>
+			<fileset dir="${target}"				includes="terminologie/**/*"		/>
+			<fileset dir="${basedir}/resources"		includes="images/"					/>
+			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
+			<fileset dir="${basedir}/resources"     includes="Events.xcu"   			/> 
+			<fileset dir="${artifacts}"				includes="types.rdb"				/> 
+			<fileset dir="${target}"				includes="${ant.project.name}-${version}.jar"	/>
 		</zip>
 		<delete dir="${package}" />
 	
