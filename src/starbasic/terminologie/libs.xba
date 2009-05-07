@@ -20,7 +20,7 @@ Private result as Object 			&apos; Current result to manage
 Private currentResult as Integer 	&apos; index of the current row in the results table
 Private oldViewCursor as Object 	&apos; Cursor on the current selection
 Private cursor as Object 			&apos; Cursor on the current selection
-Private IgnoreTermArray(0) as String
+Global IgnoreTermArray(0) as String
 Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
 
 Private exitCode as integer &apos; OK or Cancel
@@ -39,10 +39,10 @@ Private Const sDialogName = &quot;dialogues&quot;
 Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 
 Sub Main
- 	checkForDefaultActivation
-	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
-	terminologieService()
-	mainDialog=Dialog_ctr()
+ &apos;	checkForDefaultActivation
+&apos;	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
+&apos;	terminologieService()
+&apos;	mainDialog=Dialog_ctr()
 End Sub
 
 
@@ -63,11 +63,6 @@ Function terminologieService() as Object
 	end if
 	terminologieService=terminologieService_
 End Function
-
-
-
-REM
-****************************************************************************************
 
 
 REM **********************************************************************************************
@@ -290,11 +285,7 @@ Function getWorkload() as Boolean
 			end if
 		end if
 	loop while Iterator_HasNext()
-	REM Following test required when we come from the KeyEventHandler
-	if IsNull(mainDialog) then
-		mainDialog=Dialog_ctr()
-	end if
-	REM ...
+
 	if isArray(results) then
 		if Iterator_cur &gt; UBound(results) then REM Iterator_cur = -1 or Iterator_cur &gt; UBound(results) then
 			Dialog_Close()
@@ -432,12 +423,18 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	for nbCharacter = 1 to maxwords
 		startWordCursor.gotoPreviousWord(false)
 	next
+	
 	for nbCharacter = 1 to maxwords - 1
 		endWordCursor.gotoNextWord(true) 
 	next
 	endWordCursor.gotoEndOfWord(false)
-	
+
 	portionCursor = theText.createTextCursor()
+	if (theText.compareRegionStarts(startWordCursor,paragraphCursor) &gt; 0) then
+		portionCursor.gotoRange(endWordCursor.start,false)
+	else
+		portionCursor.gotoRange(paragraphCursor.start,false)
+	end if
 	if (theText.compareRegionStarts(startWordCursor,paragraphCursor) &gt; 0) then
 		portionCursor.gotoRange(endWordCursor.end,true)
 	else
@@ -663,18 +660,18 @@ REM @author Manuel Odesser modesser@linagora.com
 REM
 Global count as Integer
 Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
+	handlingKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
 	If ( isWordBoundary(keyEvent.keyChar) ) Then
 		Dim visualCursor as Object
+	On ERROR RESUME NEXT &apos; FIXME: bug with header/footer,table	
 		oldViewCursor = ThisComponent.Text.createTextCursorByRange(ThisComponent.currentController.viewCursor)
 		cursor = ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
-	&apos;	cursor = selectPart(cursor.getText(),maxwords)
+		cursor = selectPart(cursor.getText(),maxwords)
 		REM We keep running the dialog until we end
-		if ( getWorkload() ) Then
-			mainDialog.execute()
-			ThisComponent.CurrentController.select(oldViewCursor)
-		end if
+		ManageCursor()
+		&apos;ThisComponent.currentController.viewCursor.gotoRange(oldViewCursor,TRUE)
+		ThisComponent.currentController.viewCursor.gotoRange(oldViewCursor,FALSE)
 	End If
-	handlingKeyPressedEvent = False REM let the event propagate to other event handler
 End Function
 
 REM
