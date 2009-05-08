@@ -133,8 +133,9 @@ class XMLDictionnaryHandler extends DefaultHandler
 		{
 			// We've done with the current synonym
 			insideSynonyme = false;
-			// Add the current domain synonyme list
-			synonymes.add(currentSynonyme);
+			// Add the current domain synonyme list, if it is not already there
+			if ( ! synonymes.contains(currentSynonyme) )
+				synonymes.add(currentSynonyme);
 		}
 		else if (DOMAIN_TAG.equals(qName))
 		{

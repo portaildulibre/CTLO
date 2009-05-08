@@ -27,6 +27,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 **********************************************************************************************************
 	    -->
 	<property file="build.properties"/>
+	
+        <property name="OOo_SDK"        value="${OOo_HOME}/basis3.0/"/>
+        <property name="unopkg.exe"     value="${OOo_SDK}/ure-link/bin/uno.bin"/>
+        <property name="project.lib"    value="${OOo_SDK}/program/classes/"/>
+        <property name="artifacts"      value="${basedir}/artifact/"/>
+
 
 	<!-- Regular project property -->
 	<property name="out.path" 			value="bin/ant" 					/>
@@ -217,6 +223,23 @@ idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd ${src/idl}org
 			style="src/xsl/factorize-domain.xsl"
 			out="${database-without-homographies}.factorized">
 		</xslt>
+		 <move file="${database-without-homographies}.factorized" tofile="${dict.xml}"/>
+		<!--
+			Here we are done for the extension part, we still have double entries
+			inside a <synmonymes> element, but the XMLDictionnary Handler in the
+			Java component will take care of this.
+		-->
+	</target>
+
+	<target name="database-to-language-tools">
+		<!--
+			The following treatment are to generate the appropriate file for
+			OpenOffice.org's Language Tools project.
+
+			Note that the next operation is information destructive as, in order
+			to remove the double entries, we must sort the <synonyme> elements
+			which destroy the natural order respected up until now.
+		-->
 
 		<!-- Synonyms may have some double entry in a domain... let's remove them. -->
 		<xslt 	in="${database-without-homographies}.factorized"
@@ -224,7 +247,7 @@ idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd ${src/idl}org
 			out="${database-without-homographies}.nodoubleentries">
 		</xslt>
 
-		<!-- Add on PPrados, check with LT. -->
+		<!-- Add on by PPrados, generate proper datafile for LT. -->
 		<xslt 	in="${database-without-homographies}.nodoubleentries"
 			style="src/xsl/to-LangageTool.xsl"
 			out="${target}/partial-grammar.xml">
