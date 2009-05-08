@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<node oor:name="Images">
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.setup" oor:op="replace">
 				<prop oor:name="URL">
-					<value>macro:///terminologie.libs.SetupKeyHandler</value>
+					<value>macro:///terminologie.libs.switchKeyHandler</value>
 				</prop>
 				<node oor:name="UserDefinedImages">
 					<prop oor:name="ImageSmallURL" oor:type="xs:string">
@@ -65,7 +65,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.boutons" oor:op="replace">
 				<node oor:name="activate" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
-						<value>macro:///terminologie.libs.SetupKeyHandler</value>
+						<value>macro:///terminologie.libs.setUpKeyHandler</value>
 					</prop>
 					<prop oor:name="ImageIdentifier" oor:type="xs:string">
 						<value />

@@ -44,6 +44,7 @@ Private Const sDialogName = &quot;dialogues&quot;
 Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 
 Sub Main
+	switchKeyHandler
  &apos;	checkForDefaultActivation
 &apos;	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
 &apos;	terminologieService()
@@ -578,6 +579,8 @@ REM Routines related to the &quot;cheking while typing&quot; functionnality
 REM
 REM	***************************************************************************************************** 
 
+
+Global keyHandlerState As Boolean
 REM
 REM	Set up the key handler.
 REM	
@@ -590,6 +593,7 @@ Sub SetupKeyHandler
 	End If
 	removeHook
 	addHook         
+	keyHandlerState = true
 	keyMutex(&quot;set&quot;,False)                                                                                                                                 
 End Sub    
 
@@ -599,9 +603,19 @@ REM
 Sub RemoveKeyHandler                                                                                                                                                      
 	keyMutex(&quot;set&quot;,True)
 	removeHook
+	keyHandlerState = false
 	keyMutex(&quot;set&quot;,False)
 End Sub 
 
+
+REM 
+REM Inverse current state of Key Handler
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM
+Sub switchKeyHandler
+	keyHandlerState = (NOT keyHandlerState)
+End Sub
 REM
 REM	Automatically called by OOo at close.
 REM WARN: Do not modify method name.
@@ -654,14 +668,14 @@ REM @author Manuel Odesser modesser@linagora.com
 REM
 dim reentrant as boolean
 Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
-	if not reentrant then
-		reentrant=true	
-&apos;		If Not keyMutex(&quot;get&quot;) Then
+	if ( keyHandlerState ) Then
+		if not reentrant then
+			reentrant=true	
 			handlingKeyPressedEvent(keyEvent)
-&apos;		End If
-		reentrant=false
-	endif
-	REM nothing to do here...
+			reentrant=false
+		endif
+		REM nothing to do here...
+	End if
 	KeyHandler_keyReleased = False
 End Sub
 
