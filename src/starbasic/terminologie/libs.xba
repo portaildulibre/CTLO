@@ -33,7 +33,7 @@ Private ReplaceArray(0) as String
 Private ReplacementArray(0) as String
 Global TerminologieKeyHandler As Object 
 
-Private poscurrent as Integer &apos; Position du point d&apos;insertion par rapport à la selection
+Private posCurrent as Integer &apos; Position du point d&apos;insertion par rapport à la selection
 
 REM 
 REM data for the HMI layer
@@ -203,9 +203,6 @@ Function ManageCursor() as boolean
 	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.CANCEL
 	results=nothing
 	ignoreIdx=0
-	if IsNull(mainDialog) then
-		mainDialog=Dialog_ctr()
-	end if
 	REM We keep running the dialog until we end
 	if ( getWorkload() ) Then
 		mainDialog.execute()
@@ -473,7 +470,7 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	delta=theText.createTextCursor()
 	delta.gotoRange(portionCursor.start,false)
 	delta.gotoRange(viewCursor.start,true)
-	poscurrent=len(delta.string)
+	poscurrent=len(delta.string)-1 &apos; Suppression de l&apos;espace
 	
 	ThisComponent.currentController.viewCursor
 	selectPart=portionCursor
@@ -568,7 +565,7 @@ sub setDefaultActivation(state as String, mssg as String)
 	vMyKey.setStringValue(state)
 	msgbox(mssg,0,&quot;terminologie&quot;)
 	removeHook()
-	If ( state == &quot;no&quot; ) Then
+	If ( state = &quot;no&quot; ) Then
 		addHook()
 	End If
 	vMyKey.closeKey()
@@ -655,10 +652,29 @@ REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM @author Manuel Odesser modesser@linagora.com
 REM
-Sub KeyHandler_keyReleased(oKeyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+dim reentrant as boolean
+Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	if not reentrant then
+		reentrant=true	
+&apos;		If Not keyMutex(&quot;get&quot;) Then
+			handlingKeyPressedEvent(keyEvent)
+&apos;		End If
+		reentrant=false
+	endif
 	REM nothing to do here...
 	KeyHandler_keyReleased = False
 End Sub
+
+REM
+REM	Automatically called by OOo
+REM WARN: Do not modify method name.
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+	KeyHandler_keyPressed = False
+End Function
 
 REM
 REM	Manually written Mutex... far from being safe
@@ -685,20 +701,6 @@ End Function
 
 
 
-
-REM
-REM	Automatically called by OOo
-REM WARN: Do not modify method name.
-REM
-REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
-REM @author Manuel Odesser modesser@linagora.com
-REM
-Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
-	If Not keyMutex(&quot;get&quot;) Then
-		handlingKeyPressedEvent(keyEvent)
-	End If
-	KeyHandler_keyPressed = False
-End Function
 
 REM
 REM Handles the event &apos;key pressed by user&apos;.
@@ -940,7 +942,9 @@ REM
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Sub Dialog_Close	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.OK
-	mainDialog.endExecute(com.sun.star.ui.dialogs.ExecutableDialogResults.OK)
+	if (not isNull(mainDialog)) then
+		mainDialog.endExecute(com.sun.star.ui.dialogs.ExecutableDialogResults.OK)
+	endif
 End Sub                                                                                                                                                                  
                                                                                                                                                                    
 REM Update the displayed term with the appropriate value
