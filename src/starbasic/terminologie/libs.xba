@@ -80,17 +80,18 @@ Sub ManageSelection()
 	Redim ReplacementArray(0)
 	
 	visualCursor=ThisComponent.currentController.viewCursor
-	oldViewCursor=ThisComponent.Text.createTextCursorByRange(visualCursor)
-	cursor=ThisComponent.Text.createTextCursorByRange(oldViewCursor)	
+	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
+	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)	
 
 	if ManageCursor then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;
 	end if
-	ThisComponent.CurrentController.select(oldViewCursor)
+	visualCursor.Text.CurrentController.select(oldViewCursor)
 End Sub
 
 &apos; Manage all document
 Sub ManageDocument()
+	Dim visualCursor as object
 	Dim listParagraph as Object
 	Dim paraCursor as Object
 	Dim elementText as Object
@@ -101,6 +102,8 @@ Sub ManageDocument()
 	
 	Dim abort as boolean
 	abort=false
+
+	visualCursor=ThisComponent.currentController.viewCursor
 	
 	&apos; Paragraphe
 	listParagraph = ThisComponent.text.createEnumeration()
@@ -170,7 +173,7 @@ Sub ManageDocument()
 				footerCursor=pageStyle.footerText.createTextCursor
 				footerCursor.gotoStart(false)
 				footerCursor.gotoEnd(true)
-				cursor=headerCursor
+				cursor=footerCursor
 				if (not ManageCursor) then
 					abort=true
 					exit for
@@ -369,9 +372,11 @@ function Dialog_FSM(event as String) as boolean
 			replaceCursor = selectPartOfText(cursor,result)
 			remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
 			REM Case where replace by himself
-			if (ThisComponent.Text.compareRegionStarts(replaceCursor,oldViewCursor) &gt; 0) then
-				oldViewCursor.gotoRange(replaceCursor.start,true)
-			end if
+			on error goto here
+				if (replaceCursor.Text.compareRegionStarts(replaceCursor,oldViewCursor) &gt; 0) then
+					oldViewCursor.gotoRange(replaceCursor.start,true)
+				end if
+			Here:
 			if (StrComp(replaceCursor.String,remplacement,0)=0) then
 				ignoreIdx= IgnoreIdx + 1
 			else

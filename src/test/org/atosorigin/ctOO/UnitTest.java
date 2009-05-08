@@ -1,13 +1,15 @@
 package org.atosorigin.ctOO;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.atosorigin.ctOO.comp.CtOO3Impl;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.xml.sax.SAXException;
 
 //@org.junit.TestSuite
 public class UnitTest
@@ -17,23 +19,34 @@ public class UnitTest
     private URL foreignTerms;
 	{
 		foreignTerms = UnitTest.class.getResource("/terminologie.xml");
+//		foreignTerms = UnitTest.class.getResource("/org/atosorigin/ctOO/tiny.xml");
 	}
 	
 	@Before
-	public void before()
+	public void before() throws IOException, SAXException, ParserConfigurationException
 	{
 		try
 		{
 			InputStream in=new BufferedInputStream(foreignTerms.openStream());
 			parser=WordsParser.createFromXML(in);
 			in.close();
-		}
-		catch (Throwable x)
+		} catch (Exception e)
 		{
-			x.printStackTrace();
+			e.printStackTrace();
+			
 		}
-		
 	}
+	
+	@org.junit.Test
+	public void testTiretMerge()
+	{
+		Result[] r;
+
+		// Vérifie gestion du tiret
+		r=parser.find("e mail e-mail email");
+		Assert.assertEquals(3,r.length);
+	}
+	
 	@org.junit.Test
 	public void testOrder()
 	{

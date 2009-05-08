@@ -297,7 +297,7 @@ public class WordsParser
 		{
 			if (log)
 				System.out.println("add \"" + sentence + "\"");
-			add(domaines,parseSentence(sentence));
+			add(domaines,parseSentence(sentence,true));
 		}
 		
 		/**
@@ -306,21 +306,29 @@ public class WordsParser
 		 * @param domaines Le domaine.
 		 * @param words La liste de mots.
 		 */
-		public void add( ForeignTerm domaines, List<Word> words)
+		private void add( ForeignTerm domaines, List<Word> words)
 		{
 			// For each string...
 			if (maxWords<words.size()) maxWords=words.size();
 			Node cur = this;
 			for (final Word word : words)
 			{
-				// if (log) System.out.println("ADD \""+word+"\"");
-				Node f = cur.candidates.get(word.word);
-				if (f == null)
+				final String theWord=word.word;
+				if (log) System.out.println("ADD \""+word+"\"");
+				final int tiret=theWord.indexOf('-');
+				if (tiret!=-1)
 				{
-					cur.candidates.put(
-						word.word, f = new Node(word.word));
+					String first=theWord.substring(0,tiret);
+					String second=theWord.substring(tiret+1);
+					String withoutTiret=first+second;
+					Node nodeFirst = addOneNode(cur, first);
+					addOneNode(nodeFirst,second).foreignTerm=domaines;
+					cur = addOneNode(cur, withoutTiret);
+					cur.foreignTerm = domaines;
 				}
-				cur = f;
+				else
+					cur = addOneNode(cur, theWord);
+				
 			}
 			cur.foreignTerm = domaines;
 	
@@ -343,6 +351,18 @@ public class WordsParser
 			// }
 			// }.run();
 	
+		}
+
+		private Node addOneNode(Node cur, final String theWord)
+		{
+			if (log) System.out.println("ADDOneNode \""+theWord+"\"");
+			Node f = cur.candidates.get(theWord);
+			if (f == null)
+			{
+				cur.candidates.put(
+					theWord, f = new Node(theWord));
+			}
+			return f;
 		}
 	
 		/**
@@ -426,7 +446,7 @@ public class WordsParser
 	{
 		if (log)
 			System.out.println("find \"" + sentence + "\"");
-		return top.find(parseSentence(sentence));
+		return top.find(parseSentence(sentence,false));
 	}
 
 	/**
@@ -465,7 +485,7 @@ public class WordsParser
 	 * @param sentence La phrase.
 	 * @return Le tableau de mots.
 	 */
-	private static List<Word> parseSentence(String sentence)
+	private static List<Word> parseSentence(String sentence,boolean tiret)
 	{
 		List<Word> words=new ArrayList<Word>();
 		StringBuilder builder=new StringBuilder();
@@ -473,7 +493,7 @@ public class WordsParser
 		for (int i=0;i<sentence.length();++i)
 		{
 			char c=sentence.charAt(i);
-			if (Character.isLetterOrDigit(c))
+			if (Character.isLetterOrDigit(c) || (tiret && c=='-'))
 			{
 				builder.append(Character.toLowerCase(c));
 			}
