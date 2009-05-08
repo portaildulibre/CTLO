@@ -568,7 +568,7 @@ sub setDefaultActivation(state as String, mssg as String)
 	vMyKey.setStringValue(state)
 	msgbox(mssg,0,&quot;terminologie&quot;)
 	removeHook()
-	If ( state == &quot;no&quot; ) Then
+	If ( state = &quot;no&quot; ) Then
 		addHook()
 	End If
 	vMyKey.closeKey()
