@@ -963,7 +963,7 @@ Sub UpdateSelectedTerm()
 noSelectedWordNext:
     on error resume next
     &apos; et on met à jour la liste des synonymes
-    ControlModel = mainDialog.getModel().getByName(&quot;remplacement&quot;)
+    ControlModel = mainDialog.getModel().getByName(REMPLACEMENT_FIELD_NAME)
 	ControlModel.setPropertyValue(&quot;Text&quot;,term)
 	Exit Sub
 
@@ -978,25 +978,59 @@ REM
 REM @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
 REM 
 Sub OpenExternalDatasourceURL()
-	on error resume next
 	Dim objlancer
 	Dim handleErrors
 	Dim adress as String
-	Dim ControlModel As Object
 	Dim term As String
-
-	&apos; retrieving the foreign term value
-	ControlModel =  oDialog.getModel().getByName(REMPLACEMENT_FIELD_NAME)
+	Dim httpValidTerm As String
+	
+	on error resume next
 	&apos; FUTURE: When FranceTerme handle properly accentued character passed by Get
 	&apos; this next call should be removed
-	term = replaceAccentedCharacter( ControlModel.getPropertyValue(&quot;Text&quot;) )
+	term =	mainDialog.getModel().getByName(REMPLACEMENT_FIELD_NAME).getPropertyValue(&quot;Text&quot;)
+	httpValidTerm = replaceNotHttpSupportedCharacter(term)
 	&apos; building the appropriate URL
-	adress = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + term)
+	adress = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + httpValidTerm)
 	&apos; calling the external service
 	handleErrors = com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE &apos;=1 or DEFAULTS=0
 	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)
 	objlancer.execute(adresse, &quot;&quot;, handleErrors)
 End Sub
+
+REM
+REM This fonction replace special character that could mess
+REM up with an http link syntax.
+REM
+REM @author Romain PELISSE, romain.pelisse@atosorigin.com
+REM
+Function replaceNotHttpSupportedCharacter(maChaine As String)
+  Dim RechRemp(1,6) As String
+  Dim i, j, place   As Integer
+  Dim arg(0) As String : arg(0) = maChaine
+
+   &apos; Caractères à remplacer.
+   rechRemp(0, 0) = &quot;áâãäåæ&quot;: rechRemp(1, 0) = &quot;a&quot;
+   rechRemp(0, 1) = &quot;èéêë;&quot; : rechRemp(1, 1) = &quot;e&quot;
+   rechRemp(0, 2) = &quot;ìíîï&quot;  : rechRemp(1, 2) = &quot;i&quot;
+   rechRemp(0, 3) = &quot;óôõöø&quot; : rechRemp(1, 3) = &quot;o&quot;
+   rechRemp(0, 4) = &quot;ùúûü&quot;  : rechRemp(1, 4) = &quot;u&quot;
+   rechRemp(0, 5) = &quot;ç&quot;     : rechRemp(1, 5) = &quot;c&quot;
+   rechRemp(0, 6) = &quot;ñ&quot;     : rechRemp(1, 6) = &quot;n&quot;
+   &apos; TODO: add the uppercase version if any ?
+
+  &apos; Moulinette sur les chaînes de caractères.
+  For i = 0 to 6
+   For j = 0 to (Len(rechRemp(0, i)) - 1)
+    While InStr(maChaine, mid(rechRemp(0, i), (j + 1), 1)) &lt;&gt; 0
+     place = InStr(maChaine, mid(rechRemp(0, i), (j + 1), 1))
+     maChaine = Left(maChaine, (place - 1)) &amp; rechRemp(1, i) &amp; Right(maChaine, (Len(maChaine) - place))
+    Wend
+   Next j
+  Next i
+  replaceNotHttpSupportedCharacter = replace(maChaine,&quot;œ&quot;,&quot;oe&quot;)
+End Function
+
+
 
 REM Select part of the  
 REM  Selection d&apos;une portion limité à n mots avant et après la selection, 
