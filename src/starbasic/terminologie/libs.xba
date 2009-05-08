@@ -21,7 +21,10 @@ Private currentResult as Integer 	&apos; index of the current row in the results
 Private oldViewCursor as Object 	&apos; Cursor on the current selection
 Private cursor as Object 			&apos; Cursor on the current selection
 Global IgnoreTermArray(0) as String
-Private ignoreIdx as integer	&apos; Index courrant des mots à ignorer
+Private ignoreIdx as integer		&apos; Focus courrant des mots à ignorer
+&apos; Lors de l&apos;analyse du document ou d&apos;une selection, le focus est à -1
+&apos; Sinon, il permet de selectionner depuis les candidats, que ceux incluant le focus
+&apos; Cela permet d&apos;éviter d&apos;avoir à ignorer plusieurs fois, des mots avant ou après le focus
 
 Private exitCode as integer &apos; OK or Cancel
 Private maxwords as Long
@@ -29,6 +32,8 @@ Private maxwords as Long
 Private ReplaceArray(0) as String
 Private ReplacementArray(0) as String
 Global TerminologieKeyHandler As Object 
+
+Private poscurrent as Integer &apos; Position du point d&apos;insertion par rapport à la selection
 
 REM 
 REM data for the HMI layer
@@ -82,10 +87,12 @@ Sub ManageSelection()
 	visualCursor=ThisComponent.currentController.viewCursor
 	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
 	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)	
-
+	poscurrent=-1
+	
 	if ManageCursor then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;
 	end if
+	on error resume next
 	visualCursor.Text.CurrentController.select(oldViewCursor)
 End Sub
 
@@ -104,6 +111,7 @@ Sub ManageDocument()
 	abort=false
 
 	visualCursor=ThisComponent.currentController.viewCursor
+	poscurrent=-1
 	
 	&apos; Paragraphe
 	listParagraph = ThisComponent.text.createEnumeration()
@@ -259,7 +267,19 @@ Function getWorkload() as Boolean
 		if isArray(results) then
 			do
 				continue=false
-				if (Iterator_next() &lt;= UBound(results)  )  then
+				if (poscurrent=-1) then
+					Iterator_next()
+				else
+					&apos; Filtre sur les candidats incluant le focus
+					do
+						Iterator_next()
+						if (Iterator_cur() &gt; UBound(results)  ) then
+							exit do
+						end if
+						result=results(Iterator_cur)
+					loop while not (result.start&lt;poscurrent and poscurrent &lt;= result.start+result.stop )
+				end if
+				if (Iterator_cur() &lt;= UBound(results)  )  then
 					result=results(Iterator_cur)
 					remplacement = getReplacementTerm(result)
 					if (remplacement&lt;&gt; &quot;&quot;) then
@@ -410,16 +430,18 @@ End function
 &apos; Selection d&apos;une portion limité à n mots avant et après la selection, 
 &apos; bornée au paragraphe courant.
 Function selectPart(theText as Object,maxwords as Integer) as Object
+	Dim viewCursor as Object
 	Dim portionCursor as Object 
 	Dim startWordCursor as Object
 	Dim endWordCursor as Object
 	Dim paragraphCursor as Object
 	Dim nbCharacter as integer
 	
-	startWordCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
-	endWordCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
-	paragraphCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
-	portionCursor = theText.createTextCursorByRange(ThisComponent.currentController.viewCursor)
+	viewCursor=ThisComponent.currentController.viewCursor
+	startWordCursor = theText.createTextCursorByRange(viewCursor)
+	endWordCursor = theText.createTextCursorByRange(viewCursor)
+	paragraphCursor = theText.createTextCursorByRange(viewCursor)
+	portionCursor = theText.createTextCursorByRange(viewCursor)
 	
 	paragraphCursor.gotoStartOfParagraph(false)
 	paragraphCursor.gotoEndOfParagraph(true)
@@ -445,6 +467,15 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	else
 		portionCursor.gotoRange(paragraphCursor.end,true)
 	end if
+
+	REM calcul la position courant par rapport à la selection
+	Dim delta as Object
+	delta=theText.createTextCursor()
+	delta.gotoRange(portionCursor.start,false)
+	delta.gotoRange(viewCursor.start,true)
+	poscurrent=len(delta.string)
+	
+	ThisComponent.currentController.viewCursor
 	selectPart=portionCursor
 End Function
 
