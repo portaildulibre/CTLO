@@ -613,7 +613,7 @@ REM Inverse current state of Key Handler
 REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM
-Sub switchKeyHandler
+Sub toggleChecking
 	keyHandlerState = (NOT keyHandlerState)
 End Sub
 REM
