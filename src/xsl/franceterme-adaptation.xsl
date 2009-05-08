@@ -90,7 +90,9 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 				</xsl:attribute>
 				<xsl:choose>	
 					<xsl:when test="count(../Domaine) > 0">
-						<xsl:call-template name="make-domaines"/>
+						<xsl:call-template name="make-domaines">
+							<xsl:with-param name="id" select="$anglicisme"/>
+						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:message>
@@ -112,11 +114,18 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 					<xsl:element name="domaines">
 						<xsl:variable name="abreviations">
 							<xsl:element name="abreviations">
-								<xsl:if test="count(../../Terme_Vedette/variante[@type = 'Abréviation']) > 0">
-									<xsl:for-each select="../../Terme_Vedette/variante[@type = 'Abréviation']">
+							        <xsl:variable name="nb-abv" select="count(../../Terme_Vedette/variante[@type = 'Abréviation'])"/>
+							        <xsl:variable name="nb-fabg" select="count(../../Terme_Vedette/variante[@type = 'Forme abrégée'])"/>
+								<xsl:if test="($nb-abv + $nb-fabg) > 0">
+									<xsl:for-each select="../../Terme_Vedette/variante[@type = 'Forme abrégée']">
 										  <xsl:element name="abreviation">
 											  <xsl:value-of select="string(normalize-space(current()))"/>
 										  </xsl:element>
+									</xsl:for-each>
+									<xsl:for-each select="../../Terme_Vedette/variante[@type = 'Abréviation']">
+										<xsl:element name="abreviation">
+											<xsl:value-of select="string(normalize-space(current()))"/>
+										</xsl:element>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:element>
@@ -149,13 +158,21 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 	-->
 	
 	<xsl:template name="make-domaines">
+		<xsl:param name="id"/>
 		<xsl:variable name="abreviations">
 			<xsl:element name="abreviations">
-				<xsl:if test="count(../Terme_Vedette/variante[@type = 'Abréviation']) > 0">
-					<xsl:for-each select="../Terme_Vedette/variante[@type = 'Abréviation']">
+				<xsl:variable name="nb-abv" select="count(../Terme_Vedette/variante[@type = 'Abréviation'])"/>
+				<xsl:variable name="nb-fabg" select="count(../Terme_Vedette/variante[@type = 'Forme abrégée'])"/>
+				<xsl:if test="($nb-abv + $nb-fabg) > 0">
+					<xsl:for-each select="../Terme_Vedette/variante[@type = 'Forme abrégée']">
 						<xsl:element name="abreviation">
 							<xsl:value-of select="string(normalize-space(current()))"/>
 						</xsl:element>
+					</xsl:for-each>
+					<xsl:for-each select="../Terme_Vedette/variante[@type = 'Abréviation']">
+						 <xsl:element name="abreviation">
+						 	<xsl:value-of select="string(normalize-space(current()))"/>
+						 </xsl:element>
 					</xsl:for-each>
 				</xsl:if>
 			</xsl:element>
