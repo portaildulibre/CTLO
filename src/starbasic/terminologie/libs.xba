@@ -544,7 +544,15 @@ Function getRegistry() As Object
 	getRegistry = vRegistry
 End Function
 
-sub setDefaultActivationToFalse
+Sub setDefaultActivationToTrue
+	setDefaultActivation(&quot;no&quot;,&quot;La correction terminologique automatique au démarrage a été activé&quot;)
+End Sub 
+
+Sub setDefaultActivationToFalse
+	setDefaultActivation( &quot;yes&quot;,&quot;La correction terminologique automatique au démarrage a été désactivé&quot;)
+End Sub 
+
+sub setDefaultActivation(state as String, mssg as String)
 	Dim vRegistry as Object 
 	Dim vRootKey as Object
 	Dim vMyKey as Object
@@ -557,9 +565,12 @@ sub setDefaultActivationToFalse
 		REM Key is missing, we add it
 		vMyKey = vRootKey.createKey( keyName ,TRUE)
 	End If
-	vMyKey.setStringValue( &quot;yes&quot; )
-	msgbox(&quot;La vérification terminologique automatique a été désactivé&quot;,0,&quot;terminologie&quot;)		
+	vMyKey.setStringValue(state)
+	msgbox(mssg,0,&quot;terminologie&quot;)
 	removeHook()
+	If ( state == &quot;no&quot; ) Then
+		addHook()
+	End If
 	vMyKey.closeKey()
 	vRegistry.close()
 end sub 

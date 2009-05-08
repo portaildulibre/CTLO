@@ -175,7 +175,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Désactiver la correction terminologique en cours de frappe</value>
+							<value xml:lang="fr-FR">Ne pas activer automatiquement la correction terminologique en cours de saisie</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
@@ -186,6 +186,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 					</node>
 					<node
 						oor:name="org.linagora.clients.minefi.dpma.terminologie.x3"
+						oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
+						      <value>macro:///terminologie.libs.setDefaultActivationToTrue</value>
+						</prop>
+						<prop oor:name="ImageIdentifier" oor:type="xs:string">
+							<value />
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value xml:lang="fr-FR">Activer automatiquement la correction terminologique en cours de saisie</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+					</node>
+					<node
+						oor:name="org.linagora.clients.minefi.dpma.terminologie.x4"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>macro:///terminologie.libs.checkDocument</value>
@@ -204,7 +223,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						</prop>
 					</node>
 					<node
-						oor:name="org.linagora.clients.minefi.dpma.terminologie.x4"
+						oor:name="org.linagora.clients.minefi.dpma.terminologie.x5"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>macro:///terminologie.libs.SelectionOpen</value>
@@ -215,27 +234,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<prop oor:name="Title" oor:type="xs:string">
 							<value xml:lang="fr-FR">Vérifier la sélection</value>
 						</prop>
-						<prop oor:name="Target" oor:type="xs:string">
-							<value>_self</value>
-						</prop>
-						<prop oor:name="Context" oor:type="xs:string">
-							<value>com.sun.star.text.TextDocument</value>
-						</prop>
-					</node>
-					<node
-						oor:name="org.linagora.clients.minefi.dpma.terminologie.loadOnStartOff"
-						oor:op="replace">
-						<prop oor:name="URL" oor:type="xs:string">
-							<value>macro:///terminologie.libs.TODO</value>
-						</prop>
-						<prop oor:name="ImageIdentifier" oor:type="xs:string">
-							<value />
-						</prop>
-						<!--
-						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Supprimer de l'activation automatique au démarrage</value>
-						</prop>
-						-->
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
 						</prop>
