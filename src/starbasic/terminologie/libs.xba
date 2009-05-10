@@ -45,6 +45,7 @@ Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 
 Sub Main
 	switchKeyHandler
+
  &apos;	checkForDefaultActivation
 &apos;	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
 &apos;	terminologieService()
@@ -283,11 +284,10 @@ Function getWorkload() as Boolean
 					if (remplacement&lt;&gt; &quot;&quot;) then
 						replaceCursor = selectPartOfText(cursor,result)
 						REM Case where replace by himself
-						if (StrComp(replaceCursor.String, remplacement,0)=0) then
-							ignoreIdx = IgnoreIdx + 1
-						else
-							replaceCursor.String = remplacement
+						if (InStr(remplacement,replaceCursor.String)&lt;&gt;0) then
+							ignoreIdx= IgnoreIdx + 1
 						end if
+						replaceCursor.String = remplacement
 						results=checkSelection(cursor)
 						Iterator_init()
 						currentResult = currentResult + ignoreIdx
@@ -395,11 +395,11 @@ function Dialog_FSM(event as String) as boolean
 					oldViewCursor.gotoRange(replaceCursor.start,true)
 				end if
 			Here:
-			if (StrComp(replaceCursor.String,remplacement,0)=0) then
+			
+			if (InStr(remplacement,replaceCursor.String)&lt;&gt;0) then
 				ignoreIdx= IgnoreIdx + 1
-			else
-				replaceCursor.String = remplacement
 			end if
+			replaceCursor.String = remplacement
 			
 			REM We modify the target&apos;s text, we need to recheck it
 			REM so back to square one... except for the already ignore term

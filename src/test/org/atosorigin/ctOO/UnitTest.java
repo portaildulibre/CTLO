@@ -18,8 +18,8 @@ public class UnitTest
 	
     private URL foreignTerms;
 	{
-		foreignTerms = UnitTest.class.getResource("/terminologie.xml");
-//		foreignTerms = UnitTest.class.getResource("/org/atosorigin/ctOO/tiny.xml");
+//		foreignTerms = UnitTest.class.getResource("/terminologie.xml");
+		foreignTerms = UnitTest.class.getResource("/tiny.xml");
 	}
 	
 	@Before
@@ -36,15 +36,27 @@ public class UnitTest
 			
 		}
 	}
-	
+		
 	@org.junit.Test
 	public void testTiretMerge()
 	{
 		Result[] r;
 
+//		r=parser.find("abc-def ghi jkl-mno");Assert.assertEquals(1,r.length);
+//		r=parser.find("abcdef ghi jkl-mno");Assert.assertEquals(1,r.length);
+//		r=parser.find("abc-def ghi jklmno");Assert.assertEquals(1,r.length);
+//		r=parser.find("abcdef ghi jklmno");Assert.assertEquals(1,r.length);
+//		r=parser.find("abc def ghi jkl mno");Assert.assertEquals(1,r.length);
+		
 		// Vérifie gestion du tiret
 		r=parser.find("e mail e-mail email");
 		Assert.assertEquals(3,r.length);
+		r=parser.find("time-division switching");
+		Assert.assertEquals(2,r.length);
+		r=parser.find("timedivision switching");
+		Assert.assertEquals(1,r.length);
+		r=parser.find("time division switching");
+		Assert.assertEquals(2,r.length);
 	}
 	
 	@org.junit.Test

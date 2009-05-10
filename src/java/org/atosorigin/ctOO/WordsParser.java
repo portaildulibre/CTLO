@@ -311,6 +311,7 @@ public class WordsParser
 			// For each string...
 			if (maxWords<words.size()) maxWords=words.size();
 			Node cur = this;
+			Node secondcur=null;
 			for (final Word word : words)
 			{
 				final String theWord=word.word;
@@ -321,16 +322,27 @@ public class WordsParser
 					String first=theWord.substring(0,tiret);
 					String second=theWord.substring(tiret+1);
 					String withoutTiret=first+second;
-					Node nodeFirst = addOneNode(cur, first);
-					addOneNode(nodeFirst,second).foreignTerm=domaines;
-					cur = addOneNode(cur, withoutTiret);
-					cur.foreignTerm = domaines;
+					secondcur = addOneNode(cur, new Node(withoutTiret));
+					cur=addOneNode(addOneNode(cur, new Node(first)),new Node(second));
 				}
 				else
-					cur = addOneNode(cur, theWord);
+				{
+					final Node n=new Node(theWord);
+					cur = addOneNode(cur, n);
+					if (secondcur!=null)
+					{
+						addOneNode(secondcur,n);
+						secondcur=null;
+					}
+				}
 				
 			}
 			cur.foreignTerm = domaines;
+			if (secondcur!=null)
+			{
+				secondcur.foreignTerm=domaines;
+				secondcur=null;
+			}
 	
 			// new Runnable()
 			// {
@@ -353,14 +365,13 @@ public class WordsParser
 	
 		}
 
-		private Node addOneNode(Node cur, final String theWord)
+		private Node addOneNode(Node cur, final Node theWord)
 		{
 			if (log) System.out.println("ADDOneNode \""+theWord+"\"");
-			Node f = cur.candidates.get(theWord);
+			Node f = cur.candidates.get(theWord.word);
 			if (f == null)
 			{
-				cur.candidates.put(
-					theWord, f = new Node(theWord));
+				cur.candidates.put(theWord.word, f = theWord);
 			}
 			return f;
 		}
