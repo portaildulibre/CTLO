@@ -829,7 +829,7 @@ Sub Dialog_set(result as Object)
 	ControlModel.StringItemList = domainsList()
 	&apos; Preselection of the first item
 	definePreselectedItem(ControlModel)
-	UpdateTermsList(domains)
+	UpdateTermsList()
 End Sub                                                                                                                                                                   
 
 REM
@@ -865,12 +865,14 @@ REM
 REM @author Manuel Odesser modesser@linagora.com
 REM	@author Romain Pelisse romain.pelisse@atosorigin.com
 REM
-Sub UpdateTermsList(domains as Object)
+Sub UpdateTermsList()
     Dim DialogModel As Object
     Dim ControlModel As Object
     Dim meaning as String
 	Dim synonyms As Variant
+	Dim domains as Object
 
+	domains = result.foreignTerm.domaines
 	If IsNull(mainDialog) OR isNull(domains) Then
 		&apos; Should never happens...
 		Exit Sub
