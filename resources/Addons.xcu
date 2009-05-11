@@ -60,7 +60,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 <!-- Impossible de renommer la barre, voir http://www.openoffice.org/servlets/ReadMsg?list=dev&msgNo=13875 -->
       	<node oor:name="OfficeToolBar">
 			<prop oor:name="Title" oor:type="xs:string">
-				<value xml:lang="fr-FR">Correcteur terminologique</value>
+				<value xml:lang="fr">Correcteur terminologique</value>
 			</prop>
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.boutons" oor:op="replace">
 				<node oor:name="activate" oor:op="replace">
@@ -71,7 +71,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value />
 					</prop>
 					<prop oor:name="Title" oor:type="xs:string">
-						<value xml:lang="fr-FR">Activer la correction terminologique en cours de frappe</value>
+						<value xml:lang="fr">Activer la correction terminologique en cours de frappe</value>
 					</prop>
 					<prop oor:name="Target" oor:type="xs:string">
 						<value>_self</value>
@@ -88,7 +88,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value />
 					</prop>
 					<prop oor:name="Title" oor:type="xs:string">
-						<value xml:lang="fr-FR">Vérifier tout le document</value>
+						<value xml:lang="fr">Vérifier tout le document</value>
 					</prop>
 					<prop oor:name="Target" oor:type="xs:string">
 						<value>_self</value>
@@ -105,7 +105,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value />
 					</prop>
 					<prop oor:name="Title" oor:type="xs:string">
-						<value xml:lang="fr-FR">Vérifier la sélection</value>
+						<value xml:lang="fr">Vérifier la sélection</value>
 					</prop>
 					<prop oor:name="Target" oor:type="xs:string">
 						<value>_self</value>
@@ -140,7 +140,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				oor:name="org.linagora.clients.minefi.dpma.terminologie.menu"
 				oor:op="replace">
 				<prop oor:name="Title" oor:type="xs:string">
-					<value xml:lang="fr-FR">Correcteur terminologique</value>
+					<value xml:lang="fr">Correcteur terminologique</value>
 				</prop>
 				<prop oor:name="Context" oor:type="xs:string">
 					<value>com.sun.star.text.TextDocument</value>
@@ -156,7 +156,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Activer la correction terminologique en cours de frappe</value>
+							<value xml:lang="fr">Activer la correction terminologique en cours de frappe</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
@@ -175,7 +175,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Ne pas activer automatiquement la correction terminologique en cours de saisie</value>
+							<value xml:lang="fr">Ne pas activer automatiquement la correction terminologique en cours de saisie</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
@@ -194,7 +194,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Activer automatiquement la correction terminologique en cours de saisie</value>
+							<value xml:lang="fr">Activer automatiquement la correction terminologique en cours de saisie</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
@@ -213,7 +213,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Vérifier tout le document</value>
+							<value xml:lang="fr">Vérifier tout le document</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
@@ -232,7 +232,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr-FR">Vérifier la sélection</value>
+							<value xml:lang="fr">Vérifier la sélection</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
