@@ -10,8 +10,6 @@ Option Explicit
 REM
 REM Data for the service layer
 REM
-&apos;Private maxwords as Integer
-
 
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
@@ -27,7 +25,7 @@ Private ignoreIdx as integer		&apos; Focus courrant des mots à ignorer
 &apos; Cela permet d&apos;éviter d&apos;avoir à ignorer plusieurs fois, des mots avant ou après le focus
 
 Private exitCode as integer &apos; OK or Cancel
-Private maxwords as Long
+Global maxwords as Long
 
 Private ReplaceArray(0) as String
 Private ReplacementArray(0) as String
@@ -44,12 +42,6 @@ Private Const sDialogName = &quot;dialogues&quot;
 Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 
 Sub Main
-	switchKeyHandler
-
- &apos;	checkForDefaultActivation
-&apos;	BasicLibraries.LoadLibrary(&quot;XrayTool&quot;)
-&apos;	terminologieService()
-&apos;	mainDialog=Dialog_ctr()
 End Sub
 
 
@@ -59,7 +51,7 @@ REM only if the service as not already be fetched.
 REM
 REM @author Romain PELISSE romain.pelisse@atosorigin.com
 REM
-Dim terminologieService_ as Object &apos; Singleton
+Global terminologieService_ as Object &apos; Singleton
 Function terminologieService() as Object
 	if  isNull(terminologieService_) then
 		terminologieService_ = createUnoService( &quot;org.atosorigin.ctOO.comp.CtOO3&quot; )
@@ -430,41 +422,38 @@ End function
 Function selectPart(theText as Object,maxwords as Integer) as Object
 	Dim viewCursor as Object
 	Dim portionCursor as Object 
-	Dim startWordCursor as Object
-	Dim endWordCursor as Object
+	Dim wordCursor as Object
 	Dim paragraphCursor as Object
 	Dim nbCharacter as integer
 	
 	viewCursor=ThisComponent.currentController.viewCursor
-	startWordCursor = theText.createTextCursorByRange(viewCursor)
-	endWordCursor = theText.createTextCursorByRange(viewCursor)
+	wordCursor = theText.createTextCursorByRange(viewCursor)
 	paragraphCursor = theText.createTextCursorByRange(viewCursor)
 	portionCursor = theText.createTextCursorByRange(viewCursor)
 	
 	paragraphCursor.gotoStartOfParagraph(false)
 	paragraphCursor.gotoEndOfParagraph(true)
 	
-	startWordCursor.gotoStartOfWord(false)
+	wordCursor.gotoStartOfWord(false)
 	for nbCharacter = 1 to maxwords
-		startWordCursor.gotoPreviousWord(false)
+		wordCursor.gotoPreviousWord(false)
 	next
-	
+
+	wordCursor.gotoRange(viewCursor.start,true)
 	for nbCharacter = 1 to maxwords - 1
-		endWordCursor.gotoNextWord(true) 
+		wordCursor.gotoNextWord(true) 
 	next
-	endWordCursor.gotoEndOfWord(false)
+	wordCursor.gotoEndOfWord(true)
 
 	portionCursor = theText.createTextCursor()
-	if (theText.compareRegionStarts(startWordCursor,paragraphCursor) &gt; 0) then
-		portionCursor.gotoRange(endWordCursor.start,false)
-	else
-		portionCursor.gotoRange(paragraphCursor.start,false)
-	end if
-	if (theText.compareRegionStarts(startWordCursor,paragraphCursor) &gt; 0) then
-		portionCursor.gotoRange(endWordCursor.end,true)
+	
+	portionCursor.gotoRange(wordCursor.start,false)
+	if (theText.compareRegionStarts(wordCursor,paragraphCursor) &lt; 0) then
+		portionCursor.gotoRange(wordCursor.end,true)
 	else
 		portionCursor.gotoRange(paragraphCursor.end,true)
 	end if
+	&apos;viewCursor.gotoRange(portionCursor,false)
 
 	REM calcul la position courant par rapport à la selection
 	Dim delta as Object
@@ -614,6 +603,7 @@ REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM
 Sub toggleChecking
+	terminologieService &apos; Initialize maxword
 	keyHandlerState = (NOT keyHandlerState)
 End Sub
 REM
@@ -724,7 +714,7 @@ REM
 Global count as Integer
 Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
 	handlingKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
-	If ( isWordBoundary(keyEvent.keyChar) ) Then
+	If ( isWordBoundary(keyEvent) ) Then
 		Dim visualCursor as Object
 	On ERROR RESUME NEXT &apos; FIXME: bug with header/footer,table	
 		oldViewCursor = ThisComponent.Text.createTextCursorByRange(ThisComponent.currentController.viewCursor)
@@ -744,28 +734,47 @@ REM @return boolean
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Global oCharacterClassification as Object
-Function isWordBoundary(sKeyChar as String) as Boolean
+Function isWordBoundary(keyEvent as Object) as Boolean
         dim oCharacterClassification as Object, nUnicodeType as integer
+
+	Select Case keyEvent.KeyCode
+		Case com.sun.star.awt.Key.RETURN
+		   isWordBoundary = true
+		   exit function
+		Case com.sun.star.awt.Key.TAB
+		   isWordBoundary = true
+		   exit function
+&apos;		Case com.sun.star.awt.Key.DELETE
+&apos;		Case com.sun.star.awt.Key.ESCAPE
+&apos;		Case com.sun.star.awt.Key.DOWN
+&apos;		Case com.sun.star.awt.Key.UP
+&apos;		Case com.sun.star.awt.Key.LEFT
+&apos;		Case com.sun.star.awt.Key.RIGHT
+	End Select
+
+
+	if (isNull(oCharacterClassification)) then
         oCharacterClassification = CreateUnoService(&quot;com.sun.star.i18n.CharacterClassification&quot;)
-        nUnicodeType = oCharacterClassification.getType(sKeyChar,0)
-        If _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.SPACE_SEPARATOR Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.LINE_SEPARATOR Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.PARAGRAPH_SEPARATOR Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.INITIAL_PUNCTUATION Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.FINAL_PUNCTUATION Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.CONNECTOR_PUNCTUATION Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_PUNCTUATION Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.START_PUNCTUATION Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.END_PUNCTUATION Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.MATH_SYMBOL Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.CURRENCY_SYMBOL Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.MODIFIER_SYMBOL Or _
-                nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_SYMBOL Then
-                isWordBoundary = true
-        Else
-                isWordBoundary = false
-        Endif
+    end if
+	nUnicodeType = oCharacterClassification.getType(keyEvent.KeyChar,0)
+	If _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.SPACE_SEPARATOR Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.LINE_SEPARATOR Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.PARAGRAPH_SEPARATOR Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.INITIAL_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.FINAL_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.CONNECTOR_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.START_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.END_PUNCTUATION Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.MATH_SYMBOL Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.CURRENCY_SYMBOL Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.MODIFIER_SYMBOL Or _
+		nUnicodeType = com.sun.star.i18n.UnicodeType.OTHER_SYMBOL Then
+		isWordBoundary = true
+	Else
+		isWordBoundary = false
+	Endif
 End Function
 
 REM
