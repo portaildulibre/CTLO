@@ -42,6 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="out.path" 			value="bin/ant" 					/>
 	<property name="version" 			value="0.4" 						/>
 	<property name="src.java"			value="src/java"					/>
+	<property name="src.test"			value="src/tests"					/>
 	<property name="src.xsl"			value="src/xsl"						/>
 	<property name="src.idl"			value="src/idl"						/>
 	<property name="src.starbasic"			value="src/starbasic/terminologie"			/>
@@ -61,7 +62,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="dict.inclusion"			value="liste.inclusion.txt"				/>
 	<property name="dict.inclusion.xml"		value="${target}/inclusions.xml"			/>
 
-	<property name="tests"				value="tests"						/>
+	<property name="tests"				value="src/test"					/>
 	<property name="tests.classes"			value="${target}/tests/classes"				/>
 	<property name="tests.reports"			value="${target}/reports/test"				/>
 	<property name="tests.coverage"			value="${target}/coverage/"				/>
