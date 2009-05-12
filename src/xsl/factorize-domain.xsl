@@ -25,9 +25,6 @@
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
-	<xsl:param name="ref-filename"/>
-	<xsl:variable name="ref-file"	select="document($ref-filename)"/>
-
 	<!-- Copy all nodes from here.  -->
     	<xsl:template match="@*|node()">
 		<xsl:copy>
