@@ -28,10 +28,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	    -->
 	<property file="build.properties"/>
 	
+	<!-- properties specific to OOo -->
         <property name="OOo_SDK"        value="${OOo_HOME}/basis3.0/"/>
         <property name="unopkg.exe"     value="${OOo_SDK}/ure-link/bin/uno.bin"/>
         <property name="project.lib"    value="${OOo_SDK}/program/classes/"/>
         <property name="artifacts"      value="${basedir}/artifact/"/>
+	<property name="idlc.exe"	value="${OOo_HOME}/basis-link/sdk/bin/idlc"/>
+	<property name="remerge.exe"	value="${OOo_HOME}/basis-link/sdk/bin/regmerge"/>
+	<property name="javamaker.exe"	value="${OOo_HOME}/basis-link/sdk/bin/javamaker"/>
 
 
 	<!-- Regular project property -->
@@ -40,24 +44,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="src.java"			value="src/java"					/>
 	<property name="src.xsl"			value="src/xsl"						/>
 	<property name="src.idl"			value="src/idl"						/>
-	<property name="src.starbasic"		value="src/starbasic/terminologie"	/>
+	<property name="src.starbasic"			value="src/starbasic/terminologie"			/>
 
 	<property name="target"				value="target"						/>
-	<property name="classes"			value="${target}/classes"			/>
-	<property name="package"			value="${target}/package"			/>	
+	<property name="target.generated"		value="${target}/generated"				/>
+	<property name="target.generated.types"		value="${target.generated}/types.rdb"			/>
+	<property name="target.generated.classes"	value="${target.generated}/classes"			/>
+	<property name="target.generated.urd"		value="${target.generated}/urd/"			/>
+
+	<property name="classes"			value="${target}/classes"				/>
+	<property name="package"			value="${target}/package"				/>	
 	<property name="dict"				value="data"						/>
-	<property name="dict.xml"			value="${target}/terminologie.xml"	/>
-	<property name="dict.exclusion"		value="liste.exclusion.txt"			/>
-	<property name="dict.exclusion.xml"	value="${target}/exclusions.xml"	/>
-	<property name="dict.inclusion"		value="liste.inclusion.txt"			/>
-	<property name="dict.inclusion.xml"	value="${target}/inclusions.xml"	/>
+	<property name="dict.xml"			value="${target}/terminologie.xml"			/>
+	<property name="dict.exclusion"			value="liste.exclusion.txt"				/>
+	<property name="dict.exclusion.xml"		value="${target}/exclusions.xml"			/>
+	<property name="dict.inclusion"			value="liste.inclusion.txt"				/>
+	<property name="dict.inclusion.xml"		value="${target}/inclusions.xml"			/>
 
 	<property name="tests"				value="tests"						/>
-	<property name="tests.classes"		value="${target}/tests/classes"		/>
-	<property name="tests.reports"		value="${target}/reports/test"		/>
-	<property name="tests.coverage"		value="${target}/coverage/"			/>
-	<property name="REPO"				value="/home/rpelisse/.m2/repository"/>
-	<property name="rulesets"			value="resources/pmd.xml"			/>
+	<property name="tests.classes"			value="${target}/tests/classes"				/>
+	<property name="tests.reports"			value="${target}/reports/test"				/>
+	<property name="tests.coverage"			value="${target}/coverage/"				/>
+	<property name="REPO"				value="/home/rpelisse/.m2/repository"			/>
+	<property name="rulesets"			value="resources/pmd.xml"				/>
 	
 	<!-- Project classpath : contains anything required to build the plugin -->
 	
@@ -69,7 +78,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<fileset dir="${plugin.lib}">
 			<include name="*.jar"/>
 		</fileset>
-	      <pathelement path="${artifacts}"/>
+	    <pathelement path="${target.generated.classes}"/>
+	    <!-- fixme: to remove -->
+	    <pathelement path="${artifacts}"/>
+
 	</path>
 
 	<!-- Targets -->
@@ -85,43 +97,63 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	</target>
 
 	<target name="idl">
-
-<!--
-# Compilation des idl
-idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd ${src/idl}org/atosorigin/ctOO/*.idl
-
-# Création de la base de registre 'types.rdb'
- export LD_LIBRARY_PATH="/usr/lib/openoffice.org/ure/lib/"; /usr/lib/openoffice.org/basis3.0/sdk/bin/regmerge target/types.rdb /UCR target/urd/*.urd
-
-
-# Création des classes
-/usr/lib/openoffice.org/basis3.0/sdk/bin/javamaker -BUCR -nD -Torg.atosorigin.ctOO.* -O ./target/classes target/types.rdb /usr/lib/openoffice.org/ure/share/misc/types.rdb
-
-      <exec executable="${unopkg.exe}"
+		
+		<mkdir dir="${target.generated}"/>
+		<echo>
+		idl compilation:
+		(Warning, compile only specified idl classes !)
+		</echo>
+		<!-- as using a wildcard in a file/arg statement does not seems
+			to work... -->
+		<exec executable="${idlc.exe}"
 		      failonerror="yes"
 		      failifexecutionfails="yes">
-			<arg value="add"/>
-			<arg value="-v"/>
-			<arg file="${target}/${ant.project.name}-${version}.oxt"/>
+			<arg value="-I${OOo_HOME}/basis-link/sdk/idl/;${src.idl}"/>
+			<arg value="-O"/>
+			<arg file="${target.generated.urd}"/>
+			<arg file="${src.idl}/org/atosorigin/ctOO/CtOO3.idl"/>
+			<arg file="${src.idl}/org/atosorigin/ctOO/Result.idl"/>
+			<arg file="${src.idl}/org/atosorigin/ctOO/XCtOO3.idl"/>
 		</exec>
-
--->
+		<echo>
+		registry creation 'types.rdb'
+		</echo>
+	
+		<exec executable="${remerge.exe}"
+		      failonerror="yes"
+		      failifexecutionfails="yes">
+		    <env key="LD_LIBRARY_PATH" path="${OOo_HOME}/ure/lib/"/>  
+		    <arg file="${target.generated.types}"/>
+		    <arg value="/UCR"/>
+		    <arg file="${target.generated.urd}/CtOO3.urd"/>
+		    <arg file="${target.generated.urd}/Result.urd"/>
+		    <arg file="${target.generated.urd}/XCtOO3.urd"/>	      
+		</exec>
+	
+		 <echo>Classes generation</echo>	
+		 <exec executable="${javamaker.exe}"
+		       failonerror="yes"
+		       failifexecutionfails="yes">
+		       <arg value="-BUCR"/>
+		       <arg value="-nD"/>
+		       <arg value="-Torg.atosorigin.ctOO.Result;org.atosorigin.ctOO.XCtOO3;org.atosorigin.ctOO.CtOO3"/> 
+		       <arg value="-O"/> 
+		       <arg file="${target.generated.classes}"/>
+                       <arg file="${target.generated.types}"/>
+		       <arg file="${OOo_HOME}/ure/share/misc/types.rdb"/>
+		 </exec>
 	</target>
+	
 	<target name="compile" 
 		depends="init,idl"
 		description="Compile project source code">
-		
+
+		<!-- fixme: some classes are not generated by the previous task -->
 		<mkdir dir="${classes}"/>
-		<!-- TODO -->
-		<!-- invoquer javamaker -->
-		<!--
-		javamaker
-		-->
-		<javac srcdir="${src.java}:${artifacts}"
+		<javac srcdir="${src.java}:${target.generated.classes}:artifact"
 		       destdir="${classes}"
-		       debug="true"> <!-- FIXME: should not be debug for release-->
-			
-			<classpath refid="project.classpath"/>
+		       debug="false">
+		       <classpath refid="project.classpath"/>
 		</javac>
 	</target>
 	
