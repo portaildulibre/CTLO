@@ -49,6 +49,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="dict.xml"			value="${target}/terminologie.xml"	/>
 	<property name="dict.exclusion"		value="liste.exclusion.txt"			/>
 	<property name="dict.exclusion.xml"	value="${target}/exclusions.xml"	/>
+	<property name="dict.inclusion"		value="liste.inclusion.txt"			/>
+	<property name="dict.inclusion.xml"	value="${target}/inclusions.xml"	/>
+
 	<property name="tests"				value="tests"						/>
 	<property name="tests.classes"		value="${target}/tests/classes"		/>
 	<property name="tests.reports"		value="${target}/reports/test"		/>
@@ -147,9 +150,36 @@ idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd ${src/idl}org
 		<copy file="${working.copy}" tofile="${dict.exclusion.xml}"/>
 	</target>
 	
+	<target name="generate-inclusion-list">
+		<property name="working.copy"	value="${target}/${dict.inclusion}"/>
+		<delete file="${working.copy}"/>
+		
+		<copy file="resources/${dict.inclusion}" tofile="${working.copy}"/>
+		<replaceregexp byline="true">
+			<regexp pattern="(^[^$].*)=(.*)"/>
+			<substitution expression="   &lt;include anchor='\2'&gt;\1&lt;/include&gt;"/>
+			<fileset dir="." includes ="${working.copy}"/>
+		 </replaceregexp>
+
+		<replaceregexp byline="true">
+			 <regexp pattern="^.*====FIN(.*)"/>
+			 <substitution expression="&lt;/includes&gt;"/>
+			 <fileset dir="." includes ="${working.copy}"/>
+		</replaceregexp>
+		 
+		<replaceregexp byline="true">
+			<regexp pattern="^.*====DEBUT(.*)"/>
+			<substitution expression="&lt;!-- This file is generated automaticly, do not edit --&gt;&lt;includes&gt;"/>
+			<fileset dir="." includes ="${working.copy}"/>
+		</replaceregexp>	
+		<copy file="${working.copy}" tofile="${dict.inclusion.xml}"/>
+	</target>	
+	
+	
+	
 	<!-- Generating data file from FranceTerme extraction -->
 	
-	<target name="generate-xml-file" depends="generate-exclusion-list">
+	<target name="generate-xml-file" depends="generate-exclusion-list,generate-inclusion-list">
 		<!-- FranceTerme syntax is simplified and data reorganized to
 		     be "anglicism" driven... -->
 		<property name="out" value="${target}/franceterme-adapted.xml"/>
@@ -217,13 +247,35 @@ idlc "-I${OOo_HOME}/basis3.0/sdk/idl/;${src/idl}" -O ${target}/urd ${src/idl}org
 			out="${dev.null}">
 		</xslt>
 		
-				
+		<!-- Ok, now we add new terms that match a french word, based on a inclusion list --> 
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/terms-inclusion.xsl"
+			out="${database-without-homographies}.inclusions-added.xml">
+			<param name="inclusion-file" expression="${basedir}/${dict.inclusion.xml}"/>
+			<param name="ref-filename"   expression="${basedir}/${database-without-homographies}"/>
+		</xslt>
+		<copy file="${database-without-homographies}.inclusions-added.xml" 
+		      tofile="${database-without-homographies}"/>
+		<!-- How many entries have we left now ? -->
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/nb-anglicisms.xsl"
+			out="${dev.null}">
+		</xslt>
+			
 		<!-- and then we factorize the domains of the remaining entries -->
 		<xslt 	in="${database-without-homographies}"
 			style="src/xsl/factorize-domain.xsl"
 			out="${database-without-homographies}.factorized">
 		</xslt>
 		 <move file="${database-without-homographies}.factorized" tofile="${dict.xml}"/>
+		 
+		<!-- How many entries have we left now ? -->
+		<xslt 	in="${database-without-homographies}"
+			style="src/xsl/nb-anglicisms.xsl"
+			out="${dev.null}">
+		</xslt>
+
+		 
 		<!--
 			Here we are done for the extension part, we still have double entries
 			inside a <synmonymes> element, but the XMLDictionnary Handler in the

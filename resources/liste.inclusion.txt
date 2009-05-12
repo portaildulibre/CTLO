@@ -1,0 +1,3 @@
+====DEBUT DE LA LISTE D'EXCLUSION====
+mail=courriel
+====FIN DE LA LISTE D'EXCLUSION===
