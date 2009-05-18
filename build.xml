@@ -29,10 +29,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property file="build.properties"/>
 	
 	<!-- properties specific to OOo -->
-        <property name="OOo_SDK"        value="${OOo_HOME}/basis3.0/"/>
-        <property name="unopkg.exe"     value="${OOo_SDK}/ure-link/bin/uno.bin"/>
-        <property name="project.lib"    value="${OOo_SDK}/program/classes/"/>
-        <property name="artifacts"      value="${basedir}/artifact/"/>
+	<property name="OOo_SDK"        value="${OOo_HOME}/basis3.0/"/>
+	<property name="unopkg.exe"     value="${OOo_SDK}/ure-link/bin/uno.bin"/>
+	<property name="project.lib"    value="${OOo_SDK}/program/classes/"/>
 	<property name="idlc.exe"	value="${OOo_HOME}/basis-link/sdk/bin/idlc"/>
 	<property name="remerge.exe"	value="${OOo_HOME}/basis-link/sdk/bin/regmerge"/>
 	<property name="javamaker.exe"	value="${OOo_HOME}/basis-link/sdk/bin/javamaker"/>
@@ -45,28 +44,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<property name="src.test"			value="src/tests"					/>
 	<property name="src.xsl"			value="src/xsl"						/>
 	<property name="src.idl"			value="src/idl"						/>
-	<property name="src.starbasic"			value="src/starbasic/terminologie"			/>
+	<property name="src.starbasic"		value="src/starbasic/terminologie"	/>
 
-	<property name="target"				value="target"						/>
-	<property name="target.generated"		value="${target}/generated"				/>
-	<property name="target.generated.types"		value="${target.generated}/types.rdb"			/>
-	<property name="target.generated.classes"	value="${target.generated}/classes"			/>
-	<property name="target.generated.urd"		value="${target.generated}/urd/"			/>
+	<property name="target"						value="target"							/>
+	<property name="target.generated"			value="${target}/generated"				/>
+	<property name="target.generated.types"		value="${target.generated}/types.rdb"	/>
+	<property name="target.generated.classes"	value="${target.generated}/classes"		/>
+	<property name="target.generated.urd"		value="${target.generated}/urd/"		/>
 
 	<property name="classes"			value="${target}/classes"				/>
 	<property name="package"			value="${target}/package"				/>	
-	<property name="dict"				value="data"						/>
-	<property name="dict.xml"			value="${target}/terminologie.xml"			/>
-	<property name="dict.exclusion"			value="liste.exclusion.txt"				/>
-	<property name="dict.exclusion.xml"		value="${target}/exclusions.xml"			/>
-	<property name="dict.inclusion"			value="liste.inclusion.txt"				/>
-	<property name="dict.inclusion.xml"		value="${target}/inclusions.xml"			/>
+	<property name="dict"				value="data"							/>
+	<property name="dict.xml"			value="${target}/terminologie.xml"		/>
+	<property name="dict.exclusion"		value="liste.exclusion.txt"				/>
+	<property name="dict.exclusion.xml"	value="${target}/exclusions.xml"		/>
+	<property name="dict.inclusion"		value="liste.inclusion.txt"				/>
+	<property name="dict.inclusion.xml"	value="${target}/inclusions.xml"		/>
 
-	<property name="tests"				value="src/test"					/>
-	<property name="tests.classes"			value="${target}/tests/classes"				/>
-	<property name="tests.reports"			value="${target}/reports/test"				/>
-	<property name="tests.coverage"			value="${target}/coverage/"				/>
-	<property name="REPO"				value="/home/rpelisse/.m2/repository"			/>
+	<property name="tests"				value="src/test"						/>
+	<property name="tests.classes"		value="${target}/tests/classes"			/>
+	<property name="tests.reports"		value="${target}/reports/test"			/>
+	<property name="tests.coverage"		value="${target}/coverage/"				/>
+	<property name="REPO"				value="/home/rpelisse/.m2/repository"	/>
 	<property name="rulesets"			value="resources/pmd.xml"				/>
 	
 	<!-- Project classpath : contains anything required to build the plugin -->
@@ -80,8 +79,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<include name="*.jar"/>
 		</fileset>
 	    <pathelement path="${target.generated.classes}"/>
-	    <!-- fixme: to remove -->
-	    <pathelement path="${artifacts}"/>
 
 	</path>
 
@@ -137,11 +134,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		       failifexecutionfails="yes">
 		       <arg value="-BUCR"/>
 		       <arg value="-nD"/>
-		       <arg value="-Torg.atosorigin.ctOO.Result;org.atosorigin.ctOO.XCtOO3;org.atosorigin.ctOO.CtOO3"/> 
+		       <arg value="-Torg.atosorigin.ctOO.*"/> 
 		       <arg value="-O"/> 
 		       <arg file="${target.generated.classes}"/>
-                       <arg file="${target.generated.types}"/>
-		       <arg file="${OOo_HOME}/ure/share/misc/types.rdb"/>
+               <arg file="${target.generated.types}"/>
+		       <arg file="${OOo_URE}/share/misc/types.rdb"/>
 		 </exec>
 	</target>
 	
@@ -354,7 +351,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				<attribute 	name="RegistrationClassName" 		
 						 value="org.atosorigin.ctOO.comp.CtOO3Impl" />
 			</manifest>
-			<fileset dir="${artifacts}" includes="**/*.class"/>
+			<fileset dir="${target.generated.classes}" includes="**/*.class"/>
 			<fileset dir="${target}">
 				<include name="terminologie.xml"/>
 			</fileset>
@@ -389,8 +386,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<fileset dir="${target}"				includes="terminologie/**/*"		/>
 			<fileset dir="${basedir}/resources"		includes="images/"					/>
 			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
+			<fileset dir="target/generated"			includes="types.rdb"				/> 
 			<fileset dir="${basedir}/resources"     includes="Events.xcu"   			/> 
-			<fileset dir="${artifacts}"				includes="types.rdb"				/> 
 			<fileset dir="${target}"				includes="${ant.project.name}-${version}.jar"	/>
 		</zip>
 		<delete dir="${package}" />

@@ -5,4 +5,8 @@ CVS/*
 target/*
 .settings/*
 .pmd
+<<<<<<< /home/pprados/workspace/ctOO2/.hgignore
+.~lock*#
+=======
 ~
+>>>>>>> /tmp/.hgignore~other.1HNUJU
