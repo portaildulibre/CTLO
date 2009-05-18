@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="help_text" dlg:left="99" dlg:top="12" dlg:width="288" dlg:height="356" dlg:closeable="true" dlg:moveable="true" dlg:title="Aide du correcteur terminologique">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="help_text" dlg:left="99" dlg:top="12" dlg:width="288" dlg:height="364" dlg:closeable="true" dlg:moveable="true" dlg:title="Aide du correcteur terminologique">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:background-color="0xffffff" dlg:border="simple"/>
  </dlg:styles>
@@ -27,6 +27,6 @@
   <dlg:text dlg:id="Label19" dlg:tab-index="19" dlg:left="2" dlg:top="262" dlg:width="281" dlg:height="8"/>
   <dlg:text dlg:id="Label20" dlg:tab-index="20" dlg:left="2" dlg:top="304" dlg:width="281" dlg:height="35" dlg:value="Les termes étrangers détectés et les termes français de remplacement sont extraits de la base FranceTerme de la Délégation générale à la langue française et aux langues de France, qui comprend l&apos;ensemble des termes publiés au Journal officiel français. La base est consultable par un lien cliquable dans la fenêtre du correcteur." dlg:multiline="true"/>
   <dlg:text dlg:id="Label21" dlg:tab-index="21" dlg:left="2" dlg:top="296" dlg:width="281" dlg:height="8"/>
-  <dlg:button dlg:id="CommandButton1" dlg:tab-index="22" dlg:left="207" dlg:top="333" dlg:width="59" dlg:height="19" dlg:value="Ok" dlg:button-type="ok"/>
+  <dlg:button dlg:id="CommandButton1" dlg:tab-index="22" dlg:left="249" dlg:top="345" dlg:width="29" dlg:height="12" dlg:value="Fermer" dlg:button-type="ok"/>
  </dlg:bulletinboard>
 </dlg:window>

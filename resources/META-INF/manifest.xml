@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 Correcteur terminologique - éradication des anglicismes.
-Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
-
+Copyright (C) 2006 Linagora SA
+Copyright (C) 2009 Atos Orign
+	Manuel Odesser <modesser@linagora.com>
+	Sebastien Bahloul <bahloul@linagora.com>
+	Romain PELISSE <romain.pelisse@atosorigin.com>
+	Philippe PRADOS <philippe.prados@atosorigin.com>
+	
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either

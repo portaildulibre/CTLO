@@ -67,7 +67,7 @@ public class UnitTest
 		// Vérifie le classement des résultats
 		r=parser.find("cell library");
 		Assert.assertEquals(2,r.length);
-		Assert.assertTrue(r[0].stop>r[1].stop);
+		Assert.assertTrue(r[0].len>r[1].len);
 	}
 	
 	@org.junit.Test
@@ -79,7 +79,7 @@ public class UnitTest
 		r=parser.find("databases");
 		Assert.assertEquals(1,r.length);
 		Assert.assertEquals(0,r[0].start);
-		Assert.assertEquals(9,r[0].stop);
+		Assert.assertEquals(9,r[0].len);
 	}
 	@org.junit.Test
 	public void testTiret()
@@ -90,7 +90,7 @@ public class UnitTest
 		r=parser.find("back-up");
 		Assert.assertEquals(1, r.length);
 		Assert.assertEquals(0,r[0].start);
-		Assert.assertEquals(7,r[0].stop);
+		Assert.assertEquals(7,r[0].len);
 	}
 	@org.junit.Test
 	public void testDouble()

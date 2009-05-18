@@ -2,7 +2,6 @@ package org.atosorigin.ctOO.comp;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.atosorigin.ctOO.Result;
@@ -19,7 +18,7 @@ public final class CtOO3Impl extends WeakBase
    implements com.sun.star.lang.XServiceInfo,
               org.atosorigin.ctOO.XCtOO3
 {
-    private final XComponentContext m_xContext;
+    //private final XComponentContext m_xContext;
     private static final String m_implementationName = CtOO3Impl.class.getName();
     private static final String[] m_serviceNames = {
         "org.atosorigin.ctOO.comp.CtOO3" };
@@ -32,7 +31,7 @@ public final class CtOO3Impl extends WeakBase
     
     public CtOO3Impl( XComponentContext context )
     {
-        m_xContext = context;
+        //m_xContext = context;
 		try
 		{
 			InputStream in=new BufferedInputStream(foreignTerms.openStream());

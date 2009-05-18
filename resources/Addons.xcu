@@ -2,8 +2,11 @@
 <!--
 Correcteur terminologique - éradication des anglicismes.
 Copyright (C) 2006 Linagora SA
+Copyright (C) 2009 Atos Orign
 	Manuel Odesser <modesser@linagora.com>
 	Sebastien Bahloul <bahloul@linagora.com>
+	Romain PELISSE <romain.pelisse@atosorigin.com>
+	Philippe PRADOS <philippe.prados@atosorigin.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -175,7 +178,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr">Ne pas activer automatiquement la correction terminologique en cours de saisie</value>
+							<value xml:lang="fr">Ne pas activer automatiquement la correction terminologique en cours de frappe</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
@@ -194,7 +197,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr">Activer automatiquement la correction terminologique en cours de saisie</value>
+							<value xml:lang="fr">Activer automatiquement la correction terminologique en cours de frappe</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>

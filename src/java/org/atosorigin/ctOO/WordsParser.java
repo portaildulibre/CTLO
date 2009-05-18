@@ -407,11 +407,11 @@ public class WordsParser
 					{
 						final Result result=new Result();
 						result.start=start;
-						result.stop=word.pos+word.word.length()-start;
+						result.len=word.pos+word.word.length()-start;
 						result.foreignTerm=find.foreignTerm;
 						results.add(result);
 						if (log)
-							System.out.println("ADD \"" + find.foreignTerm + "\" de " + result.start + " à " + result.stop);
+							System.out.println("ADD \"" + find.foreignTerm + "\" de " + result.start + " pour " + result.len);
 					}
 					cur = find;
 					continue here;
@@ -435,7 +435,7 @@ public class WordsParser
 				{
 					if (o1.start==o2.start)
 					{
-						return o2.stop-o1.stop;
+						return o2.len-o1.len;
 					}
 					else
 						return o1.start-o2.start;
