@@ -341,9 +341,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<!-- Assembling the jar file -->
 	
 	<target name="jar" 
-		depends="compile,generate-xml-file,version"
-		description="Create jar file">
-
+		description="Create jar file"
+		depends="compile,generate-xml-file,version">
 		<jar 	basedir="${classes}" 
 		     	includes="**/*" 
 			destfile="${target}/${ant.project.name}-${version}.jar">
