@@ -1002,23 +1002,22 @@ REM
 REM @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
 REM 
 Sub OpenExternalDatasourceURL()
-	Dim objlancer
-	Dim handleErrors
+	Dim objlancer as Object
+	Dim handleErrors as Object
 	Dim adress as String
 	Dim term As String
 	Dim httpValidTerm As String
 	
-	on error resume next
+&apos;	on error resume next
+	term =	mainDialog.getModel().getByName(REMPLACEMENT_FIELD_NAME).getPropertyValue(&quot;Text&quot;)
 	&apos; FUTURE: When FranceTerme handle properly accentued character passed by Get
 	&apos; this next call should be removed
-	term =	mainDialog.getModel().getByName(REMPLACEMENT_FIELD_NAME).getPropertyValue(&quot;Text&quot;)
 	httpValidTerm = replaceNotHttpSupportedCharacter(term)
 	&apos; building the appropriate URL
 	adress = ConvertToURL(&quot;http://franceterme.culture.fr/FranceTerme/recherche.html?TERME=&quot; + httpValidTerm)
 	&apos; calling the external service
-	handleErrors = com.sun.star.system.SystemShellExecuteFlags.NO_SYSTEM_ERROR_MESSAGE &apos;=1 or DEFAULTS=0
 	objlancer = CreateUnoService(&quot;com.sun.star.system.SystemShellExecute&quot;)
-	objlancer.execute(adresse, &quot;&quot;, handleErrors)
+	objlancer.execute(adress, &quot;&quot;, 0)
 End Sub
 
 REM
@@ -1051,9 +1050,39 @@ Function replaceNotHttpSupportedCharacter(maChaine As String)
     Wend
    Next j
   Next i
-  replaceNotHttpSupportedCharacter = replace(maChaine,&quot;œ&quot;,&quot;oe&quot;)
+  Dim str As String
+  str = StrSubstitute(maChaine,&quot;œ&quot;,&quot;oe&quot;)
+  replaceNotHttpSupportedCharacter = str
 End Function
 
+REM
+REM The original string, cString, is modified by this function and then returned.
+REM All occurences of cFindStr are replaced by cReplaceStr.
+REM cFindStr and cReplaceStr do not need to be the same length.
+REM 
+REM	@author DannyB (http://www.oooforum.org/forum/viewtopic.phtml?t=5374)
+REM
+Function StrSubstitute( ByVal cString As String,_
+         ByVal cFindStr As String, ByVal cReplaceStr As String ) As String
+   Dim cResult As String
+   Dim nPos As Integer
+   
+   cResult = &quot;&quot;
+   If Len( cFindStr ) &gt; 0 Then
+      Do
+         nPos = Instr( 1, cString, cFindStr, 0 )
+         If nPos &gt; 0 Then
+            cResult = cResult &amp; Left( cString, nPos-1 )
+            cResult = cResult &amp; cReplaceStr
+            cString = Mid( cString, nPos+Len(cFindStr) )
+         Else
+            &apos; Append the rest of the original string.
+            cResult = cResult &amp; cString
+         EndIf
+      Loop Until nPos = 0
+   EndIf
+   StrSubstitute() = cResult
+End Function 
 
 
 REM Select part of the  
