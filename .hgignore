@@ -1,12 +1,12 @@
 CVS/*
-.cvsignore
-.project
-.settings/org.eclipse.jdt.core.prefs
-target/*
-.settings/*
-.pmd
-<<<<<<< /home/pprados/workspace/ctOO2/.hgignore
+^.cvsignore
+^.project
+^.settings/org.eclipse.jdt.core.prefs
+^target/*
+^.settings/*
+^.pmd
 .~lock*#
-=======
 ~
->>>>>>> /tmp/.hgignore~other.1HNUJU
+^bin
+^.classpath
+^.metadata
