@@ -31,11 +31,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<node oor:name="Images">
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.activate" oor:op="replace">
 				<prop oor:name="URL">
-					<value>macro:///terminologie.libs.toggleChecking</value>
+					<value>macro:///terminologie.libs.activate</value>
 				</prop>
 				<node oor:name="UserDefinedImages">
 					<prop oor:name="ImageSmallURL" oor:type="xs:string">
 						<value>%origin%/images/correct_frappe.png</value>
+					</prop>
+				</node>
+			</node>
+			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.images.desactivate" oor:op="replace">
+				<prop oor:name="URL">
+					<value>macro:///terminologie.libs.desactivate</value>
+				</prop>
+				<node oor:name="UserDefinedImages">
+					<prop oor:name="ImageSmallURL" oor:type="xs:string">
+						<value>%origin%/images/no_correct_frappe.png</value>
 					</prop>
 				</node>
 			</node>
@@ -68,13 +78,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.boutons" oor:op="replace">
 				<node oor:name="activate" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
-						<value>macro:///terminologie.libs.toggleChecking</value>
+						<value>macro:///terminologie.libs.activate</value>
 					</prop>
 					<prop oor:name="ImageIdentifier" oor:type="xs:string">
 						<value />
 					</prop>
 					<prop oor:name="Title" oor:type="xs:string">
 						<value xml:lang="fr">Activer la correction terminologique en cours de frappe</value>
+					</prop>
+					<prop oor:name="Target" oor:type="xs:string">
+						<value>_self</value>
+					</prop>
+					<prop oor:name="Context" oor:type="xs:string">
+						<value>com.sun.star.text.TextDocument</value>
+					</prop>
+				</node>
+				<node oor:name="desactivate" oor:op="replace">
+					<prop oor:name="URL" oor:type="xs:string">
+						<value>macro:///terminologie.libs.desactivate</value>
+					</prop>
+					<prop oor:name="ImageIdentifier" oor:type="xs:string">
+						<value />
+					</prop>
+					<prop oor:name="Title" oor:type="xs:string">
+						<value xml:lang="fr">Désactiver la correction terminologique en cours de frappe</value>
 					</prop>
 					<prop oor:name="Target" oor:type="xs:string">
 						<value>_self</value>
@@ -153,7 +180,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						oor:name="org.linagora.clients.minefi.dpma.terminologie.x1"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
-							<value>macro:///terminologie.libs.SetupKeyHandler</value>
+							<value>macro:///terminologie.libs.activate</value>
 						</prop>
 						<prop oor:name="ImageIdentifier" oor:type="xs:string">
 							<value />
@@ -172,6 +199,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						oor:name="org.linagora.clients.minefi.dpma.terminologie.x2"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
+							<value>macro:///terminologie.libs.desactivate</value>
+						</prop>
+						<prop oor:name="ImageIdentifier" oor:type="xs:string">
+							<value />
+						</prop>
+						<prop oor:name="Title" oor:type="xs:string">
+							<value xml:lang="fr">Activer la correction terminologique en cours de frappe</value>
+						</prop>
+						<prop oor:name="Target" oor:type="xs:string">
+							<value>_self</value>
+						</prop>
+						<prop oor:name="Context" oor:type="xs:string">
+							<value>com.sun.star.text.TextDocument</value>
+						</prop>
+					</node>
+					<node
+						oor:name="org.linagora.clients.minefi.dpma.terminologie.x3"
+						oor:op="replace">
+						<prop oor:name="URL" oor:type="xs:string">
 							<value>macro:///terminologie.libs.setDefaultActivationToFalse</value>
 						</prop>
 						<prop oor:name="ImageIdentifier" oor:type="xs:string">
@@ -188,7 +234,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						</prop>
 					</node>
 					<node
-						oor:name="org.linagora.clients.minefi.dpma.terminologie.x3"
+						oor:name="org.linagora.clients.minefi.dpma.terminologie.x4"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 						      <value>macro:///terminologie.libs.setDefaultActivationToTrue</value>
@@ -207,7 +253,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						</prop>
 					</node>
 					<node
-						oor:name="org.linagora.clients.minefi.dpma.terminologie.x4"
+						oor:name="org.linagora.clients.minefi.dpma.terminologie.x5"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>macro:///terminologie.libs.checkDocument</value>
@@ -226,7 +272,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						</prop>
 					</node>
 					<node
-						oor:name="org.linagora.clients.minefi.dpma.terminologie.x5"
+						oor:name="org.linagora.clients.minefi.dpma.terminologie.x6"
 						oor:op="replace">
 						<prop oor:name="URL" oor:type="xs:string">
 							<value>macro:///terminologie.libs.SelectionOpen</value>
