@@ -76,7 +76,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				<value xml:lang="fr">Correcteur terminologique</value>
 			</prop>
 			<node oor:name="org.linagora.clients.minefi.dpma.terminologie.boutons" oor:op="replace">
-				<node oor:name="activate" oor:op="replace">
+				<!--
+					OOo order icons by their name, therefore the numbered prefix is
+					here to ensure proper ordering.
+				-->
+				<node oor:name="order1.activate" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.activate</value>
 					</prop>
@@ -93,7 +97,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
 				</node>
-				<node oor:name="desactivate" oor:op="replace">
+				<node oor:name="order2.desactivate" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.desactivate</value>
 					</prop>
@@ -110,7 +114,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
 				</node>
-				<node oor:name="checkAll" oor:op="replace">
+				<node oor:name="order3.checkAll" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.ManageDocument</value>
 					</prop>
@@ -127,7 +131,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
 				</node>
-				<node oor:name="checkSelection" oor:op="replace">
+				<node oor:name="order4.checkSelection" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.ManageSelection</value>
 					</prop>
@@ -205,7 +209,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 							<value />
 						</prop>
 						<prop oor:name="Title" oor:type="xs:string">
-							<value xml:lang="fr">Activer la correction terminologique en cours de frappe</value>
+							<value xml:lang="fr">Désactiver la correction terminologique en cours de frappe</value>
 						</prop>
 						<prop oor:name="Target" oor:type="xs:string">
 							<value>_self</value>
