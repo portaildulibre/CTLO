@@ -507,13 +507,15 @@ Sub checkForDefaultActivation
 	vRegistry = getRegistry()
 	vRootKey = vRegistry.getRootKey()
 	vMyKey = vRootKey.openKey(keyName)
-	If isNull(vMyKey) Then
-		REM no key means activation@start
-		SetupKeyHandler
-	else
+	REM Whatever is defined, we record the key Handler
+	SetupKeyHandler()
+	keyHandlerState = true
+	If NOT isNull(vMyKey) Then
 		REM if the value is not &quot;yes&quot;, we also activate...
-		if ( vMyKey.getStringValue &lt;&gt; &quot;yes&quot; ) Then
-			SetupKeyHandler	
+		Dim str As String
+		str = vMyKey.getStringValue
+		if ( vMyKey.getStringValue = &quot;yes&quot; ) Then
+			keyHandlerState = false
 		End if
 	End if	
 	REM otherwise, we do nothing, the checker is not activated
@@ -556,11 +558,15 @@ sub setDefaultActivation(state as String, mssg as String)
 	vMyKey.setStringValue(state)
 	msgbox(mssg,0,&quot;Correcteur terminologique&quot;)
 	removeHook()
+	addHook()
 	If ( state = &quot;no&quot; ) Then
-		addHook()
+		keyHandlerState = true
+	Else 
+		keyHandlerState = false		
 	End If
 	vMyKey.closeKey()
 	vRegistry.close()
+	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
 end sub 
 
 REM	***************************************************************************************************** 
@@ -583,7 +589,6 @@ Sub SetupKeyHandler
 	End If
 	removeHook
 	addHook         
-	keyHandlerState = true
 	keyMutex(&quot;set&quot;,False)                                                                                                                                 
 End Sub    
 
@@ -597,6 +602,38 @@ Sub RemoveKeyHandler
 	keyMutex(&quot;set&quot;,False)
 End Sub 
 
+REM 
+REM activate autocorrection
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM
+Sub activate
+	terminologieService 
+	SetupKeyHandler 
+	keyHandlerState = true
+&apos;	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
+End Sub
+
+REM 
+REM desactivate autocorrection
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM
+Sub desactivate
+	terminologieService 
+	keyHandlerState = false
+&apos;	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
+End Sub
+
+
+
+
+REM 
+REM Inverse current state of Key Handler
+REM
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM
+
 
 REM 
 REM Inverse current state of Key Handler
@@ -604,7 +641,7 @@ REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM
 Sub toggleChecking
-	terminologieService &apos; Initialize maxword
+	terminologieService 
 	keyHandlerState = (NOT keyHandlerState)
 End Sub
 REM
