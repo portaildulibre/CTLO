@@ -338,6 +338,7 @@ Function getReplacementTerm(result as object) as string
 	&apos; Check ignore term
 	Dim word as string
 	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
+	word = mid(cursor.String,len(cursor.ListLabelString)+1)  &apos;FIXME: renv. string dans result	
 	if not isNull(ReplaceArray) then
 		Dim index as Integer
 		for index = LBound(ReplaceArray) to UBound(ReplaceArray)
@@ -1093,7 +1094,8 @@ Function selectPartOfText(cursor as Object,result as Object) as Object
 	If not IsNull(cursor) AND not IsNull(result) then
 		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
 		selectionCursor.collapseToStart()
-		selectionCursor.goRight(result.start,false)
+		&apos; selectionCursor.goRight(result.start,false)
+		selectionCursor.goRight(result.start-len(selectionCursor.ListLabelString),false)
 		selectionCursor.goRight(result.len,true) 
 		selectPartOfText = selectionCursor
 	Else
