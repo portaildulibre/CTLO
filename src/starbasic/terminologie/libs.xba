@@ -44,6 +44,31 @@ Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 Sub Main
 End Sub
 
+REM Retreives the running OOO version
+REM http://www.oooforum.org/forum/viewtopic.phtml?t=10003&amp;highlight=getsolarversion
+REM @author : Laurent Godard &lt;listes.godard@laposte.net&gt;
+REM	@author : Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
+REM 
+REM
+Global OOoVersion_ as String
+Function OOoVersion() As String
+	If (  OOoVersion_ = &quot;&quot; ) Then 
+	  Dim aSettings, aConfigProvider
+	  Dim aParams2(0) As new com.sun.star.beans.PropertyValue
+	  Dim sProvider$, sAccess$
+	  sProvider = &quot;com.sun.star.configuration.ConfigurationProvider&quot;
+	  sAccess   = &quot;com.sun.star.configuration.ConfigurationAccess&quot;
+	  aConfigProvider = createUnoService(sProvider)
+	  aParams2(0).Name = &quot;nodepath&quot;
+	  aParams2(0).Value = &quot;/org.openoffice.Setup/Product&quot;
+	  aSettings = aConfigProvider.createInstanceWithArguments(sAccess, aParams2())
+	  _OOoVersion =  aSettings.getByName(&quot;ooSetupVersion&quot;)
+	End If
+	OOOVersion = _OOoVersion
+End Function
+
+
+
 
 REM
 REM Retrieve and build the Uno Service associated with this plugin, if and
@@ -333,12 +358,13 @@ End Function
 
 REM Return empty string or the replacement term
 Function getReplacementTerm(result as object) as string
-	getReplacementTerm=&quot;&quot;
+	getReplacementTerm = &quot;&quot;
 	
 	&apos; Check ignore term
 	Dim word as string
 	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
-	word = mid(cursor.String,len(cursor.ListLabelString)+1)  &apos;FIXME: renv. string dans result	
+	word = mid(cursor.String, 1 )  &apos;FIXME: renv. string dans result	
+
 	if not isNull(ReplaceArray) then
 		Dim index as Integer
 		for index = LBound(ReplaceArray) to UBound(ReplaceArray)
@@ -1132,7 +1158,7 @@ Function selectPartOfText(cursor as Object,result as Object) as Object
 		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
 		selectionCursor.collapseToStart()
 		&apos; selectionCursor.goRight(result.start,false)
-		selectionCursor.goRight(result.start-len(selectionCursor.ListLabelString),false)
+		selectionCursor.goRight(result.start,false)
 		selectionCursor.goRight(result.len,true) 
 		selectPartOfText = selectionCursor
 	Else
