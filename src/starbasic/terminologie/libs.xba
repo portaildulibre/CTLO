@@ -566,7 +566,7 @@ sub setDefaultActivation(state as String, mssg as String)
 	End If
 	vMyKey.closeKey()
 	vRegistry.close()
-	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
+REM	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
 end sub 
 
 REM	***************************************************************************************************** 
