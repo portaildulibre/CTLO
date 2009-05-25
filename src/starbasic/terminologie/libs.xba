@@ -295,25 +295,28 @@ Function getWorkload() as Boolean
 						result=results(Iterator_cur)
 					loop while not (result.start&lt;poscurrent and poscurrent &lt;= result.start+result.len )
 				end if
-				if (Iterator_cur() &lt;= UBound(results)  )  then
-					result=results(Iterator_cur)
-					remplacement = getReplacementTerm(result)
-					if (remplacement&lt;&gt; &quot;&quot;) then
-						replaceCursor = selectPartOfText(cursor,result)
-						REM Case where replace by himself
-						if (InStr(remplacement,replaceCursor.String)&lt;&gt;0) then
+				if isArray(results) then
+					if Iterator_cur() &lt;= UBound(results)  then
+						result=results(Iterator_cur)
+						remplacement = getReplacementTerm(result)
+						if (remplacement&lt;&gt; &quot;&quot;) then
+							replaceCursor = selectPartOfText(cursor,result)
+							REM Case where replace by himself
+							if (InStr(replaceCursor.String,remplacement &amp; &quot; &quot;)&lt;&gt;0) or _
+								InStr(replaceCursor.String,&quot; &quot; &amp; remplacement)&lt;&gt;0 then
+								ignoreIdx= IgnoreIdx + 1
+							end if
+							replaceCursor.String = remplacement
+							results=checkSelection(cursor)
+							Iterator_init()
+							currentResult = currentResult + ignoreIdx
+							continue=true
+						elseif ( NOT isIgnoreTerm(result)) then
+							breakloop=true
+						else
 							ignoreIdx= IgnoreIdx + 1
+							continue=true
 						end if
-						replaceCursor.String = remplacement
-						results=checkSelection(cursor)
-						Iterator_init()
-						currentResult = currentResult + ignoreIdx
-						continue=true
-					elseif ( NOT isIgnoreTerm(result)) then
-						breakloop=true
-					else
-						ignoreIdx= IgnoreIdx + 1
-						continue=true
 					end if
 				end if
 			loop while continue		
@@ -363,7 +366,6 @@ Function getReplacementTerm(result as object) as string
 	&apos; Check ignore term
 	Dim word as string
 	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
-	word = mid(cursor.String, 1 )  &apos;FIXME: renv. string dans result	
 
 	if not isNull(ReplaceArray) then
 		Dim index as Integer
@@ -415,7 +417,8 @@ function Dialog_FSM(event as String) as boolean
 				end if
 			Here:
 			
-			if (InStr(remplacement,replaceCursor.String)&lt;&gt;0) then
+			if (InStr(replaceCursor.String,remplacement &amp; &quot; &quot;)&lt;&gt;0) or _
+				InStr(replaceCursor.String,&quot; &quot; &amp; remplacement)&lt;&gt;0 then
 				ignoreIdx= IgnoreIdx + 1
 			end if
 			replaceCursor.String = remplacement

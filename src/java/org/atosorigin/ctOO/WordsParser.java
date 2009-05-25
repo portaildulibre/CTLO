@@ -504,7 +504,7 @@ public class WordsParser
 		for (int i=0;i<sentence.length();++i)
 		{
 			char c=sentence.charAt(i);
-			if (Character.isLetterOrDigit(c) || (tiret && c=='-'))
+			if (Character.isLetter(c) || (tiret && c=='-'))
 			{
 				builder.append(Character.toLowerCase(c));
 			}

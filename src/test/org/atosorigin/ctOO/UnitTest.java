@@ -105,4 +105,17 @@ public class UnitTest
 		Assert.assertEquals(2,parser.find("bit et bit").length);
 	}
 
+	@org.junit.Test
+	public void testPrefixeNumerique()
+	{
+		Result[] r;
+
+		// Vérifie les doublons
+		r=parser.find("3.2database");
+		Assert.assertEquals(1,r.length);
+		Assert.assertEquals(0,r[0].start);
+		Assert.assertEquals(9,r[1].start);
+		Assert.assertEquals(2,parser.find("bit et bit").length);
+	}
+
 }
