@@ -105,10 +105,11 @@ Sub ManageSelection()
 	
 	visualCursor=ThisComponent.currentController.viewCursor
 	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
-	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)	
+	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)
 	poscurrent=-1
+&apos;xray cursor		
 	
-	if ManageCursor then
+	if ManageParagraphs(cursor.createEnumeration()) then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
 	on error resume next
@@ -132,47 +133,8 @@ Sub ManageDocument()
 	visualCursor=ThisComponent.currentController.viewCursor
 	poscurrent=-1
 	
-	&apos; Paragraphe
-	listParagraph = ThisComponent.text.createEnumeration()
-	do while listParagraph.hasMoreElements
-		elementText = listParagraph.nextElement
-		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
-			paraCursor=ThisComponent.text.createTextCursorByRange(elementText)
-			cursor=paraCursor
-			oldViewCursor=paraCursor
-			if (not ManageCursor) then
-				abort=true
-				exit do
-			end if
-		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
-			Dim rows as Object
-			Dim cols as Object
-			Dim cell as Object
-			Dim x as Long
-			Dim y as Long
-			
-      		rows=elementText.rows
-      		cols=elementText.Columns
-      		for x = 0 to rows.count-1
-      			for y = 0 to cols.count -1
-      				cell=elementText.getCellByPosition(y,x)
-      				cursor=cell.createTextCursor()
-					cursor.gotoStart(false)
-					cursor.gotoEnd(true)
-					if (not ManageCursor) then
-						abort=true
-						exit for
-					end if
-      			next
-      			if (abort) then
-      				exit for
-      			end if
-      		next
-		end if
-		if (abort) then
-			exit do
-		end if
-	loop
+	&apos; Paragraphes
+	manageParagraphs(ThisComponent.text.createEnumeration())
 	
 	&apos; Header &amp; footer
 	if (not abort) then
@@ -217,7 +179,53 @@ Sub ManageDocument()
 End sub
 
 &apos; -------------------------------------------------------
-&apos; Execute engine for a cursor
+&apos; Manage all paragraph and table
+Function ManageParagraphs(listParagraph as Object) as boolean
+	dim elementText as object
+	dim paraCursor as object
+	
+	&apos; Paragraphe
+	do while listParagraph.hasMoreElements
+		elementText = listParagraph.nextElement
+		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
+			paraCursor=ThisComponent.text.createTextCursorByRange(elementText)
+			cursor=paraCursor
+			if (not ManageCursor) then
+				ManageParagraphs=true
+				exit do
+			end if
+		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
+			Dim rows as Object
+			Dim cols as Object
+			Dim cell as Object
+			Dim x as Long
+			Dim y as Long
+			
+      		rows=elementText.rows
+      		cols=elementText.Columns
+      		for x = 0 to rows.count-1
+      			for y = 0 to cols.count -1
+      				cell=elementText.getCellByPosition(y,x)
+      				cursor=cell.createTextCursor()
+					cursor.gotoStart(false)
+					cursor.gotoEnd(true)
+					if (not ManageCursor) then
+						ManageParagraphs=true
+						exit for
+					end if
+      			next
+      			if (ManageParagraphs) then
+      				exit for
+      			end if
+      		next
+		end if
+		if (ManageParagraphs) then
+			exit do
+		end if
+	loop
+end function
+
+&apos; Execute engine for the cursor variable
 Function ManageCursor() as boolean
 	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.CANCEL
 	results=nothing
