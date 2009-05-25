@@ -107,7 +107,7 @@ Sub ManageSelection()
 	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)
 	poscurrent=-1
 	
-	if ManageParagraphs(cursor,ThisComponent.text,cursor.createEnumeration()) then
+	if not ManageParagraphs(cursor,ThisComponent.text,cursor.createEnumeration()) then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
 	ThisComponent.CurrentController.select(oldViewCursor)
@@ -328,8 +328,7 @@ Function getWorkload() as Boolean
 						if (remplacement&lt;&gt; &quot;&quot;) then
 							replaceCursor = createCursorPartOfText(cursor,result)
 							REM Case where replace by himself
-							if (InStr(1,remplacement &amp; &quot; &quot;,replaceCursor.String,1)&lt;&gt;0) or _
-								InStr(1,&quot; &quot; &amp; remplacement,replaceCursor.String,1)&lt;&gt;0 then
+							if checkRecurs(replaceCursor.String,remplacement) then
 								ignoreIdx= IgnoreIdx + 1
 							end if
 							replaceCursor.String = remplacement
@@ -442,11 +441,14 @@ function Dialog_FSM(event as String) as boolean
 					oldViewCursor.gotoRange(replaceCursor.start,true)
 				end if
 			Here:
-			
-			if (InStr(1,remplacement &amp; &quot; &quot;,replaceCursor.String,1)&lt;&gt;0) or _
-				InStr(1,&quot; &quot; &amp; remplacement,replaceCursor.String,1)&lt;&gt;0 then
+
+			if checkRecurs(replaceCursor.String,remplacement) then
 				ignoreIdx= IgnoreIdx + 1
 			end if
+&apos;			if (InStr(1,remplacement &amp; &quot; &quot;,replaceCursor.String,1)&lt;&gt;0) or _
+&apos;				InStr(1,&quot; &quot; &amp; remplacement,replaceCursor.String,1)&lt;&gt;0 then
+&apos;				ignoreIdx= IgnoreIdx + 1
+&apos;			end if
 			replaceCursor.String = remplacement
 			
 			REM We modify the target&apos;s text, we need to recheck it
@@ -521,6 +523,21 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	ThisComponent.currentController.viewCursor
 	selectPart=portionCursor
 End Function
+
+function checkRecurs(orig as String,remplacement as String) as boolean
+	dim pos as integer
+	pos=InStr(1,remplacement,orig,1)
+	if (pos &lt;&gt; 0) then
+		if (mid(remplacement,pos+len(orig),1) = &quot; &quot;) then
+			checkRecurs=true
+		end if
+	end if
+	if (pos&gt;1) then
+		if (mid(remplacement,pos-1,1) = &quot; &quot;) then
+			checkRecurs=true
+		end if
+	end if
+end function
 
 REM	***************************************************************************************************** 
 REM 	Events call back                                                                                                                                  
