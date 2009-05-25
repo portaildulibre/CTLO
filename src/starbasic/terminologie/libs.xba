@@ -220,15 +220,19 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 			
       		rows=elementText.rows
       		cols=elementText.Columns
-      		for x = 0 to rows.count-1
-      			for y = 0 to cols.count -1
+			on error resume next
+   			for y = 0 to cols.count -1
+	      		for x = 0 to rows.count-1
+					cell=null
       				cell=elementText.getCellByPosition(y,x)
-      				cursor=cell.createTextCursor()
-					cursor.gotoStart(false)
-					cursor.gotoEnd(true)
-					if (not ManageCursor) then
-						ManageParagraphs=true
-						exit for
+      				if not isNull(cell) then
+	      				cursor=cell.createTextCursor()
+						cursor.gotoStart(false)
+						cursor.gotoEnd(true)
+						if (not ManageCursor) then
+							ManageParagraphs=true
+							exit for
+						end if
 					end if
       			next
       			if (ManageParagraphs) then
