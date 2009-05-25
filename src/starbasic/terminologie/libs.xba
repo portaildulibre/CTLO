@@ -327,8 +327,8 @@ Function getWorkload() as Boolean
 						if (remplacement&lt;&gt; &quot;&quot;) then
 							replaceCursor = createCursorPartOfText(cursor,result)
 							REM Case where replace by himself
-							if (InStr(replaceCursor.String,remplacement &amp; &quot; &quot;)&lt;&gt;0) or _
-								InStr(replaceCursor.String,&quot; &quot; &amp; remplacement)&lt;&gt;0 then
+							if (InStr(1,remplacement &amp; &quot; &quot;,replaceCursor.String,1)&lt;&gt;0) or _
+								InStr(1,&quot; &quot; &amp; remplacement,replaceCursor.String,1)&lt;&gt;0 then
 								ignoreIdx= IgnoreIdx + 1
 							end if
 							replaceCursor.String = remplacement
@@ -442,8 +442,8 @@ function Dialog_FSM(event as String) as boolean
 				end if
 			Here:
 			
-			if (InStr(replaceCursor.String,remplacement &amp; &quot; &quot;)&lt;&gt;0) or _
-				InStr(replaceCursor.String,&quot; &quot; &amp; remplacement)&lt;&gt;0 then
+			if (InStr(1,remplacement &amp; &quot; &quot;,replaceCursor.String,1)&lt;&gt;0) or _
+				InStr(1,&quot; &quot; &amp; remplacement,replaceCursor.String,1)&lt;&gt;0 then
 				ignoreIdx= IgnoreIdx + 1
 			end if
 			replaceCursor.String = remplacement
