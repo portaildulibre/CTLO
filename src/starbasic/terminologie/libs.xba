@@ -110,8 +110,7 @@ Sub ManageSelection()
 	if ManageParagraphs(cursor,ThisComponent.text,cursor.createEnumeration()) then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
-	on error resume next
-	visualCursor.Text.CurrentController.select(oldViewCursor)
+	ThisComponent.CurrentController.select(oldViewCursor)
 End Sub
 
 &apos; Manage all document
@@ -129,6 +128,7 @@ Sub ManageDocument()
 	abort=false
 
 	visualCursor=ThisComponent.currentController.viewCursor
+	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
 	poscurrent=-1
 	
 	&apos; Paragraphes
@@ -170,10 +170,11 @@ Sub ManageDocument()
 	end if
 
 	&apos; End
+	ThisComponent.CurrentController.select(oldViewCursor)
 	if not abort then
 		msgbox &quot;La vérification du document a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
-
+	
 End sub
 
 &apos; -------------------------------------------------------
