@@ -97,7 +97,6 @@ REM ****************************************************************************
 
 &apos; Manage current selection
 Sub ManageSelection()
-	&apos; FIXME : Travailler paragraphe par paragraphe dans la sélection
 	Dim visualCursor as object
 	Redim IgnoreTermArray(0)
 	Redim ReplaceArray(0)
@@ -107,9 +106,8 @@ Sub ManageSelection()
 	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
 	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)
 	poscurrent=-1
-&apos;xray cursor		
 	
-	if ManageParagraphs(cursor.createEnumeration()) then
+	if ManageParagraphs(cursor,ThisComponent.text,cursor.createEnumeration()) then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
 	on error resume next
@@ -134,7 +132,7 @@ Sub ManageDocument()
 	poscurrent=-1
 	
 	&apos; Paragraphes
-	manageParagraphs(ThisComponent.text.createEnumeration())
+	manageParagraphs(visualCursor,ThisComponent.text,ThisComponent.text.createEnumeration())
 	
 	&apos; Header &amp; footer
 	if (not abort) then
@@ -180,19 +178,37 @@ End sub
 
 &apos; -------------------------------------------------------
 &apos; Manage all paragraph and table
-Function ManageParagraphs(listParagraph as Object) as boolean
+Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph as Object) as boolean
 	dim elementText as object
 	dim paraCursor as object
-	
-	&apos; Paragraphe
+	dim newParaCursor as object
+
+&apos;on error goto Ignore
+	&apos; Paragraphes
+	newParaCursor=theText.createTextCursor()
 	do while listParagraph.hasMoreElements
 		elementText = listParagraph.nextElement
 		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
-			paraCursor=ThisComponent.text.createTextCursorByRange(elementText)
+			paraCursor=theCursor.Text.createTextCursorByRange(elementText,true)
+
+			&apos; Ajuste the begin and end to the cursor
+&apos; FIXME : Cela fait planter le &apos;alldocument&apos;
+&apos;			if (theText.compareRegionStarts(paraCursor.start,theCursor.start) &gt; 0) then
+&apos;				newParaCursor.gotoRange(theCursor.start,false)
+&apos;				newParaCursor.gotoRange(paraCursor.end,true)
+&apos;				paraCursor=newParaCursor
+&apos;			endif
+&apos;			if (theText.compareRegionStarts(paraCursor.end,theCursor.end) &lt; 0) then
+&apos;				newParaCursor.gotoRange(paraCursor.start,false)
+&apos;				newParaCursor.gotoRange(theCursor.end,true)
+&apos;				paraCursor=newParaCursor
+&apos;			endif
 			cursor=paraCursor
-			if (not ManageCursor) then
-				ManageParagraphs=true
-				exit do
+			if (not isNull(paraCursor)) then
+				if (not ManageCursor) then
+					ManageParagraphs=true
+					exit do
+				end if
 			end if
 		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
 			Dim rows as Object
@@ -223,6 +239,7 @@ Function ManageParagraphs(listParagraph as Object) as boolean
 			exit do
 		end if
 	loop
+Ignore:	
 end function
 
 &apos; Execute engine for the cursor variable
@@ -308,7 +325,7 @@ Function getWorkload() as Boolean
 						result=results(Iterator_cur)
 						remplacement = getReplacementTerm(result)
 						if (remplacement&lt;&gt; &quot;&quot;) then
-							replaceCursor = selectPartOfText(cursor,result)
+							replaceCursor = createCursorPartOfText(cursor,result)
 							REM Case where replace by himself
 							if (InStr(replaceCursor.String,remplacement &amp; &quot; &quot;)&lt;&gt;0) or _
 								InStr(replaceCursor.String,&quot; &quot; &amp; remplacement)&lt;&gt;0 then
@@ -340,7 +357,7 @@ Function getWorkload() as Boolean
 			Dialog_Close()
 			getWorkload = false &apos; It&apos;s necessary to open the dialog
 		Else
-			ThisComponent.CurrentController.select(selectPartOfText(cursor,result))
+			ThisComponent.CurrentController.select(createCursorPartOfText(cursor,result))
 			Dialog_set(result)
 		end if
 	else
@@ -355,7 +372,7 @@ Function IsIgnoreTerm(result as object) as boolean
 	
 	REM Check ignore term
 	Dim word as string
-	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
+	word = getPartOfText(cursor,result) &apos;FIXME: renv. string dans result
 	if not isNull(IgnoreTermArray) then
 		Dim index as Integer
 		for index = LBound(IgnoreTermArray)  to UBound(IgnoreTermArray)
@@ -373,7 +390,7 @@ Function getReplacementTerm(result as object) as string
 	
 	&apos; Check ignore term
 	Dim word as string
-	word = selectPartOfText(cursor,result).String &apos;FIXME: renv. string dans result
+	word = getPartOfText(cursor,result) &apos;FIXME: renv. string dans result
 
 	if not isNull(ReplaceArray) then
 		Dim index as Integer
@@ -412,11 +429,11 @@ function Dialog_FSM(event as String) as boolean
 			end if
 			ReDim preserve IgnoreTermArray(l)
 			&apos; Add to array
-			IgnoreTermArray(UBound(IgnoreTermArray)) = selectPartOfText(cursor,result).String
+			IgnoreTermArray(UBound(IgnoreTermArray)) = getPartOfText(cursor,result)
 			Dialog_FSM(&quot;ignore&quot;)
 
 		case &quot;replace&quot;
-			replaceCursor = selectPartOfText(cursor,result)
+			replaceCursor = createCursorPartOfText(cursor,result)
 			remplacement = mainDialog.getModel().getByName(&quot;remplacement&quot;).getPropertyValue(&quot;Text&quot;)
 			REM Case where replace by himself
 			on error goto here
@@ -449,7 +466,7 @@ function Dialog_FSM(event as String) as boolean
 			ReDim preserve ReplaceArray(l)
 			ReDim preserve ReplacementArray(l)
 			&apos; Add to array
-			ReplaceArray(UBound(ReplaceArray)) = selectPartOfText(cursor,result).String
+			ReplaceArray(UBound(ReplaceArray)) = getPartOfText(cursor,result)
 			ReplacementArray(UBound(ReplacementArray)) = remplacement
 			Dialog_FSM(&quot;replace&quot;)
 	end select
@@ -893,7 +910,7 @@ Sub Dialog_set(result as Object)
 	Dim domains as Object
 	Dim term as String
 	domains = result.foreignTerm.domaines
-	term = selectPartOfText(cursor,result).getString()
+	term = getPartOfText(cursor,result)
     Dim DialogModel As Object
     Dim ControlModel As Object
 		
@@ -1160,21 +1177,34 @@ Function StrSubstitute( ByVal cString As String,_
 End Function 
 
 
-REM Select part of the  
-REM  Selection d&apos;une portion limité à n mots avant et après la selection, 
-&apos; bornée au paragraphe courant.
-Function selectPartOfText(cursor as Object,result as Object) as Object	
+REM Select part of the text
+Function createCursorPartOfText(cursor as Object,result as Object) as Object	
 	Dim selectionCursor as Object
-	If not IsNull(cursor) AND not IsNull(result) then
+	If not IsNull(cursor) AND not IsNull(result) then	
 		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
 		selectionCursor.collapseToStart()
-		&apos; selectionCursor.goRight(result.start,false)
-		selectionCursor.goRight(result.start,false)
+		&apos; TODO Le pb est là. Après un collapseToStart(), le goRight déplace au premier char
+		&apos; après le numéro
+		dim l as integer
+		l=LenNumber(cursor)
+		if (result.start &gt; l ) then
+			selectionCursor.goRight(result.start-l,false)
+		end if
 		selectionCursor.goRight(result.len,true) 
-		selectPartOfText = selectionCursor
+		createCursorPartOfText = selectionCursor
 	Else
-		selectPartOfText = cursor
+		createCursorPartOfText = cursor
 	End If
+End Function
+
+REM Select part of the text
+Function getPartOfText(cursor as Object,result as Object) as String	
+	getPartOfText=mid(cursor.string,result.start + LenNumber(cursor) + 1,result.len)
+End Function
+
+REM Select part of the text
+Function getOnlyText(cursor as Object) as String	
+	getOnlyText=mid(cursor.string,LenNumber(cursor)+1)
 End Function
 
 REM  Selection d&apos;une portion limité à n mots avant et après la selection, 
@@ -1217,13 +1247,10 @@ End Function
 
 &apos; This routine is a wrapper for java component
 Function CheckSelection(cursor as Object) as Object                                                                                                                                                    
-	Dim currentText as Object
 	Dim selectedText as String
 	
-	currentText = cursor.Text
-	&apos; cursor will keep all text selected
-	cursor = currentText.createTextCursorByRange(cursor)
-	selectedText = cursor.String
+&apos;	msgbox &quot;cursor=&quot; &amp; cursor.string
+	selectedText = getOnlyText(cursor)
 	If NOT isNull(selectedText) AND selectedText &lt;&gt; &quot;&quot; Then
 		dim a as object
 		results = terminologieService.search(selectedText)
@@ -1232,4 +1259,17 @@ Function CheckSelection(cursor as Object) as Object
 	end if
 End Function 
 
+&apos; Hack function.
+&apos; Calculate the length of number if present
+Function LenNumber(cursor as Object) as Integer
+	dim hackCursor as object
+	hackCursor=cursor.Text.createTextCursorByRange(cursor,false)
+	hackCursor.collapseToStart()
+	hackCursor.goRight(1,false)
+	hackCursor.goLeft(1,true)
+	LenNumber=len(hackCursor.string) - 1
+	if (LenNumber &lt; 0) then
+		LenNumber = 0
+	end if
+End Function
 </script:module>
