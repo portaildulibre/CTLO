@@ -780,7 +780,7 @@ Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boole
 		endif
 		REM nothing to do here...
 	End if
-	KeyHandler_keyReleased = False
+	KeyHandler_keyReleased = false
 End Sub
 
 REM
@@ -835,6 +835,7 @@ Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
 		cursor = visualCursor.Text.createTextCursorByRange(oldViewCursor)	
 		cursor = selectPart(cursor.getText(),maxwords)
 		REM We keep running the dialog until we end
+		Redim IgnoreTermArray(0)
 		ManageCursor()
 		visualCursor.gotoRange(oldViewCursor,FALSE)
 	End If
