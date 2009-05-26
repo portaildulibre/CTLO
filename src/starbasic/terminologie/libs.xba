@@ -557,6 +557,9 @@ End Function
 
 function checkRecurs(orig as String,remplacement as String) as boolean
 	dim pos as integer
+	if (StrComp(remplacement,orig,1)=0) then
+		checkRecurs=true
+	endif
 	pos=InStr(1,remplacement,orig,1)
 	if (pos &lt;&gt; 0) then
 		if (mid(remplacement,pos+len(orig),1) = &quot; &quot;) then
