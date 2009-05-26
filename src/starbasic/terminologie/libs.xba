@@ -11,6 +11,9 @@ REM
 REM Data for the service layer
 REM
 
+Private Const USE_ON_ERROR = true &apos; Hide some errors
+&apos;Private Const USE_ON_ERROR = false &apos; TODO : set to true for livraison
+
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
 Private result as Object 			&apos; Current result to manage
@@ -98,23 +101,34 @@ REM ****************************************************************************
 &apos; Manage current selection
 Sub ManageSelection()
 	Dim visualCursor as object
+	Dim abort as boolean
+	Dim theText as Object	
+
 	Redim IgnoreTermArray(0)
 	Redim ReplaceArray(0)
 	Redim ReplacementArray(0)
-	
+
 	visualCursor=ThisComponent.currentController.viewCursor
-	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
-	cursor=visualCursor.Text.createTextCursorByRange(oldViewCursor)
+	if not isEmpty(visualCursor.Cell) then
+		theText=visualCursor.Cell
+	else
+		theText=visualCursor.Text
+	endif
+
+	oldViewCursor=theText.createTextCursorByRange(visualCursor)
+	cursor=theText.createTextCursorByRange(visualCursor)
 	poscurrent=-1
 	
-	if not ManageParagraphs(cursor,ThisComponent.text,cursor.createEnumeration()) then
-		oldViewCursor.collapseToEnd() 
-		visualCursor.gotoRange(oldViewCursor,FALSE)
-		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
-	end if
-
+	if USE_ON_ERROR then
+		on error goto Ignore &apos; Trap to all errors
+	endif
+	abort=ManageParagraphs(cursor,theText,cursor.createEnumeration())
+Ignore:
 	oldViewCursor.collapseToEnd() 
 	visualCursor.gotoRange(oldViewCursor,FALSE)
+	if not abort then
+		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
+	end if
 End Sub
 
 &apos; Manage all document
@@ -123,6 +137,10 @@ Sub ManageDocument()
 	Dim listParagraph as Object
 	Dim paraCursor as Object
 	Dim elementText as Object
+
+	if USE_ON_ERROR then
+		on error goto Ignore &apos; Trap to all errors
+	endif
 
 	Redim IgnoreTermArray(0)
 	Redim ReplaceArray(0)
@@ -136,7 +154,7 @@ Sub ManageDocument()
 	poscurrent=-1
 	
 	&apos; Paragraphes
-	manageParagraphs(visualCursor,ThisComponent.text,ThisComponent.text.createEnumeration())
+	abort=manageParagraphs(nothing,ThisComponent.text,ThisComponent.text.createEnumeration())
 	
 	&apos; Header &amp; footer
 	if (not abort) then
@@ -174,6 +192,7 @@ Sub ManageDocument()
 	end if
 
 	&apos; End
+Ignore:
 	oldViewCursor.collapseToEnd() 
 	visualCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
@@ -189,26 +208,32 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 	dim paraCursor as object
 	dim newParaCursor as object
 
-&apos;on error goto Ignore
+	if USE_ON_ERROR then
+		on error goto Ignore &apos; Trap to all errors
+	endif
+	
 	&apos; Paragraphes
 	newParaCursor=theText.createTextCursor()
 	do while listParagraph.hasMoreElements
 		elementText = listParagraph.nextElement
 		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
-			paraCursor=theCursor.Text.createTextCursorByRange(elementText,true)
+			paraCursor=theText.createTextCursorByRange(elementText,true)
 
 			&apos; Ajuste the begin and end to the cursor
-&apos; FIXME : Cela fait planter le &apos;alldocument&apos;
-&apos;			if (theText.compareRegionStarts(paraCursor.start,theCursor.start) &gt; 0) then
-&apos;				newParaCursor.gotoRange(theCursor.start,false)
-&apos;				newParaCursor.gotoRange(paraCursor.end,true)
-&apos;				paraCursor=newParaCursor
-&apos;			endif
-&apos;			if (theText.compareRegionStarts(paraCursor.end,theCursor.end) &lt; 0) then
-&apos;				newParaCursor.gotoRange(paraCursor.start,false)
-&apos;				newParaCursor.gotoRange(theCursor.end,true)
-&apos;				paraCursor=newParaCursor
-&apos;			endif
+			if not isNull(theCursor) then
+				on error goto IgnoreAdjuste
+				if (theText.compareRegionStarts(paraCursor.start,theCursor.start) &gt; 0) then
+					newParaCursor.gotoRange(theCursor.start,false)
+					newParaCursor.gotoRange(paraCursor.end,true)
+					paraCursor=newParaCursor
+				endif
+				if (theText.compareRegionStarts(paraCursor.end,theCursor.end) &lt; 0) then
+					newParaCursor.gotoRange(paraCursor.start,false)
+					newParaCursor.gotoRange(theCursor.end,true)
+					paraCursor=newParaCursor
+				endif
+				IgnoreAdjuste:
+			endif
 			cursor=paraCursor
 			if (not isNull(paraCursor)) then
 				if (not ManageCursor) then
