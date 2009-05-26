@@ -44,9 +44,6 @@ Private Const dialogueLibraryName = &quot;terminologie&quot;
 Private Const sDialogName = &quot;dialogues&quot;
 Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
 
-Sub Main
-End Sub
-
 REM Retreives the running OOO version
 REM http://www.oooforum.org/forum/viewtopic.phtml?t=10003&amp;highlight=getsolarversion
 REM @author : Laurent Godard &lt;listes.godard@laposte.net&gt;
@@ -207,8 +204,8 @@ REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Global count as Integer
-Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
-	handlingKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
+Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
+	ManageKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
 	If ( isWordBoundary(keyEvent) ) Then
 		Dim visualCursor as Object
 		visualCursor = ThisComponent.currentController.viewCursor
@@ -220,6 +217,7 @@ Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
 		ManageCursor()
 		&apos;visualCursor.collapseToEnd() &apos;gotoRange(oldViewCursor,FALSE)
 		visualCursor.gotoRange(oldViewCursor,FALSE)
+		visualCursor.collapseToEnd()
 	End If
 End Function
 
@@ -825,7 +823,7 @@ Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boole
 	if ( keyHandlerState ) Then
 		if not reentrant then
 			reentrant=true	
-			handlingKeyPressedEvent(keyEvent)
+			ManageKeyPressedEvent(keyEvent)
 			reentrant=false
 		endif
 		REM nothing to do here...
