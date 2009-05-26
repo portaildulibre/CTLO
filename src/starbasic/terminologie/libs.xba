@@ -108,9 +108,13 @@ Sub ManageSelection()
 	poscurrent=-1
 	
 	if not ManageParagraphs(cursor,ThisComponent.text,cursor.createEnumeration()) then
+		oldViewCursor.collapseToEnd() 
+		visualCursor.gotoRange(oldViewCursor,FALSE)
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
-	ThisComponent.CurrentController.select(oldViewCursor)
+
+	oldViewCursor.collapseToEnd() 
+	visualCursor.gotoRange(oldViewCursor,FALSE)
 End Sub
 
 &apos; Manage all document
@@ -170,7 +174,8 @@ Sub ManageDocument()
 	end if
 
 	&apos; End
-	ThisComponent.CurrentController.select(oldViewCursor)
+	oldViewCursor.collapseToEnd() 
+	visualCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
 		msgbox &quot;La vérification du document a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
@@ -324,6 +329,7 @@ Function getWorkload() as Boolean
 						end if
 						result=results(Iterator_cur)
 					loop while not (result.start&lt;poscurrent and poscurrent &lt;= result.start+result.len )
+currentResult = currentResult + ignoreIdx 
 				end if
 				if isArray(results) then
 					if Iterator_cur() &lt;= UBound(results)  then
@@ -449,10 +455,6 @@ function Dialog_FSM(event as String) as boolean
 			if checkRecurs(replaceCursor.String,remplacement) then
 				ignoreIdx= IgnoreIdx + 1
 			end if
-&apos;			if (InStr(1,remplacement &amp; &quot; &quot;,replaceCursor.String,1)&lt;&gt;0) or _
-&apos;				InStr(1,&quot; &quot; &amp; remplacement,replaceCursor.String,1)&lt;&gt;0 then
-&apos;				ignoreIdx= IgnoreIdx + 1
-&apos;			end if
 			replaceCursor.String = remplacement
 			
 			REM We modify the target&apos;s text, we need to recheck it
@@ -702,15 +704,6 @@ Sub desactivate
 End Sub
 
 
-
-
-REM 
-REM Inverse current state of Key Handler
-REM
-REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
-REM
-
-
 REM 
 REM Inverse current state of Key Handler
 REM
@@ -720,20 +713,23 @@ Sub toggleChecking
 	terminologieService 
 	keyHandlerState = (NOT keyHandlerState)
 End Sub
+
 REM
 REM	Automatically called by OOo at close.
 REM WARN: Do not modify method name.
 REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM @author Manuel Odesser modesser@linagora.com
-REM                                                                                                                                                                  
+REM       
+Global isHook as boolean                                                                                                                                                           
 Sub addHook
 	Dim doc As Object
 	doc =  StarDesktop.CurrentComponent   
 	REM can&apos;t use thisComponent here, operation would be call on any open files, 
 	REM including the librairies, which is far away from what we need.
-	If HasUnoInterfaces(doc, &quot;com.sun.star.frame.XModel&quot;) Then
+	If not isHook and HasUnoInterfaces(doc, &quot;com.sun.star.frame.XModel&quot;) Then
 		If doc.supportsService(&quot;com.sun.star.text.TextDocument&quot;) Then
+			isHook=true
 			doc.currentController.addKeyHandler(TerminologieKeyHandler) 
 		End If
 	End If                                                                                                                                                               
@@ -749,7 +745,10 @@ REM
 Sub removeHook    
 	ON ERROR RESUME NEXT 
 	REM If this procedure is launched by the quick start, no document has been defined
-	StarDesktop.CurrentComponent.currentController.removeKeyHandler(TerminologieKeyHandler)                                                                                              
+	if isHook then
+		StarDesktop.CurrentComponent.currentController.removeKeyHandler(TerminologieKeyHandler)                                                                                              
+		isHook = false
+	end if
 End Sub
 
 REM
@@ -837,7 +836,7 @@ Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
 		REM We keep running the dialog until we end
 		Redim IgnoreTermArray(0)
 		ManageCursor()
-		visualCursor.gotoRange(oldViewCursor,FALSE)
+		visualCursor.collapseToEnd() &apos;gotoRange(oldViewCursor,FALSE)
 	End If
 End Function
 
