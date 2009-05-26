@@ -201,6 +201,29 @@ Ignore:
 	
 End sub
 
+REM
+REM Handles the event &apos;key pressed by user&apos;.
+REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
+REM @author Manuel Odesser modesser@linagora.com
+REM
+Global count as Integer
+Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
+	handlingKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
+	If ( isWordBoundary(keyEvent) ) Then
+		Dim visualCursor as Object
+		visualCursor = ThisComponent.currentController.viewCursor
+		oldViewCursor = visualCursor.Text.createTextCursorByRange(visualCursor)
+		cursor = visualCursor.Text.createTextCursorByRange(oldViewCursor)	
+		cursor = selectPart(cursor.getText(),maxwords)
+		REM We keep running the dialog until we end
+		Redim IgnoreTermArray(0)
+		ManageCursor()
+		&apos;visualCursor.collapseToEnd() &apos;gotoRange(oldViewCursor,FALSE)
+		visualCursor.gotoRange(oldViewCursor,FALSE)
+	End If
+End Function
+
+
 &apos; -------------------------------------------------------
 &apos; Manage all paragraph and table
 Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph as Object) as boolean
@@ -846,27 +869,6 @@ End Function
 
 
 
-
-REM
-REM Handles the event &apos;key pressed by user&apos;.
-REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
-REM @author Manuel Odesser modesser@linagora.com
-REM
-Global count as Integer
-Function handlingKeyPressedEvent(keyEvent As Object) As Boolean
-	handlingKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
-	If ( isWordBoundary(keyEvent) ) Then
-		Dim visualCursor as Object
-		visualCursor = ThisComponent.currentController.viewCursor
-		oldViewCursor = visualCursor.Text.createTextCursorByRange(visualCursor)
-		cursor = visualCursor.Text.createTextCursorByRange(oldViewCursor)	
-		cursor = selectPart(cursor.getText(),maxwords)
-		REM We keep running the dialog until we end
-		Redim IgnoreTermArray(0)
-		ManageCursor()
-		visualCursor.collapseToEnd() &apos;gotoRange(oldViewCursor,FALSE)
-	End If
-End Function
 
 REM
 REM Does the character is a word boundary ?
