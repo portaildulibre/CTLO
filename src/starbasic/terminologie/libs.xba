@@ -632,7 +632,7 @@ Function getRegistry() As Object
 	vRegistry = createUnoService(&quot;com.sun.star.registry.SimpleRegistry&quot;)
 	pathSubstitutionService = createUnoService(&quot;com.sun.star.util.PathSubstitution&quot;) 
 
-  	fileURL = pathSubstitutionService.getSubstituteVariableValue(&quot;$(user)&quot;) &amp; &quot;/store/&quot; &amp; packageName &amp; &quot;terminologie.rdb&quot;
+  	fileURL = pathSubstitutionService.getSubstituteVariableValue(&quot;$(user)&quot;) &amp; packageName &amp; &quot;terminologie.rdb&quot;
 	vRegistry.open(convertToURL(fileURL), FALSE, TRUE )
 	getRegistry = vRegistry
 End Function
