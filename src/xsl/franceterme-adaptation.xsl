@@ -137,13 +137,6 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 									select="$abreviations"/>
 							</xsl:call-template>
 						</xsl:for-each>
-						<xsl:for-each select="../../Domaine/S-dom">
-							<xsl:call-template name="make-domain">
-								<xsl:with-param 
-									name="abreviations"
-									select="$abreviations"/>
-							</xsl:call-template>
-						</xsl:for-each>
 					</xsl:element>
 				</xsl:element>
 			</xsl:for-each>
@@ -180,12 +173,6 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
 
 		<xsl:element name="domaines">
 			<xsl:for-each select="../Domaine/Dom">
-				<xsl:call-template name="make-domain">
-					<xsl:with-param name="abreviations"
-							select="$abreviations"/>
-				</xsl:call-template>
-			</xsl:for-each>
-			<xsl:for-each select="../Domaine/S-dom">
 				<xsl:call-template name="make-domain">
 					<xsl:with-param name="abreviations"
 							select="$abreviations"/>
