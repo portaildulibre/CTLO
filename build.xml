@@ -297,7 +297,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			style="src/xsl/factorize-domain.xsl"
 			out="${database-without-homographies}.factorized">
 		</xslt>
-		 <move file="${database-without-homographies}.factorized" tofile="${dict.xml}"/>
 		 
 		<!-- How many entries have we left now ? -->
 		<xslt 	in="${database-without-homographies}"
@@ -305,7 +304,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			out="${dev.null}">
 		</xslt>
 
-		 
+		<!-- Yet one more step: sort the terms list in each domain -->
+		<xslt   in="${database-without-homographies}.factorized"
+			style="src/xsl/sort-term-list.xsl"
+			out="${dict.xml}"/>
+			
+
 		<!--
 			Here we are done for the extension part, we still have double entries
 			inside a <synmonymes> element, but the XMLDictionnary Handler in the
