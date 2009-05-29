@@ -11,8 +11,8 @@ REM
 REM Data for the service layer
 REM
 
-Private Const USE_ON_ERROR = true &apos; Hide some errors
-&apos;Private Const USE_ON_ERROR = false &apos; TODO : set to true for livraison
+&apos;Private Const USE_ON_ERROR = true &apos; Hide some errors
+Private Const USE_ON_ERROR = false &apos; TODO : set to true for livraison
 
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
@@ -119,7 +119,33 @@ Sub ManageSelection()
 	if USE_ON_ERROR then
 		on error goto Ignore &apos; Trap to all errors
 	endif
-	abort=ManageParagraphs(cursor,theText,cursor.createEnumeration())
+	if ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextRanges&quot;) then
+		abort=ManageParagraphs(cursor,theText,cursor.createEnumeration())
+	elseif ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
+		&apos; Selection dans un tableau
+		Dim table as object
+		table = ThisComponent.TextTables.getByName(visualCursor.TextTable.Name)
+		&apos; Patch temporaire
+		abort=ManageArray(table)
+		goto nextstep  
+&apos; --------- ESSAIS pour gérer la selection dans un tableau		
+   xray table
+   xray table.getCellRangeByName(ThisComponent.currentSelection.RangeName)
+   &apos;
+&apos;   ThisComponent.currentSelection.gotoStart(False)
+Dim oFirstCell as Object
+   oFirstCell = table.getCellByName(ThisComponent.currentSelection.RangeName)
+   xray  oFirstCell
+   oText = oFirstCell.Text
+   msgBox oText.getString()
+   &apos;
+&apos;   ThisComponent.TextTables.gotoEnd(False)
+&apos;   oLastCell = oTable.getCellByName(ThisComponent.TextTables.getRangeName())
+&apos;   oText = oLastCell.Text
+&apos;   msgBox oText.getString()
+nextstep:
+	end if
+
 Ignore:
 	oldViewCursor.collapseToEnd() 
 	visualCursor.gotoRange(oldViewCursor,FALSE)
@@ -263,34 +289,9 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 				end if
 			end if
 		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
-			Dim rows as Object
-			Dim cols as Object
-			Dim cell as Object
-			Dim x as Long
-			Dim y as Long
-			
-      		rows=elementText.rows
-      		cols=elementText.Columns
-			on error resume next
-   			for y = 0 to cols.count -1
-	      		for x = 0 to rows.count-1
-					cell=null
-      				cell=elementText.getCellByPosition(y,x)
-      				if not isNull(cell) then
-	      				cursor=cell.createTextCursor()
-						cursor.gotoStart(false)
-						cursor.gotoEnd(true)
-						if (not ManageCursor) then
-							ManageParagraphs=true
-							exit for
-						end if
-					end if
-      			next
-      			if (ManageParagraphs) then
-      				exit for
-      			end if
-      		next
+			ManageParagraphs=ManageArray(elementText)
 		end if
+		
 		if (ManageParagraphs) then
 			exit do
 		end if
@@ -314,6 +315,23 @@ Function ManageCursor() as boolean
 	end if
 End Function
 
+Function ManageArray(array as object)
+	Dim cell as Object
+	
+	dim index as integer
+	for index = LBound(array.CellNames)  to UBound(array.CellNames)
+		cell=array.getCellByName(array.CellNames(index))
+		if not isNull(cell) then
+			cursor=cell.createTextCursor()
+			cursor.gotoStart(false)
+			cursor.gotoEnd(true)
+			if (not ManageCursor) then
+				ManageArray=true
+				exit for
+			end if
+		end if
+	next
+end function
 
 &apos; -----------------------------------------------------
 &apos; Iterator in text
