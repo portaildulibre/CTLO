@@ -283,9 +283,11 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
     <xsl:variable name="parent">
       <xsl:value-of select="name(.)"/>
     </xsl:variable>
+    <!--
     <xsl:message>
       [Parent:<xsl:value-of select="$parent"/>,type:<xsl:value-of select="@type"/>]
     </xsl:message>
+    -->
     <xsl:attribute name="type">
       <xsl:choose>
       <!--

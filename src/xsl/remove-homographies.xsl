@@ -52,10 +52,7 @@ Les termes suivants ont été supprimés pour cause d'homographie :
 				<xsl:otherwise>
 					<xsl:message><xsl:value-of select="$label"/></xsl:message>
 				</xsl:otherwise>
-			</xsl:choose> <!--
-				<xsl:copy>
-					<xsl:apply-templates select="@*|node()"/>	
-				</xsl:copy> -->
+			</xsl:choose>
     	</xsl:template>
 
 

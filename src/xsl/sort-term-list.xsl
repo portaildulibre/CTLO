@@ -26,9 +26,6 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
 	<xsl:template match="/">
-<xsl:message>
-Les termes suivants ont été supprimés pour cause d'homographie :
-</xsl:message>
 		<xsl:apply-templates select="@*|node()"/>	
 	</xsl:template>
 	

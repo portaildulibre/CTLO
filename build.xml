@@ -213,7 +213,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<!-- FranceTerme syntax is simplified and data reorganized to
 		     be "anglicism" driven... -->
 		<property name="out" value="${target}/franceterme-adapted.xml"/>
-		<xslt 	in="resources/extraction.xml"
+		<xslt 	in="resources/FranceTerme.xml"
 			style="src/xsl/franceterme-adaptation.xsl"
 			out="${out}">
 		</xslt>
