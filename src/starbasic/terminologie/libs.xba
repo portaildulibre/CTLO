@@ -228,7 +228,7 @@ Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
 		poscurrent=poscurrent-1
 		
 		ManageMixedCursor(theText,contextCursor)
-&apos;		visualCursor.gotoRange(oldViewCursor,FALSE)
+&apos;		visualCursor.gotoRange(oldViewCursor,FALSE) &apos; Selection toute la ligne d&apos;un tableau lors d&apos;un changement de cellule
 		visualCursor.collapseToEnd()
 	End If
 Ignore:	
@@ -577,6 +577,9 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	next
 
 	wordCursor.gotoRange(viewCursor.start,true)
+	REM calcul la position courant par rapport à la selection
+	poscurrent=len(wordCursor.string) - 1 &apos;remove last space
+
 	for nbCharacter = 1 to maxwords - 1
 		wordCursor.gotoNextWord(true) 
 	next
@@ -590,11 +593,6 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 		portionCursor.gotoRange(paragraphCursor.end,true)
 	end if
 &apos;	viewCursor.gotoRange(portionCursor,false)
-
-	REM calcul la position courant par rapport à la selection
-	Dim delta as Object
-	delta=portionCursor
-	poscurrent=len(delta.string)-1 &apos; Suppression de l&apos;espace
 	
 	selectPart=portionCursor
 End Function
@@ -843,13 +841,13 @@ REM @author Manuel Odesser modesser@linagora.com
 REM
 dim reentrant as boolean
 Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
-&apos;	if ( keyHandlerState ) Then
-&apos;		if not reentrant then
-&apos;			reentrant=true	
-&apos;			ManageKeyPressedEvent(keyEvent)
-&apos;			reentrant=false
-&apos;		endif
-&apos;	End if
+	if ( keyHandlerState ) Then
+		if not reentrant then
+			reentrant=true	
+			ManageKeyPressedEvent(keyEvent)
+			reentrant=false
+		endif
+	End if
 	KeyHandler_keyReleased = false
 End Sub
 
@@ -861,13 +859,14 @@ REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
-	if ( keyHandlerState ) Then
-		if not reentrant then
-			reentrant=true	
-			ManageKeyPressedEvent(keyEvent)
-			reentrant=false
-		endif
-	End if
+&apos; Ne fonctionne pas, car le mot n&apos;est pas délimité par un espace à ce moment là.
+&apos;	if ( keyHandlerState ) Then
+&apos;		if not reentrant then
+&apos;			reentrant=true	
+&apos;			ManageKeyPressedEvent(keyEvent)
+&apos;			reentrant=false
+&apos;		endif
+&apos;	End if
 	KeyHandler_keyPressed = False
 End Function
 
