@@ -100,6 +100,7 @@ Sub ManageSelection()
 	Dim visualCursor as object
 	Dim theText as Object	
 	Dim theCursor as Object
+	Dim abort as boolean
 
 	Redim IgnoreTermArray(0)
 	Redim ReplaceArray(0)
@@ -115,7 +116,7 @@ Sub ManageSelection()
 	oldViewCursor=theText.createTextCursorByRange(visualCursor)
 	theCursor=theText.createTextCursorByRange(visualCursor)
 	poscurrent=-1
-	ManageMixedCursor(theText,theCursor)
+	abort=ManageMixedCursor(theText,theCursor)
 	oldViewCursor.collapseToEnd() 
 	visualCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
@@ -230,6 +231,7 @@ Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
 		ManageMixedCursor(theText,contextCursor)
 &apos;		visualCursor.gotoRange(oldViewCursor,FALSE) &apos; Selection toute la ligne d&apos;un tableau lors d&apos;un changement de cellule
 		visualCursor.collapseToEnd()
+		visualCursor.goRight(1,false)
 	End If
 Ignore:	
 End Function
