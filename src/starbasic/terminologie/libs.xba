@@ -185,12 +185,16 @@ Sub ManageDocument()
 
 	&apos; End
 Ignore:
+	if USE_ON_ERROR then
+		on error goto EndFn &apos; Trap to all errors
+	endif
+
 	oldViewCursor.collapseToEnd() 
 	visualCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
 		msgbox &quot;La vérification du document a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
-	
+EndFn:	
 End sub
 
 REM
@@ -204,26 +208,30 @@ Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
 	If ( isWordBoundary(keyEvent) ) Then
 		Dim visualCursor as Object
 		Dim contextCursor as Object
-		visualCursor = ThisComponent.currentController.viewCursor
-		oldViewCursor = visualCursor.Text.createTextCursorByRange(visualCursor)
-		contextCursor = visualCursor.Text.createTextCursorByRange(oldViewCursor)	
-		contextCursor = selectPart(contextCursor.getText(),maxwords)
-		REM We keep running the dialog until we end
-		Redim IgnoreTermArray(0)
 		Dim theText as Object
-&apos;TODO		visualCursor=ThisComponent.currentController.viewCursor
+		if USE_ON_ERROR then
+			on error goto Ignore
+		endif
+		visualCursor = ThisComponent.currentController.viewCursor
+	
 		if not isEmpty(visualCursor.Cell) then
 			theText=visualCursor.Cell
 		else
 			theText=visualCursor.Text
 		endif
+		oldViewCursor = theText.createTextCursorByRange(visualCursor)
+		contextCursor = theText.createTextCursorByRange(oldViewCursor)	
+		contextCursor = selectPart(contextCursor.getText(),maxwords)
+		REM We keep running the dialog until we end
+		Redim IgnoreTermArray(0)
 		&apos; Remove last cr
 		poscurrent=poscurrent-1
 		
 		ManageMixedCursor(theText,contextCursor)
-		visualCursor.gotoRange(oldViewCursor,FALSE)
+&apos;		visualCursor.gotoRange(oldViewCursor,FALSE)
 		visualCursor.collapseToEnd()
 	End If
+Ignore:	
 End Function
 
 &apos; Execute engine for the cursor variable
@@ -237,10 +245,11 @@ Sub ManageMixedCursor(theText as Object,contextCursor as Object)
 	elseif ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
 		&apos; Selection dans un tableau
 		Dim table as object
-		table = ThisComponent.TextTables.getByName(visualCursor.TextTable.Name)
+		table = ThisComponent.TextTables.getByName(ThisComponent.currentController.viewCursor.TextTable.Name)
 		&apos; Patch temporaire
 		abort=ManageArray(table)
 	end if
+	ManageMixedCursor=abort
 Ignore:
 End Sub
 
