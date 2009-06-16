@@ -24,36 +24,10 @@
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-
-	<xsl:template match="/">
-<xsl:message>
-Les termes suivants ont été supprimés pour cause d'homographie :
-</xsl:message>
-		<xsl:apply-templates select="@*|node()"/>	
-	</xsl:template>
 	
-	<!-- Copy all nodes from here.  -->
-    	<xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>	
-		</xsl:copy>
-    	</xsl:template>
-
-    	<xsl:template match="anglicisme">
-		<xsl:variable name="label" select="@id"/>
-			<!-- 	if there is at least one synonym that differs from french translation, 
-				we remove the entry, otherwise we keep it -->
-			<xsl:choose>
-				<xsl:when test="count(domaines/domaine/synonymes/synonyme[text() != $label]) > 0">
-					<xsl:copy>
-						<xsl:apply-templates select="@*|node()"/>	
-					</xsl:copy>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message><xsl:value-of select="$label"/></xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
-    	</xsl:template>
-
-
+	<xsl:template match="S-dom">
+		<xsl:message>
+			<xsl:value-of select="name(.)"/> belongs to <xsl:value-of select="name(..)"/>, with <xsl:value-of select="count(../Dom)"/> domains.
+		</xsl:message>
+	</xsl:template>
 </xsl:stylesheet>

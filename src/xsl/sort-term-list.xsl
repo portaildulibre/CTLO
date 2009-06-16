@@ -26,9 +26,6 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
 	<xsl:template match="/">
-<xsl:message>
-Les termes suivants ont été supprimés pour cause d'homographie :
-</xsl:message>
 		<xsl:apply-templates select="@*|node()"/>	
 	</xsl:template>
 	
@@ -39,21 +36,16 @@ Les termes suivants ont été supprimés pour cause d'homographie :
 		</xsl:copy>
     	</xsl:template>
 
-    	<xsl:template match="anglicisme">
-		<xsl:variable name="label" select="@id"/>
-			<!-- 	if there is at least one synonym that differs from french translation, 
-				we remove the entry, otherwise we keep it -->
-			<xsl:choose>
-				<xsl:when test="count(domaines/domaine/synonymes/synonyme[text() != $label]) > 0">
-					<xsl:copy>
-						<xsl:apply-templates select="@*|node()"/>	
-					</xsl:copy>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message><xsl:value-of select="$label"/></xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
-    	</xsl:template>
+    	<xsl:template match="synonymes">
+		<xsl:element name="synonymes">
+    			<xsl:for-each select="synonyme">
+				<xsl:sort select="@type"/>
+				<xsl:element name="synonyme">
+					<xsl:apply-templates select="@*|node()"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
 
 
 </xsl:stylesheet>
