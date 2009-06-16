@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anglicismes>
+	<anglicisme id="abc-def ghi jkl-mno">
+		<domaines>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Biochimie et biologie moléculaire">
+				<synonymes>
+					<synonyme>ACP</synonyme>
+					<synonyme>amplification en chaîne par polymérase
+					</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+
+	<anglicisme id="time-division switching">
+		<domaines>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Biochimie et biologie moléculaire">
+				<synonymes>
+					<synonyme>ACP</synonyme>
+					<synonyme>amplification en chaîne par polymérase
+					</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+	<anglicisme id="e-mail">
+		<domaines>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Biochimie et biologie moléculaire">
+				<synonymes>
+					<synonyme>ACP</synonyme>
+					<synonyme>amplification en chaîne par polymérase
+					</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+	<anglicisme id="e-mail">
+		<domaines>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Biochimie et biologie moléculaire">
+				<synonymes>
+					<synonyme>ACP</synonyme>
+					<synonyme>amplification en chaîne par polymérase
+					</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+
+	<anglicisme id="constitution">
+		<domaines>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Chimie">
+				<synonymes>
+					<synonyme>constitution d'une entité moléculaire
+					</synonyme>
+				</synonymes>
+			</domaine>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Stéréochimie">
+				<synonymes>
+					<synonyme>constitution d'une entité moléculaire
+					</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+
+	<anglicisme id="built-in self test">
+		<domaines>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Électronique">
+				<synonymes>
+					<synonyme>test intégré</synonyme>
+				</synonymes>
+			</domaine>
+			<domaine xmlns:exsl="http://exslt.org/common" id="Composants électroniques">
+				<synonymes>
+					<synonyme>test intégré</synonyme>
+				</synonymes>
+			</domaine>
+		</domaines>
+	</anglicisme>
+
+</anglicismes>
