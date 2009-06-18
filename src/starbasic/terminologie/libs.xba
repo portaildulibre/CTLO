@@ -14,6 +14,8 @@ REM
 &apos;Private Const USE_ON_ERROR = true &apos; Hide some errors
 Private Const USE_ON_ERROR = false &apos; TODO : set to true for livraison
 
+Private Const selectWord = true &apos; Select current word to update
+
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
 Private result as Object 			&apos; Current result to manage
@@ -97,66 +99,36 @@ REM ****************************************************************************
 
 &apos; Manage current selection
 Sub ManageSelection()
-	Dim visualCursor as object
-	Dim abort as boolean
+	Dim viewCursor as object
 	Dim theText as Object	
+	Dim theCursor as Object
+	Dim abort as boolean
 
 	Redim IgnoreTermArray(0)
 	Redim ReplaceArray(0)
 	Redim ReplacementArray(0)
 
-	visualCursor=ThisComponent.currentController.viewCursor
-	if not isEmpty(visualCursor.Cell) then
-		theText=visualCursor.Cell
+	viewCursor=ThisComponent.currentController.viewCursor
+	if not isEmpty(viewCursor.Cell) then
+		theText=viewCursor.Cell
 	else
-		theText=visualCursor.Text
+		theText=viewCursor.Text
 	endif
 
-	oldViewCursor=theText.createTextCursorByRange(visualCursor)
-	cursor=theText.createTextCursorByRange(visualCursor)
+	oldViewCursor=theText.createTextCursorByRange(viewCursor)
+	theCursor=theText.createTextCursorByRange(viewCursor)
 	poscurrent=-1
-	
-	if USE_ON_ERROR then
-		on error goto Ignore &apos; Trap to all errors
-	endif
-	if ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextRanges&quot;) then
-		abort=ManageParagraphs(cursor,theText,cursor.createEnumeration())
-	elseif ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
-		&apos; Selection dans un tableau
-		Dim table as object
-		table = ThisComponent.TextTables.getByName(visualCursor.TextTable.Name)
-		&apos; Patch temporaire
-		abort=ManageArray(table)
-		goto nextstep  
-&apos; --------- ESSAIS pour gérer la selection dans un tableau		
-   xray table
-   xray table.getCellRangeByName(ThisComponent.currentSelection.RangeName)
-   &apos;
-&apos;   ThisComponent.currentSelection.gotoStart(False)
-Dim oFirstCell as Object
-   oFirstCell = table.getCellByName(ThisComponent.currentSelection.RangeName)
-   xray  oFirstCell
-   oText = oFirstCell.Text
-   msgBox oText.getString()
-   &apos;
-&apos;   ThisComponent.TextTables.gotoEnd(False)
-&apos;   oLastCell = oTable.getCellByName(ThisComponent.TextTables.getRangeName())
-&apos;   oText = oLastCell.Text
-&apos;   msgBox oText.getString()
-nextstep:
-	end if
-
-Ignore:
+	abort=ManageMixedCursor(theText,theCursor)
 	oldViewCursor.collapseToEnd() 
-	visualCursor.gotoRange(oldViewCursor,FALSE)
+	viewCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
 		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
-End Sub
+end sub
 
 &apos; Manage all document
 Sub ManageDocument()
-	Dim visualCursor as object
+	Dim viewCursor as object
 	Dim listParagraph as Object
 	Dim paraCursor as Object
 	Dim elementText as Object
@@ -172,8 +144,8 @@ Sub ManageDocument()
 	Dim abort as boolean
 	abort=false
 
-	visualCursor=ThisComponent.currentController.viewCursor
-	oldViewCursor=visualCursor.Text.createTextCursorByRange(visualCursor)
+	viewCursor=ThisComponent.currentController.viewCursor
+	oldViewCursor=viewCursor.Text.createTextCursorByRange(viewCursor)
 	poscurrent=-1
 	
 	&apos; Paragraphes
@@ -216,12 +188,16 @@ Sub ManageDocument()
 
 	&apos; End
 Ignore:
+	if USE_ON_ERROR then
+		on error goto EndFn &apos; Trap to all errors
+	endif
+
 	oldViewCursor.collapseToEnd() 
-	visualCursor.gotoRange(oldViewCursor,FALSE)
+	viewCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
 		msgbox &quot;La vérification du document a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
 	end if
-	
+EndFn:	
 End sub
 
 REM
@@ -233,18 +209,55 @@ Global count as Integer
 Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
 	ManageKeyPressedEvent = True REM whatever happen, let the event propagate to other event handler
 	If ( isWordBoundary(keyEvent) ) Then
-		Dim visualCursor as Object
-		visualCursor = ThisComponent.currentController.viewCursor
-		oldViewCursor = visualCursor.Text.createTextCursorByRange(visualCursor)
-		cursor = visualCursor.Text.createTextCursorByRange(oldViewCursor)	
-		cursor = selectPart(cursor.getText(),maxwords)
+		Dim viewCursor as Object
+		Dim contextCursor as Object
+		Dim theText as Object
+		if USE_ON_ERROR then
+			on error goto Ignore
+		endif
+		viewCursor = ThisComponent.currentController.viewCursor
+	
+		if not isEmpty(viewCursor.Cell) then
+			theText=viewCursor.Cell
+		else
+			theText=viewCursor.Text
+		endif
+		oldViewCursor = theText.createTextCursorByRange(viewCursor)
+		contextCursor = theText.createTextCursorByRange(oldViewCursor)	
+		contextCursor = selectPart(contextCursor.getText(),maxwords)
 		REM We keep running the dialog until we end
 		Redim IgnoreTermArray(0)
-		ManageCursor()
-		&apos;visualCursor.collapseToEnd() &apos;gotoRange(oldViewCursor,FALSE)
-		visualCursor.gotoRange(oldViewCursor,FALSE)
-		visualCursor.collapseToEnd()
+		&apos; Remove last cr
+		poscurrent=poscurrent-1
+		ManageMixedCursor(theText,contextCursor)
+		ThisComponent.CurrentController.select(oldViewCursor)
+&apos;		if ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
+&apos;			viewCursor.collapseToEnd()
+&apos;			viewCursor.goRight(1,false)
+&apos;		else
+&apos;			viewCursor.gotoRange(oldViewCursor,FALSE) &apos; Selection toute la ligne d&apos;un tableau lors d&apos;un changement de cellule
+&apos;		endif
 	End If
+Ignore:	
+End Function
+
+&apos; Execute engine for the cursor variable
+function ManageMixedCursor(theText as Object,contextCursor as Object) as boolean
+	Dim abort as boolean
+	if USE_ON_ERROR then
+		on error goto Ignore &apos; Trap to all errors
+	endif
+	if ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextRanges&quot;) then
+		abort=ManageParagraphs(contextCursor,theText,contextCursor.createEnumeration())
+	elseif ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
+		&apos; Selection dans un tableau
+		Dim table as object
+		table = ThisComponent.TextTables.getByName(ThisComponent.currentController.viewCursor.TextTable.Name)
+		&apos; Patch temporaire
+		abort=ManageArray(table)
+	end if
+	ManageMixedCursor=abort
+Ignore:
 End Function
 
 
@@ -265,7 +278,8 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 		elementText = listParagraph.nextElement
 		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
 			paraCursor=theText.createTextCursorByRange(elementText,true)
-
+			dim l as integer
+			l=len(paraCursor.string)+1
 			&apos; Ajuste the begin and end to the cursor
 			if not isNull(theCursor) then
 				on error goto IgnoreAdjuste
@@ -288,6 +302,9 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 					exit do
 				end if
 			end if
+			if (poscurrent &lt;&gt; -1) then
+				poscurrent=poscurrent - l
+			end if
 		elseif elementText.supportsService(&quot;com.sun.star.text.TextTable&quot;) Then
 			ManageParagraphs=ManageArray(elementText)
 		end if
@@ -299,7 +316,6 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 Ignore:	
 end function
 
-&apos; Execute engine for the cursor variable
 Function ManageCursor() as boolean
 	exitCode=com.sun.star.ui.dialogs.ExecutableDialogResults.CANCEL
 	results=nothing
@@ -392,8 +408,8 @@ Function getWorkload() as Boolean
 							exit do
 						end if
 						result=results(Iterator_cur)
-					loop while not (result.start&lt;poscurrent and poscurrent &lt;= result.start+result.len )
-currentResult = currentResult + ignoreIdx 
+					loop while not (result.start&lt;=poscurrent and poscurrent &lt;= result.start+result.len )
+					currentResult = currentResult + ignoreIdx 
 				end if
 				if isArray(results) then
 					if Iterator_cur() &lt;= UBound(results)  then
@@ -431,7 +447,11 @@ currentResult = currentResult + ignoreIdx
 			Dialog_Close()
 			getWorkload = false &apos; It&apos;s necessary to open the dialog
 		Else
-			ThisComponent.CurrentController.select(createCursorPartOfText(cursor,result))
+			if (selectWord) then
+				ThisComponent.CurrentController.select(createCursorPartOfText(cursor,result))
+			else
+				createCursorPartOfText(cursor,result)
+			endif
 			Dialog_set(result)
 		end if
 	else
@@ -558,9 +578,9 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	wordCursor = theText.createTextCursorByRange(viewCursor)
 	paragraphCursor = theText.createTextCursorByRange(viewCursor)
 	portionCursor = theText.createTextCursorByRange(viewCursor)
-	
-	paragraphCursor.gotoStartOfParagraph(false)
 	paragraphCursor.gotoEndOfParagraph(true)
+	paragraphCursor.gotoStartOfParagraph(true)
+	paragraphCursor.gotoPreviousParagraph(true)
 	
 	wordCursor.gotoStartOfWord(false)
 	for nbCharacter = 1 to maxwords
@@ -568,29 +588,29 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	next
 
 	wordCursor.gotoRange(viewCursor.start,true)
+	REM calcul la position courant par rapport à la selection
+
 	for nbCharacter = 1 to maxwords - 1
 		wordCursor.gotoNextWord(true) 
 	next
 	wordCursor.gotoEndOfWord(true)
 
-	portionCursor = theText.createTextCursor()
-	
-	portionCursor.gotoRange(wordCursor.start,false)
-	if (theText.compareRegionStarts(wordCursor,paragraphCursor) &lt; 0) then
+	portionCursor = theText.createTextCursorByRange(viewCursor)
+
+	if (theText.compareRegionStarts(wordCursor.start,paragraphCursor.start) &lt; 0) then
+		portionCursor.gotoRange(wordCursor.start,true)
+	else
+		portionCursor.gotoRange(paragraphCursor.start,true)
+	end if
+	poscurrent=len(portionCursor.string) - 1 &apos;remove last space
+
+	if (theText.compareRegionStarts(wordCursor.end,paragraphCursor.end) &gt; 0) then
 		portionCursor.gotoRange(wordCursor.end,true)
 	else
 		portionCursor.gotoRange(paragraphCursor.end,true)
 	end if
-	&apos;viewCursor.gotoRange(portionCursor,false)
-
-	REM calcul la position courant par rapport à la selection
-	Dim delta as Object
-	delta=theText.createTextCursor()
-	delta.gotoRange(portionCursor.start,false)
-	delta.gotoRange(viewCursor.start,true)
-	poscurrent=len(delta.string)-1 &apos; Suppression de l&apos;espace
+&apos;	viewCursor.gotoRange(portionCursor,false)
 	
-	ThisComponent.currentController.viewCursor
 	selectPart=portionCursor
 End Function
 
@@ -844,7 +864,6 @@ Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boole
 			ManageKeyPressedEvent(keyEvent)
 			reentrant=false
 		endif
-		REM nothing to do here...
 	End if
 	KeyHandler_keyReleased = false
 End Sub
@@ -857,6 +876,14 @@ REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
+&apos; Ne fonctionne pas, car le mot n&apos;est pas délimité par un espace à ce moment là.
+&apos;	if ( keyHandlerState ) Then
+&apos;		if not reentrant then
+&apos;			reentrant=true	
+&apos;			ManageKeyPressedEvent(keyEvent)
+&apos;			reentrant=false
+&apos;		endif
+&apos;	End if
 	KeyHandler_keyPressed = False
 End Function
 
@@ -946,7 +973,6 @@ Dim characterClassificationService_ as Object
 Function characterClassificationService() as Object
 	Dim service as String
 	service = &quot;com.sun.star.i18n.CharacterClassification&quot;
-	REM TODO: Factorize this part...
 	if  isNull(characterClassificationService_) then
 		characterClassificationService_ = CreateUnoService(service)
 	end if
@@ -1251,10 +1277,10 @@ Function createCursorPartOfText(cursor as Object,result as Object) as Object
 	If not IsNull(cursor) AND not IsNull(result) then	
 		selectionCursor = cursor.Text.createTextCursorByRange(cursor)
 		selectionCursor.collapseToStart()
-		&apos; TODO Le pb est là. Après un collapseToStart(), le goRight déplace au premier char
-		&apos; après le numéro
 		dim l as integer
-		l=LenNumber(cursor)
+&apos;		l=LenNumber(cursor)
+		&apos; No ajust paragraph number
+		l=0
 		if (result.start &gt; l ) then
 			selectionCursor.goRight(result.start-l,false)
 		end if
