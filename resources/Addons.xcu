@@ -70,7 +70,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				</node>
 			</node>
 		</node> 
-<!-- Impossible de renommer la barre, voir http://www.openoffice.org/servlets/ReadMsg?list=dev&msgNo=13875 -->
+	<!-- Warning: http://www.openoffice.org/servlets/ReadMsg?listName=dev&msgNo=23983
+	-->
       	<node oor:name="OfficeToolBar">
 			<prop oor:name="Title" oor:type="xs:string">
 				<value xml:lang="fr">Correcteur terminologique</value>

@@ -3,11 +3,11 @@
 Correcteur terminologique - éradication des anglicismes.
 Copyright (C) 2006 Linagora SA
 Copyright (C) 2009 Atos Orign
-	Manuel Odesser <modesser@linagora.com>
-	Sebastien Bahloul <bahloul@linagora.com>
-	Romain PELISSE <romain.pelisse@atosorigin.com>
-	Philippe PRADOS <philippe.prados@atosorigin.com>
-	
+      Manuel Odesser <modesser@linagora.com>
+      Sebastien Bahloul <bahloul@linagora.com>
+      Romain PELISSE <romain.pelisse@atosorigin.com>
+      Philippe PRADOS <philippe.prados@atosorigin.com>
+      
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either
@@ -24,26 +24,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 -->
 <!DOCTYPE manifest:manifest PUBLIC "-//OpenOffice.org//DTD Manifest 1.0//EN" "Manifest.dtd">
 <manifest:manifest>
-	<manifest:file-entry
-		manifest:media-type="application/vnd.sun.star.uno-component;type=Java"
-		manifest:full-path="terminologie-@@VERSION@@.jar" />
-	<manifest:file-entry 
-		manifest:full-path="types.rdb" 
-		manifest:media-type="application/vnd.sun.star.uno-typelibrary;type=RDB"/>
-
-	<!-- Version setted in build --> 
-	<manifest:file-entry
-		manifest:media-type="application/vnd.sun.star.configuration-data"
-		manifest:full-path="Addons.xcu" />
-	<manifest:file-entry
-		manifest:media-type="application/vnd.sun.star.configuration-data"
-		manifest:full-path="Events.xcu" />
-
-	<manifest:file-entry
-		manifest:media-type="application/vnd.sun.star.basic-library"
-		manifest:full-path="terminologie" />
-	
-	<manifest:file-entry
-		manifest:media-type="application/vnd.sun.star.package-bundle-description"
-		manifest:full-path="README" /> 
+      <!-- Version setted in build -->
+      <manifest:file-entry
+            manifest:media-type="application/vnd.sun.star.uno-component;type=Java"
+            manifest:full-path="terminologie-@@VERSION@@.jar" />
+      <manifest:file-entry 
+            manifest:full-path="types.rdb" 
+            manifest:media-type="application/vnd.sun.star.uno-typelibrary;type=RDB"/> 
+      <manifest:file-entry
+            manifest:media-type="application/vnd.sun.star.configuration-data"
+            manifest:full-path="Addons.xcu" />
+      <manifest:file-entry
+            manifest:media-type="application/vnd.sun.star.configuration-data"
+              manifest:full-path="Events.xcu" />
+      <manifest:file-entry 
+            manifest:media-type="application/vnd.sun.star.configuration-data"
+            manifest:full-path="WriterWindowState.xcu"/>
+      <manifest:file-entry
+            manifest:media-type="application/vnd.sun.star.basic-library"
+            manifest:full-path="terminologie" />
+      
+      <manifest:file-entry
+            manifest:media-type="application/vnd.sun.star.package-bundle-description"
+            manifest:full-path="README" /> 
 </manifest:manifest> 

@@ -382,16 +382,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<mkdir  dir="${package}"/> <!-- we just need an empty directory as a basedir -->
 		<zip 	destfile="${target}/${ant.project.name}-${version}.oxt"
 		     	basedir="${package}">
-			<fileset dir="${target}/"				includes="META-INF/manifest.xml"	/>
-			<fileset dir="${basedir}" 				includes="README"					/>
-			<fileset dir="${basedir}" 				includes="COPYING"					/>
-			<fileset dir="${basedir}"				includes="resources/ChangeLog"		/>
-			<fileset dir="${target}"				includes="terminologie/**/*"		/>
-			<fileset dir="${basedir}/resources"		includes="images/"					/>
-			<fileset dir="${basedir}/resources"     includes="Addons.xcu"   			/>
-			<fileset dir="target/generated"			includes="types.rdb"				/> 
-			<fileset dir="${basedir}/resources"     includes="Events.xcu"   			/> 
-			<fileset dir="${target}"				includes="${ant.project.name}-${version}.jar"	/>
+			<fileset dir="${target}/"		includes="META-INF/manifest.xml"	/>
+			<fileset dir="${basedir}" 		includes="README"			/>
+			<fileset dir="${basedir}" 		includes="COPYING"			/>
+			<fileset dir="${basedir}"		includes="resources/ChangeLog"		/>
+			<fileset dir="${target}"		includes="terminologie/**/*"		/>
+			<fileset dir="target/generated"		includes="types.rdb"			/> 
+			<fileset dir="${basedir}/resources"	includes="images/"			/>
+			<fileset dir="${basedir}/resources"    	includes="Addons.xcu"   		/>
+			<fileset dir="${basedir}/resources"     includes="Events.xcu"   		/> 
+			<fileset dir="${basedir}/resources"     includes="WriterWindowState.xcu"   	/> 
+			<fileset dir="${target}"		includes="${ant.project.name}-${version}.jar"	/>
 		</zip>
 		<delete dir="${package}" />
 	
