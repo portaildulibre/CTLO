@@ -590,11 +590,6 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	wordCursor.gotoRange(viewCursor.start,true)
 	REM calcul la position courant par rapport à la selection
 
-	for nbCharacter = 1 to maxwords - 1
-		wordCursor.gotoNextWord(true) 
-	next
-	wordCursor.gotoEndOfWord(true)
-
 	portionCursor = theText.createTextCursorByRange(viewCursor)
 
 	if (theText.compareRegionStarts(wordCursor.start,paragraphCursor.start) &lt; 0) then
@@ -602,7 +597,8 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	else
 		portionCursor.gotoRange(paragraphCursor.start,true)
 	end if
-&apos;TODO	poscurrent=len(portionCursor.string) - 1 &apos;remove last space
+
+	&apos; Calculate cursor position
 	poscurrent=0
 	Dim listParagraph as Object
 	Dim elementText as Object
@@ -610,12 +606,24 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	listParagraph=portionCursor.createEnumeration()
 	do while listParagraph.hasMoreElements
 		elementText = listParagraph.nextElement
-		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
-			paraCursor=theText.createTextCursorByRange(elementText,true)
-			poscurrent=poscurrent + len(getOnlyText(paraCursor))
-		end if
+		if 	listParagraph.hasMoreElements then
+			if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
+				paraCursor=theText.createTextCursorByRange(elementText,true)
+				poscurrent=poscurrent + len(getOnlyText(paraCursor)) + 1 &apos; for CR
+			end if
+		end if		
 	loop
+	Dim partialLineCursor as Object
+	partialLineCursor = theText.createTextCursorByRange(viewCursor)
+	partialLineCursor.gotoRange(elementText.start,true)
+	poscurrent = poscurrent + len(getOnlyText(partialLineCursor))
 	
+	
+	for nbCharacter = 1 to maxwords - 1
+		wordCursor.gotoNextWord(true) 
+	next
+	wordCursor.gotoEndOfWord(true)
+
 	if (theText.compareRegionStarts(wordCursor.end,paragraphCursor.end) &gt; 0) then
 		portionCursor.gotoRange(wordCursor.end,true)
 	else
