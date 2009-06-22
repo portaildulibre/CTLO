@@ -408,7 +408,7 @@ Function getWorkload() as Boolean
 							exit do
 						end if
 						result=results(Iterator_cur)
-					loop while not (result.start&lt;=poscurrent and poscurrent &lt;= result.start+result.len )
+					loop while not (result.start&lt;=poscurrent and poscurrent &lt;= result.start+result.len + 1 )
 					currentResult = currentResult + ignoreIdx 
 				end if
 				if isArray(results) then
@@ -1218,7 +1218,7 @@ Function replaceNotHttpSupportedCharacter(maChaine As String)
   Dim arg(0) As String : arg(0) = maChaine
 
    &apos; Caractères à remplacer.
-   rechRemp(0, 0) = &quot;àáâãäåæ&quot;: rechRemp(1, 0) = &quot;a&quot;
+   rechRemp(0, 0) = &quot;áâãäåæ&quot;: rechRemp(1, 0) = &quot;a&quot;
    rechRemp(0, 1) = &quot;èéêë;&quot; : rechRemp(1, 1) = &quot;e&quot;
    rechRemp(0, 2) = &quot;ìíîï&quot;  : rechRemp(1, 2) = &quot;i&quot;
    rechRemp(0, 3) = &quot;óôõöø&quot; : rechRemp(1, 3) = &quot;o&quot;
