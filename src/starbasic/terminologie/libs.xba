@@ -11,8 +11,7 @@ REM
 REM Data for the service layer
 REM
 
-&apos;Private Const USE_ON_ERROR = true &apos; Hide some errors
-Private Const USE_ON_ERROR = false &apos; TODO : set to true for livraison
+Private Const USE_ON_ERROR = true &apos; Hide some errors
 
 Private Const selectWord = true &apos; Select current word to update
 

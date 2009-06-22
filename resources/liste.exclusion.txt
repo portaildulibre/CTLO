@@ -47,4 +47,6 @@ retarder
 font
 fixer
 base
+pas
+ils
 ====FIN DE LA LISTE D'EXCLUSION===
