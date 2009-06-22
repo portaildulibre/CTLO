@@ -279,7 +279,7 @@ Function ManageParagraphs(theCursor as Object,theText as Object, listParagraph a
 		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
 			paraCursor=theText.createTextCursorByRange(elementText,true)
 			dim l as integer
-			l=len(paraCursor.string)+1
+			l=len(getOnlyText(paraCursor))+1
 			&apos; Ajuste the begin and end to the cursor
 			if not isNull(theCursor) then
 				on error goto IgnoreAdjuste
@@ -408,7 +408,7 @@ Function getWorkload() as Boolean
 							exit do
 						end if
 						result=results(Iterator_cur)
-					loop while not (result.start&lt;=poscurrent and poscurrent &lt;= result.start+result.len + 1 )
+					loop while not (result.start&lt;=poscurrent and poscurrent &lt;= result.start+result.len )
 					currentResult = currentResult + ignoreIdx 
 				end if
 				if isArray(results) then
@@ -602,8 +602,20 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	else
 		portionCursor.gotoRange(paragraphCursor.start,true)
 	end if
-	poscurrent=len(portionCursor.string) - 1 &apos;remove last space
-
+&apos;TODO	poscurrent=len(portionCursor.string) - 1 &apos;remove last space
+	poscurrent=0
+	Dim listParagraph as Object
+	Dim elementText as Object
+	Dim paraCursor as Object
+	listParagraph=portionCursor.createEnumeration()
+	do while listParagraph.hasMoreElements
+		elementText = listParagraph.nextElement
+		if (elementText.supportsService(&quot;com.sun.star.text.Paragraph&quot;)) then
+			paraCursor=theText.createTextCursorByRange(elementText,true)
+			poscurrent=poscurrent + len(getOnlyText(paraCursor))
+		end if
+	loop
+	
 	if (theText.compareRegionStarts(wordCursor.end,paragraphCursor.end) &gt; 0) then
 		portionCursor.gotoRange(wordCursor.end,true)
 	else
