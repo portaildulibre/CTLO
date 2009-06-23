@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="dialogues" dlg:left="149" dlg:top="114" dlg:width="250" dlg:height="245" dlg:help-url="http://franceterme.culture.fr" dlg:closeable="true" dlg:moveable="true" dlg:title="Remplacement des termes étrangers">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="dialogues" dlg:left="149" dlg:top="114" dlg:width="253" dlg:height="253" dlg:help-url="http://franceterme.culture.fr" dlg:closeable="true" dlg:moveable="true" dlg:title="Remplacement des termes étrangers">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:text-color="0xff0000"/>
   <dlg:style dlg:style-id="1" dlg:text-color="0x80" dlg:font-underline="single"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:text dlg:id="TexteExplicatif" dlg:tab-index="6" dlg:left="3" dlg:top="6" dlg:width="157" dlg:height="47" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr" dlg:value="Sélectionnez un domaine, un terme français, puis cliquez sur Remplacer. Pour garder le terme étranger cliquez sur Ignorer." dlg:multiline="true"/>
-  <dlg:text dlg:id="LienSurFranceTerme" dlg:tab-index="7" dlg:left="3" dlg:top="53" dlg:width="71" dlg:height="15" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="Pour plus d&apos;informations : ">
+  <dlg:text dlg:id="TexteExplicatif" dlg:tab-index="6" dlg:left="22" dlg:top="-76" dlg:width="157" dlg:height="47" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr" dlg:value="Sélectionnez un domaine, un terme français, puis cliquez sur Remplacer. Pour garder le terme étranger cliquez sur Ignorer." dlg:multiline="true"/>
+  <dlg:text dlg:id="LienSurFranceTerme" dlg:tab-index="7" dlg:left="55" dlg:top="200" dlg:width="71" dlg:height="8" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="Pour plus d&apos;informations : " dlg:align="right">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenExternalDatasourceURL?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:text>
-  <dlg:text dlg:id="LabelTermeEtranger" dlg:tab-index="11" dlg:left="2" dlg:top="69" dlg:width="120" dlg:height="9" dlg:value="Terme étranger :"/>
-  <dlg:textfield dlg:style-id="0" dlg:id="anglicisme" dlg:tab-index="13" dlg:left="3" dlg:top="80" dlg:width="118" dlg:height="15" dlg:tabstop="false" dlg:readonly="true"/>
-  <dlg:text dlg:id="LabelRemplacerPar" dlg:tab-index="14" dlg:left="125" dlg:top="115" dlg:width="119" dlg:height="9" dlg:value="Remplacer par :"/>
-  <dlg:textfield dlg:id="remplacement" dlg:tab-index="12" dlg:left="125" dlg:top="125" dlg:width="119" dlg:height="15" dlg:tabstop="false"/>
-  <dlg:text dlg:id="LabelDomaine" dlg:tab-index="0" dlg:left="2" dlg:top="145" dlg:width="120" dlg:height="9" dlg:value="Domaines :"/>
-  <dlg:menulist dlg:id="Domaines" dlg:tab-index="1" dlg:left="2" dlg:top="155" dlg:width="120" dlg:height="78">
+  <dlg:text dlg:id="LabelTermeEtranger" dlg:tab-index="11" dlg:left="5" dlg:top="24" dlg:width="120" dlg:height="9" dlg:value="Terme étranger"/>
+  <dlg:textfield dlg:style-id="0" dlg:id="anglicisme" dlg:tab-index="13" dlg:left="5" dlg:top="36" dlg:width="120" dlg:height="15" dlg:tabstop="false" dlg:readonly="true"/>
+  <dlg:text dlg:id="LabelRemplacerPar" dlg:tab-index="14" dlg:left="6" dlg:top="183" dlg:width="119" dlg:height="9" dlg:value="Terme français retenu" dlg:align="right"/>
+  <dlg:textfield dlg:id="remplacement" dlg:tab-index="12" dlg:left="128" dlg:top="181" dlg:width="119" dlg:height="11" dlg:tabstop="false"/>
+  <dlg:text dlg:id="LabelDomaine" dlg:tab-index="0" dlg:left="5" dlg:top="84" dlg:width="120" dlg:height="9" dlg:value="Domaines"/>
+  <dlg:menulist dlg:id="Domaines" dlg:tab-index="1" dlg:left="5" dlg:top="96" dlg:width="120" dlg:height="78">
    <script:event script:event-name="on-blur" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-keyup" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateTermsList?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
-  <dlg:text dlg:id="LabelTermes" dlg:tab-index="2" dlg:left="125" dlg:top="145" dlg:width="120" dlg:height="9" dlg:value="Termes français :"/>
-  <dlg:menulist dlg:id="Termes" dlg:tab-index="3" dlg:left="125" dlg:top="155" dlg:width="120" dlg:height="78">
+  <dlg:text dlg:id="LabelTermes" dlg:tab-index="2" dlg:left="128" dlg:top="84" dlg:width="120" dlg:height="9" dlg:value="Termes français"/>
+  <dlg:menulist dlg:id="Termes" dlg:tab-index="3" dlg:left="128" dlg:top="97" dlg:width="120" dlg:height="78">
    <script:event script:event-name="on-keyup" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.UpdateSelectedTerm?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
-  <dlg:button dlg:id="ReplaceButton" dlg:tab-index="4" dlg:left="175" dlg:top="7" dlg:width="70" dlg:height="16" dlg:default="true" dlg:value="Remplacer">
+  <dlg:button dlg:id="ReplaceButton" dlg:tab-index="4" dlg:left="55" dlg:top="212" dlg:width="70" dlg:height="16" dlg:default="true" dlg:value="Remplacer">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:terminologie.libs.ReplaceAnglicisme?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="BoutonIgnorer" dlg:tab-index="8" dlg:left="175" dlg:top="28" dlg:width="70" dlg:height="16" dlg:value="Ignorer">
+  <dlg:button dlg:id="BoutonIgnorer" dlg:tab-index="8" dlg:left="128" dlg:top="212" dlg:width="70" dlg:height="16" dlg:value="Ignorer">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:terminologie.libs.Ignore?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="BoutonRemplacerPartout" dlg:tab-index="5" dlg:left="175" dlg:top="49" dlg:width="70" dlg:height="16" dlg:default="true" dlg:value="Remplacer partout">
+  <dlg:button dlg:id="BoutonRemplacerPartout" dlg:tab-index="5" dlg:left="55" dlg:top="231" dlg:width="70" dlg:height="16" dlg:default="true" dlg:value="Remplacer partout">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:terminologie.libs.ReplaceAllAnglicisme?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="BoutonIgnorerTout" dlg:tab-index="9" dlg:left="175" dlg:top="70" dlg:width="70" dlg:height="16" dlg:value="Ignorer partout">
+  <dlg:button dlg:id="BoutonIgnorerTout" dlg:tab-index="9" dlg:left="128" dlg:top="231" dlg:width="70" dlg:height="16" dlg:value="Ignorer partout">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:terminologie.libs.IgnoreAll?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="BoutonAide" dlg:tab-index="10" dlg:left="175" dlg:top="91" dlg:width="70" dlg:height="16" dlg:value="Aide">
+  <dlg:button dlg:id="BoutonAide" dlg:tab-index="10" dlg:left="177" dlg:top="5" dlg:width="70" dlg:height="16" dlg:value="Aide">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:terminologie.libs.Help?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:style-id="1" dlg:id="Label1" dlg:tab-index="15" dlg:left="74" dlg:top="53" dlg:width="86" dlg:height="15" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="http://franceterme.culture.fr/">
+  <dlg:text dlg:style-id="1" dlg:id="Label1" dlg:tab-index="15" dlg:left="128" dlg:top="200" dlg:width="80" dlg:height="8" dlg:help-text="Aller sur le site de France Terme" dlg:help-url="http://franceterme.culture.fr/" dlg:value="http://franceterme.culture.fr/">
    <script:event script:event-name="on-mouseup" script:macro-name="vnd.sun.star.script:Terminologie.libs.OpenExternalDatasourceURL?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:text>
-  <dlg:textfield dlg:id="ForeignTermInContext" dlg:tab-index="16" dlg:left="3" dlg:top="98" dlg:width="119" dlg:height="43" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true"/>
+  <dlg:textfield dlg:id="ForeignTermInContext" dlg:tab-index="16" dlg:left="128" dlg:top="36" dlg:width="119" dlg:height="43" dlg:vscroll="true" dlg:multiline="true" dlg:readonly="true"/>
+  <dlg:text dlg:id="LabelContext" dlg:tab-index="17" dlg:left="128" dlg:top="24" dlg:width="120" dlg:height="9" dlg:value="Contexte"/>
  </dlg:bulletinboard>
 </dlg:window>
