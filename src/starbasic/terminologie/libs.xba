@@ -229,7 +229,7 @@ Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
 		&apos; Remove last cr
 		poscurrent=poscurrent-1
 		ManageMixedCursor(theText,contextCursor)
-		ThisComponent.CurrentController.select(oldViewCursor)
+		viewCursor.gotoRange(oldViewCursor.end)
 &apos;		if ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
 &apos;			viewCursor.collapseToEnd()
 &apos;			viewCursor.goRight(1,false)
@@ -614,6 +614,7 @@ Function selectPart(theText as Object,maxwords as Integer) as Object
 	loop
 	Dim partialLineCursor as Object
 	partialLineCursor = theText.createTextCursorByRange(viewCursor)
+	on error resume next
 	partialLineCursor.gotoRange(elementText.start,true)
 	poscurrent = poscurrent + len(getOnlyText(partialLineCursor))
 	
