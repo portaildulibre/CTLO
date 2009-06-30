@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
       <node oor:name="private:resource/toolbar/addon_org.linagora.clients.minefi.dpma.terminologie.boutons" oor:op="replace">
         <prop oor:name="UIName" oor:type="xs:string">
           <value xml:lang="en-US">CTOO</value>
-          <value xml:lang="fr-FR">Correcteur Terminologique</value>
+          <value xml:lang="fr-FR">Correcteur terminologique</value>
         </prop>
       </node>
     </node>
