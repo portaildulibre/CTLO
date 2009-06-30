@@ -40,7 +40,7 @@
 <meta content="text/css" http-equiv="Content-Style-Type" /><title>FranceTerme</title><link type="text/css" rel="stylesheet" href="http://franceterme.culture.fr/FranceTerme/style-accueil.css" />
       </head>
       <body>
-        <h2>Information générales</h2>
+        <h2>Informations générales</h2>
         <p>
         La table de correspondance contient :
         <ul>
@@ -49,38 +49,13 @@
         </ul>
         </p>
         <table>
-          <tr><!--
-            <td valign="top">
-        <h2>Bilan des termes exclus:</h2>
-          <p><xsl:value-of select="count(//log-entry[@type='exclusions']/log-item)"/> terme(s) exclu(s).</p>
-          <ol>
-        <xsl:for-each select="//log-entry[@type='exclusions']">
-            <xsl:for-each select="log-item">
-              <li><xsl:value-of select="current()"/></li>
-            </xsl:for-each>
-        </xsl:for-each>
-          </ol>
-          </td>
--->
+          <tr>
             <xsl:call-template name="log-section">
-              <xsl:with-param name="log-type" select="'homographie'"/>
+              <xsl:with-param name="log-type" select="'exclusions'"/>
               <xsl:with-param name="title-message" select="'Bilan des termes exclus'"/>
               <xsl:with-param name="count-message" select="'terme(s) exclu(s)'"/>
             </xsl:call-template>
 
-
-<!--
-          <td valign="top">
-        <h2>Homographies retirées:</h2>
-          <p><xsl:value-of select="count(//log-entry[@type='homographie']/log-item)"/> homographie(s) retirée(s)</p>
-          <ol>
-            <xsl:for-each select="//log-entry[@type='homographie']">
-              <xsl:for-each select="log-item">
-                <li><xsl:value-of select="current()"/></li>
-              </xsl:for-each>
-            </xsl:for-each>
-          </ol>
-          </td> -->  
             <xsl:call-template name="log-section">
               <xsl:with-param name="log-type" select="'homographie'"/>
               <xsl:with-param name="title-message" select="'Homographies retirées'"/>
@@ -93,7 +68,6 @@
               <xsl:with-param name="title-message" select="'Bilan des termes ajoutés'"/>
               <xsl:with-param name="count-message" select="'terme(s) ajouté(s)'"/>
             </xsl:call-template>
-
           </tr>
         </table>
       </body>
@@ -109,13 +83,14 @@
       <p>
         <xsl:value-of select="count(//log-entry[@type=$log-type]/log-item)"/><xsl:value-of select="concat(' ',$count-message)"/>.
       </p>
-      <ol>
+      <ul>
         <xsl:for-each select="//log-entry[@type=$log-type]">
+          <xsl:sort select="log-item"/>
           <xsl:for-each select="log-item">
             <li><xsl:value-of select="current()"/></li>
           </xsl:for-each>
         </xsl:for-each>
-      </ol>
+      </ul>
     </td>
   </xsl:template>
 
