@@ -32,7 +32,7 @@
     <xsl:param name="inclusion-file"/>
     <xsl:param name="ref-filename"/>
     
-    <xsl:variable name="inclusions"        select="document($inclusion-file)"/>
+    <xsl:variable name="inclusions"      select="document($inclusion-file)"/>
     <xsl:variable name="ref-file"        select="document($ref-filename)"/>
 
     <xsl:variable name="NOTHING-TO-ADD"    select="'nothing-to-add'"/> 
@@ -47,14 +47,12 @@
     <!-- Defining the root of the new XML document -->
     <xsl:template match="/anglicismes">
         <xsl:variable name="nb-include-terms"    select="count($inclusions//include)"/>
-        
-    
-    <xsl:message>
-Nombre de termes à inclure: <xsl:value-of select="count($inclusions/includes/include)"/>
-Nombre de termes existants: <xsl:value-of select="count($ref-file/anglicismes/anglicisme)"/>
-        </xsl:message>
-    <xsl:element name="anglicismes">
-    
+        <xsl:element name="anglicismes">
+<log-entry type="inclusions">
+  <h2>Termes ajoutés à la table de correspondance</h2>
+  <p>Nombre de termes à inclure: <xsl:value-of select="count($inclusions/includes/include)"/>.</p>
+  <p>Nombre de termes existants: <xsl:value-of select="count($ref-file/anglicismes/anglicisme)"/>.</p>
+</log-entry>
             <xsl:apply-templates select="@*|node()"/>
 
         <xsl:for-each select="$inclusions/includes/include">
@@ -73,11 +71,12 @@ Nombre de termes existants: <xsl:value-of select="count($ref-file/anglicismes/an
 			     </xsl:message>
 			     <xsl:copy-of select="../../.."/>
                          </xsl:element>
+<log-entry type="inclusions"><log-item><b><xsl:value-of select="$term-to-include"/></b> (variante du terme <i><xsl:value-of select="$anchor"/></i>)</log-item></log-entry>
 		    </xsl:if>
                 </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
-                 <xsl:message>Impossible d'include le terme '<xsl:value-of select="$term-to-include"/>' car la forme terminologique qui lui est associée, '<xsl:value-of select="$anchor"/>' n'existe pas !</xsl:message> 
+                 <log-entry type="inclusions"><div style="color:red;"><p>Impossible d'include le terme '<xsl:value-of select="$term-to-include"/>' car la forme terminologique qui lui est associée, '<xsl:value-of select="$anchor"/>' n'existe pas !</p></div></log-entry> 
             </xsl:otherwise>
         </xsl:choose>
         </xsl:for-each>

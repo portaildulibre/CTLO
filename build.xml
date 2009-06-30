@@ -309,7 +309,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			style="src/xsl/sort-term-list.xsl"
 			out="${dict.xml}"/>
 			
-
+		<xslt   in="${dict.xml}"
+                        style="src/xsl/log-display.xsl"
+                        out="${target}/rapport-execution.html"/>
 		<!--
 			Here we are done for the extension part, we still have double entries
 			inside a <synmonymes> element, but the XMLDictionnary Handler in the

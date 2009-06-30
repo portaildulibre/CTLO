@@ -26,12 +26,15 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
 	<xsl:template match="/">
-<xsl:message>
-Les termes suivants ont été supprimés pour cause d'homographie :
-</xsl:message>
 		<xsl:apply-templates select="@*|node()"/>	
 	</xsl:template>
-	
+
+	<xsl:template name="anglicismes">
+<log-entry type="homographie">
+<h2>Homographies</h2>
+<p>Les termes suivants ont été supprimés pour cause d'homographie :</p>
+</log-entry>
+	</xsl:template>
 	<!-- Copy all nodes from here.  -->
     	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -50,7 +53,7 @@ Les termes suivants ont été supprimés pour cause d'homographie :
 					</xsl:copy>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:message><xsl:value-of select="$label"/></xsl:message>
+<log-entry type="homographie"><log-item><xsl:value-of select="$label"/></log-item></log-entry>
 				</xsl:otherwise>
 			</xsl:choose>
     	</xsl:template>

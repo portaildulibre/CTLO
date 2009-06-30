@@ -46,14 +46,16 @@
 
 	<!-- Defining the root of the new XML document -->
 	<xsl:template match="/">
-		<xsl:variable name="nb-exclude-terms"	select="count($exclusions/excludes/exclude)"/>
-		<!-- //FUTURE: Find way to log missing exclude term -->
-		<xsl:message>
-Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>
-		</xsl:message>
-
 		<xsl:apply-templates select="@*|node()"/>
+	</xsl:template>
 
+	<xsl:template name="anglicismes">
+          <xsl:variable name="nb-exclude-terms"   select="count($exclusions/excludes/exclude)"/>
+	  <log-entry type="exclusions">
+	    <h1>Termes exclues</h1>
+	    <p>Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>.</p>
+	    <p>Les termes suivants ont été retirés de la table de correspondance:</p>
+	  </log-entry>
 	</xsl:template>
 
 	<xsl:template match="anglicisme">
@@ -70,7 +72,9 @@ Nombre de termes à exclure: <xsl:value-of select="$nb-exclude-terms"/>
 -->
 		<xsl:choose>
 			<xsl:when test="contains($is-exclude,'excluded')">
-				<xsl:message>Le terme <xsl:value-of select="$term"/> a été retiré.</xsl:message>
+<log-entry type="exclusions">
+	<log-item><xsl:value-of select="$term"/></log-item>
+</log-entry>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:element name="anglicisme">
