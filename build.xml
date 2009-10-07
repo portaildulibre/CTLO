@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 	<!-- Regular project property -->
 	<property name="out.path" 			value="bin/ant" 					/>
-	<property name="version" 			value="0.4.3" 						/>
+	<property name="version" 			value="1.0.0" 						/>
 	<property name="src.java"			value="src/java"					/>
 	<property name="src.test"			value="src/tests"					/>
 	<property name="src.xsl"			value="src/xsl"						/>
@@ -77,7 +77,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<property name="unopkg.exe"     value="${OOo_SDK}/ure-link/bin/uno.bin"/>
 		<property name="project.lib"    value="${OOo_SDK}/program/classes/"/>
 		<property name="idlc.exe"	value="${OOo_HOME}/basis-link/sdk/bin/idlc"/>
-		<property name="remerge.exe"	value="${OOo_HOME}/basis-link/sdk/bin/regmerge"/>
+		<property name="remerge.exe"	value="${OOo_URE}/bin/regmerge"/>
 		<property name="javamaker.exe"	value="${OOo_HOME}/basis-link/sdk/bin/javamaker"/>
 		  
 		<path id="project.classpath">
