@@ -691,12 +691,10 @@ Sub checkForDefaultActivation
 	Dim vRegistry as Object 
 	Dim vRootKey as Object
 	Dim vMyKey as Object 
-	
+	REM msgbox("here")	
 	vRegistry = getRegistry()
 	vRootKey = vRegistry.getRootKey()
 	vMyKey = vRootKey.openKey(keyName)
-	REM Whatever is defined, we record the key Handler
-	SetupKeyHandler()
 	keyHandlerState = true
 	If NOT isNull(vMyKey) Then
 		REM if the value is not &quot;yes&quot;, we also activate...
@@ -705,8 +703,9 @@ Sub checkForDefaultActivation
 		if ( vMyKey.getStringValue = &quot;yes&quot; ) Then
 			keyHandlerState = false
 		End if
-	End if	
-	REM otherwise, we do nothing, the checker is not activated
+	End if
+	REM Whatever is defined, we record the key Handler
+	SetupKeyHandler()
 End Sub
 
 Function getRegistry() As Object
