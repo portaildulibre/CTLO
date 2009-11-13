@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="libs" script:language="StarBasic">REM  *****  BASIC  *****
-REM @author Manuel Odesser modesser@linagora.com
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="libs" script:language="StarBasic">REM	@author Philippe Prados philippe.prados@atosorigin.com
 REM	@author Romain Pelisse romain.pelisse@atosorigin.com
-REM	@author Philippe Prados philippe.prados@atosorigin.com
-REM @author Laurent Godard http://www.indesko.com/telechargements/ooowikipedia
+REM @author Manuel Odesser modesser@linagora.com
+REM @author Laurent Godard
 
 Option Explicit
 REM
 REM Data for the service layer
 REM
-
 Private Const USE_ON_ERROR = true &apos; Hide some errors
 
 Private Const selectWord = true &apos; Select current word to update
@@ -23,33 +21,32 @@ Private currentResult as Integer 	&apos; index of the current row in the results
 Private oldViewCursor as Object 	&apos; Cursor on the current selection
 Private cursor as Object 			&apos; Cursor on the current selection
 Global IgnoreTermArray(0) as String
-Private ignoreIdx as integer		&apos; Focus courrant des mots à ignorer
+Private ignoreIdx as integer		&apos; Focus current words to ignore
 &apos; Lors de l&apos;analyse du document ou d&apos;une selection, le focus est à -1
 &apos; Sinon, il permet de selectionner depuis les candidats, que ceux incluant le focus
 &apos; Cela permet d&apos;éviter d&apos;avoir à ignorer plusieurs fois, des mots avant ou après le focus
 
-Private exitCode as integer &apos; OK or Cancel
-Global maxwords as Long
+Private exitCode as integer 		&apos; OK or Cancel
+Global maxwords as Long 			&apos; Max number of world to analyse, before and after cursor
 
 Private ReplaceArray(0) as String
 Private ReplacementArray(0) as String
-Global TerminologieKeyHandler As Object 
 
-Private posCurrent as Integer &apos; Position du point d&apos;insertion par rapport à la selection
+Private posCurrent as Integer 		&apos; Cursor position in relation to selection
 
 REM 
 REM data for the HMI layer
 REM
 Dim mainDialog as Object &apos; Current dialog objet
-Private Const dialogueLibraryName = &quot;terminologie&quot;
-Private Const sDialogName = &quot;dialogues&quot;
-Private Const REMPLACEMENT_FIELD_NAME = &quot;remplacement&quot;
+Private Const dialogueLibraryName 		= &quot;terminologie&quot;
+Private Const sDialogName 				= &quot;dialogues&quot;
+Private Const REMPLACEMENT_FIELD_NAME 	= &quot;remplacement&quot;
+Private Const TITLE 					= &quot;Correcteur terminologique&quot;
 
 REM Retreives the running OOO version
 REM http://www.oooforum.org/forum/viewtopic.phtml?t=10003&amp;highlight=getsolarversion
-REM @author : Laurent Godard &lt;listes.godard@laposte.net&gt;
 REM	@author : Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
-REM 
+REM @author : Laurent Godard &lt;listes.godard@laposte.net&gt;
 REM
 Global OOoVersion_ as String
 Function OOoVersion() As String
@@ -68,9 +65,6 @@ Function OOoVersion() As String
 	OOOVersion = _OOoVersion
 End Function
 
-
-
-
 REM
 REM Retrieve and build the Uno Service associated with this plugin, if and
 REM only if the service as not already be fetched.
@@ -84,7 +78,7 @@ Function terminologieService() as Object
 		maxwords = terminologieService_.maxwords
 	end if
 	if (isnull(terminologieService_)) then
-		msgbox(&quot;not found&quot;,0,&quot;Correcteur terminologique&quot;)
+		msgbox(&quot;Java module not found&quot;,0,TITLE)
 	end if
 	terminologieService=terminologieService_
 End Function
@@ -121,7 +115,7 @@ Sub ManageSelection()
 	oldViewCursor.collapseToEnd() 
 	viewCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
-		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
+		msgbox &quot;La vérification de la sélection a été effectuée.&quot;,0,TITLE
 	end if
 end sub
 
@@ -194,7 +188,7 @@ Ignore:
 	oldViewCursor.collapseToEnd() 
 	viewCursor.gotoRange(oldViewCursor,FALSE)
 	if not abort then
-		msgbox &quot;La vérification du document a été effectuée.&quot;,0,&quot;Correcteur terminologique&quot;
+		msgbox &quot;La vérification du document a été effectuée.&quot;,0,TITLE
 	end if
 EndFn:	
 End sub
@@ -687,26 +681,30 @@ REM	****************************************************************************
 
 Const packageName = &quot;org.atosorigin.ctOO.terminologie&quot;
 Const keyName = packageName &amp; &quot;.noActivationAtStart&quot;
+
+
 Sub checkForDefaultActivation
-	Dim vRegistry as Object 
-	Dim vRootKey as Object
 	Dim vMyKey as Object 
-	
-	vRegistry = getRegistry()
-	vRootKey = vRegistry.getRootKey()
-	vMyKey = vRootKey.openKey(keyName)
-	REM Whatever is defined, we record the key Handler
-	SetupKeyHandler()
-	keyHandlerState = true
+
+	terminologieService &apos; Init java wrapper
+	vMyKey = getRegistry().getRootKey().openKey(keyName)
+
+   &apos; Wait a half second before open or create the document
+   &apos; because, some time, the current doc is not good, 
+   &apos; and it&apos;s impossible to register the key event
+	Wait 500
+
+	&apos; Whatever is defined, we record the key Handler
 	If NOT isNull(vMyKey) Then
 		REM if the value is not &quot;yes&quot;, we also activate...
 		Dim str As String
 		str = vMyKey.getStringValue
 		if ( vMyKey.getStringValue = &quot;yes&quot; ) Then
-			keyHandlerState = false
+			desactivate()&apos;
+		else
+			activate()
 		End if
 	End if	
-	REM otherwise, we do nothing, the checker is not activated
 End Sub
 
 Function getRegistry() As Object
@@ -744,17 +742,15 @@ sub setDefaultActivation(state as String, mssg as String)
 		vMyKey = vRootKey.createKey( keyName ,TRUE)
 	End If
 	vMyKey.setStringValue(state)
-	msgbox(mssg,0,&quot;Correcteur terminologique&quot;)
-	removeHook()
-	addHook()
+	msgbox(mssg,0,TITLE)
 	If ( state = &quot;no&quot; ) Then
-		keyHandlerState = true
+		activate()
 	Else 
-		keyHandlerState = false		
+		desactivate()		
 	End If
 	vMyKey.closeKey()
 	vRegistry.close()
-REM	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
+	&apos;msgbox(&quot;keyHandlerEnable:&quot; &amp; 	keyHandlerEnable,&quot;debug&quot;)
 end sub 
 
 REM	***************************************************************************************************** 
@@ -763,67 +759,6 @@ REM Routines related to the &quot;cheking while typing&quot; functionnality
 REM
 REM	***************************************************************************************************** 
 
-
-Global keyHandlerState As Boolean
-REM
-REM	Set up the key handler.
-REM	
-REM	@author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
-REM 
-Sub SetupKeyHandler  
-	keyMutex(&quot;set&quot;,True)
-	If IsNull(TerminologieKeyHandler) Then
-		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
-	End If
-	removeHook
-	addHook         
-	keyMutex(&quot;set&quot;,False)                                                                                                                                 
-End Sub    
-
-REM
-REM	Opposite of set up key handler
-REM                                                                                                                                                                
-Sub RemoveKeyHandler                                                                                                                                                      
-	keyMutex(&quot;set&quot;,True)
-	removeHook
-	keyHandlerState = false
-	keyMutex(&quot;set&quot;,False)
-End Sub 
-
-REM 
-REM activate autocorrection
-REM
-REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
-REM
-Sub activate
-	terminologieService 
-	SetupKeyHandler 
-	keyHandlerState = true
-&apos;	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
-End Sub
-
-REM 
-REM desactivate autocorrection
-REM
-REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
-REM
-Sub desactivate
-	terminologieService 
-	keyHandlerState = false
-&apos;	msgbox(&quot;keyhandler:&quot; &amp; 	keyHandlerState,&quot;debug&quot;)
-End Sub
-
-
-REM 
-REM Inverse current state of Key Handler
-REM
-REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
-REM
-Sub toggleChecking
-	terminologieService 
-	keyHandlerState = (NOT keyHandlerState)
-End Sub
-
 REM
 REM	Automatically called by OOo at close.
 REM WARN: Do not modify method name.
@@ -831,19 +766,28 @@ REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM @author Manuel Odesser modesser@linagora.com
 REM       
-Global isHook as boolean                                                                                                                                                           
-Sub addHook
+Global keyHandlerEnable as boolean &apos; true if on
+Global TerminologieKeyHandler As Object &apos; Singleton
+Sub activate
 	Dim doc As Object
 	doc =  StarDesktop.CurrentComponent   
+	If IsNull(TerminologieKeyHandler) Then
+		TerminologieKeyHandler = CreateUnoListener(&quot;KeyHandler_&quot;,&quot;com.sun.star.awt.XKeyHandler&quot;)
+	End If
+	
 	REM can&apos;t use thisComponent here, operation would be call on any open files, 
 	REM including the librairies, which is far away from what we need.
-	If not isHook and HasUnoInterfaces(doc, &quot;com.sun.star.frame.XModel&quot;) Then
+	if HasUnoInterfaces(doc, &quot;com.sun.star.frame.XModel&quot;) Then
 		If doc.supportsService(&quot;com.sun.star.text.TextDocument&quot;) Then
-			isHook=true
 			doc.currentController.addKeyHandler(TerminologieKeyHandler) 
+			keyHandlerEnable=true
+		else
+			if USE_ON_ERROR = false then msgbox(&quot;ERROR addKeyHandler for &quot; &amp; doc.Title,&quot;debug&quot;)
 		End If
-	End If                                                                                                                                                               
-End Sub     
+	else
+		if USE_ON_ERROR = false then msgbox(&quot;ERROR HasUnoInterfaces for &quot; &amp; doc.Title,&quot;debug&quot;)
+	end if
+End Sub 
        
 REM
 REM	Automatically called by OOo at close.
@@ -852,12 +796,12 @@ REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM @author Manuel Odesser modesser@linagora.com
 REM                                                                                                                                                              
-Sub removeHook    
+Sub desactivate    
 	ON ERROR RESUME NEXT 
 	REM If this procedure is launched by the quick start, no document has been defined
-	if isHook then
+	if keyHandlerEnable then
 		StarDesktop.CurrentComponent.currentController.removeKeyHandler(TerminologieKeyHandler)                                                                                              
-		isHook = false
+		keyHandlerEnable = false
 	end if
 End Sub
 
@@ -881,13 +825,11 @@ REM @author Manuel Odesser modesser@linagora.com
 REM
 dim reentrant as boolean
 Sub KeyHandler_keyReleased(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
-	if ( keyHandlerState ) Then
-		if not reentrant then
-			reentrant=true	
-			ManageKeyPressedEvent(keyEvent)
-			reentrant=false
-		endif
-	End if
+	if not reentrant then &apos; evite une double boite de dialogue
+		reentrant=true	
+		ManageKeyPressedEvent(keyEvent)
+		reentrant=false
+	endif
 	KeyHandler_keyReleased = false
 End Sub
 
@@ -898,16 +840,28 @@ REM
 REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt; 
 REM @author Manuel Odesser modesser@linagora.com
 REM
+Global insecable as object
+
 Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As Boolean
 &apos; Ne fonctionne pas, car le mot n&apos;est pas délimité par un espace à ce moment là.
-&apos;	if ( keyHandlerState ) Then
+&apos;	if ( keyHandlerEnable ) Then
 &apos;		if not reentrant then
 &apos;			reentrant=true	
 &apos;			ManageKeyPressedEvent(keyEvent)
 &apos;			reentrant=false
 &apos;		endif
 &apos;	End if
-	KeyHandler_keyPressed = False
+	&apos; Hook for insecable space
+	if isNull(insecable) then
+		insecable = array(&quot;:&quot;, &quot;;&quot;, &quot;?&quot;, &quot;!&quot;)
+	end if
+	KeyHandler_keyPressed=false
+	dim count as integer
+	for count=Lbound(insecable) to Ubound(insecable)
+		if (insecable(count) = keyEvent.keyChar) then
+			KeyHandler_keyPressed=true
+		endif
+	next
 End Function
 
 REM
@@ -932,9 +886,6 @@ Function keyMutex(operation As String, Optional state As Boolean)
 		keyMutex = mutex
 	End If
 End Function
-
-
-
 
 REM
 REM Does the character is a word boundary ?
@@ -1000,7 +951,7 @@ Function characterClassificationService() as Object
 		characterClassificationService_ = CreateUnoService(service)
 	end if
 	if (isnull(characterClassificationService_)) then
-		msgbox(&quot;Problème: service &quot; &amp; service &amp; &quot; introuvable&quot;,0,&quot;Correcteur terminologique&quot;)
+		msgbox(&quot;Problème: service &quot; &amp; service &amp; &quot; introuvable&quot;,0,TITLE)
 	end if
 	REM ...
 	characterClassificationService=characterClassificationService_
@@ -1350,7 +1301,6 @@ Function selectSentence(cursor as Object, result as Object, offset as Integer) a
 			selectionCursor = cursor.Text.createTextCursorByRange(cursor)
 			selectionCursor.collapseToStart()
 			selectionCursor.goRight(start,false)
-REM			selectionCursor.goRight(result.len)
 			selectionCursor.gotoEndOfParagraph(true)
 		Else
 			suffix = &quot;...&quot;

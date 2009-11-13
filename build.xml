@@ -2,6 +2,7 @@
 <!--
 Correcteur terminologique - éradication des anglicismes.
 Copyright (C) 2006 Linagora SA - Manuel Odesser modesser@linagora.com
+Copyright (C) 2009 Atos Origin - Philippe PRADOS, Romain PELISSE
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -345,7 +346,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			out="${database-without-homographies}.nodoubleentries">
 		</xslt>
 
-		<!-- Add on by PPrados, generate proper datafile for LT. -->
+		<!-- Generate proper datafile for LT. -->
 		<xslt 	in="${database-without-homographies}.nodoubleentries"
 			style="src/xsl/to-LangageTool.xsl"
 			out="${target}/partial-grammar.xml">
