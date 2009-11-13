@@ -700,10 +700,12 @@ Sub checkForDefaultActivation
 		Dim str As String
 		str = vMyKey.getStringValue
 		if ( vMyKey.getStringValue = &quot;yes&quot; ) Then
-			desactivate()&apos;
-		else
 			activate()
+		else
+			desactivate()&apos;
 		End if
+	else
+		activate()
 	End if	
 End Sub
 
@@ -721,11 +723,11 @@ Function getRegistry() As Object
 End Function
 
 Sub setDefaultActivationToTrue
-	setDefaultActivation(&quot;no&quot;,&quot;La correction terminologique automatique au démarrage a été activée.&quot;)
+	setDefaultActivation(&quot;yes&quot;,&quot;La correction terminologique automatique au démarrage a été activée.&quot;)
 End Sub 
 
 Sub setDefaultActivationToFalse
-	setDefaultActivation( &quot;yes&quot;,&quot;La correction terminologique automatique au démarrage a été désactivée.&quot;)
+	setDefaultActivation( &quot;no&quot;,&quot;La correction terminologique automatique au démarrage a été désactivée.&quot;)
 End Sub 
 
 sub setDefaultActivation(state as String, mssg as String)
@@ -743,7 +745,7 @@ sub setDefaultActivation(state as String, mssg as String)
 	End If
 	vMyKey.setStringValue(state)
 	msgbox(mssg,0,TITLE)
-	If ( state = &quot;no&quot; ) Then
+	If ( state = &quot;yes&quot; ) Then
 		activate()
 	Else 
 		desactivate()		
