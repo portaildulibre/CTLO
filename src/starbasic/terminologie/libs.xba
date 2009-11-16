@@ -34,6 +34,9 @@ Private ReplacementArray(0) as String
 
 Private posCurrent as Integer 		&apos; Cursor position in relation to selection
 
+Private withInsecable as boolean	&apos; true if plugin insecable is present
+
+
 REM 
 REM data for the HMI layer
 REM
@@ -695,7 +698,9 @@ Sub checkForDefaultActivation
    &apos; Wait a half second before open or create the document
    &apos; because, some time, the current doc is not good, 
    &apos; and it&apos;s impossible to register the key event
-	Wait 500
+&apos;	Wait 50
+
+	initInsecable()
 
 	&apos; Whatever is defined, we record the key Handler
 	If NOT isNull(vMyKey) Then
@@ -710,7 +715,16 @@ Sub checkForDefaultActivation
 	else
 		activate()
 	End if	
+
 End Sub
+
+Sub initInsecable()
+	on error goto no
+	BasicLibraries.LoadLibrary(&quot;starxpert_insecable&quot;)
+	withInsecable=true
+	no:
+End sub
+
 
 Function getRegistry() As Object
 	Dim vRegistry as Object
@@ -861,12 +875,14 @@ Function KeyHandler_keyPressed(keyEvent As New com.sun.star.awt.KeyHandler) As B
 		insecable = array(&quot;:&quot;, &quot;;&quot;, &quot;?&quot;, &quot;!&quot;)
 	end if
 	KeyHandler_keyPressed=false
-	dim count as integer
-	for count=Lbound(insecable) to Ubound(insecable)
-		if (insecable(count) = keyEvent.keyChar) then
-			KeyHandler_keyPressed=true
-		endif
-	next
+	if withInsecable then
+		dim count as integer
+		for count=Lbound(insecable) to Ubound(insecable)
+			if (insecable(count) = keyEvent.keyChar) then
+				KeyHandler_keyPressed=true
+			endif
+		next
+	end if
 End Function
 
 REM
