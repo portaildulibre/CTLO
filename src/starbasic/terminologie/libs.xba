@@ -13,6 +13,8 @@ Private Const USE_ON_ERROR = true &apos; Hide some errors
 
 Private Const selectWord = true &apos; Select current word to update
 
+Private Const defaultStartup = true
+
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
 Private result as Object 			&apos; Current result to manage
@@ -710,10 +712,16 @@ Sub checkForDefaultActivation
 		if ( vMyKey.getStringValue = &quot;yes&quot; ) Then
 			activate()
 		else
-			desactivate()&apos;
+			desactivate()
 		End if
 	else
-		activate()
+		if (defaultStartup = true) Then
+			msgbox(&quot;activate&quot;)
+			activate()
+		else
+			msgbox(&quot;deactivate&quot;)
+			desactivate()
+		End if
 	End if	
 
 End Sub
