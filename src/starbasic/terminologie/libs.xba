@@ -716,10 +716,8 @@ Sub checkForDefaultActivation
 		End if
 	else
 		if (defaultStartup = true) Then
-			msgbox(&quot;activate&quot;)
 			activate()
 		else
-			msgbox(&quot;deactivate&quot;)
 			desactivate()
 		End if
 	End if	

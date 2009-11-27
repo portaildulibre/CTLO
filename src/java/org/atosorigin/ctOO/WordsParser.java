@@ -1,5 +1,8 @@
 package org.atosorigin.ctOO;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import org.xml.sax.SAXException;
 
 public class WordsParser
 {
-	private static boolean log = false;
+	private static boolean log = true;
 	Node top=new Node();
 	int maxWords=3; // TODO : calculer
 	String[] domains;
@@ -274,10 +277,22 @@ public class WordsParser
 				"word=").append(
 				word).append(
 				"\n");
-			buf.append(
-				"domaines=").append(
-				foreignTerm).append(
-				"\n");
+			buf.append("domaines=");
+			if (foreignTerm==null)
+				buf.append("null");
+			else
+			{
+				for (Domaine d:foreignTerm.domaines)
+				{
+					buf.append('{').append(d.name).append(",[");
+					for (String syn:d.synonymes)
+					{
+						buf.append(syn).append(',');
+					}
+					buf.append("]}");
+				}
+			}
+			buf.append("\n");
 			buf.append(
 				"candidates={").append(
 				candidates).append(
@@ -316,14 +331,28 @@ public class WordsParser
 			{
 				final String theWord=word.word;
 				if (log) System.out.println("ADD \""+word+"\"");
-				final int tiret=theWord.indexOf('-');
+				int tiret=theWord.indexOf('-');
 				if (tiret!=-1)
 				{
+					// Limité à deux tirets dans le mot (peer-to-peer)
 					String first=theWord.substring(0,tiret);
 					String second=theWord.substring(tiret+1);
-					String withoutTiret=first+second;
+					String third="";
+					tiret=second.indexOf('-');
+					if (tiret!=-1)
+					{
+						third=second.substring(tiret+1);
+						second=second.substring(0,tiret);
+						assert(second.indexOf('-') == -1);
+					}
+					String withoutTiret=first+second+third;
 					secondcur = addOneNode(cur, new Node(withoutTiret));
-					cur=addOneNode(addOneNode(cur, new Node(first)),new Node(second));
+					if ("".equals(third))
+					{
+						cur=addOneNode(addOneNode(cur, new Node(first)),new Node(second));
+					}
+					else
+						cur=addOneNode(addOneNode(addOneNode(cur, new Node(first)),new Node(second)),new Node(third));
 				}
 				else
 				{
@@ -389,9 +418,9 @@ public class WordsParser
 			int start=-1;
 			here: for (int i = 0; i < max; ++i)
 			{
-				// System.out.println(cur.candidates.dump());
 				Word word=words.get(i);
 				Node find = cur.candidates.get(word.word);
+				if (log) System.out.println("find="+find);
 				// Hock pour gérer la forme fléchie avec un pluriel simple
 				if ((find==null) && word.word.charAt(word.word.length()-1)=='s') 
 				{
@@ -504,7 +533,7 @@ public class WordsParser
 		for (int i=0;i<sentence.length();++i)
 		{
 			char c=sentence.charAt(i);
-			if (Character.isLetter(c) || (tiret && c=='-'))
+			if (Character.isLetter(c) || Character.isDigit(c) || (tiret && c=='-'))
 			{
 				builder.append(Character.toLowerCase(c));
 			}
@@ -529,5 +558,15 @@ public class WordsParser
 	public int getMaxWords()
 	{
 		return maxWords;
+	}
+	public static void main(String...strings) throws SAXException, IOException, ParserConfigurationException
+	{
+		InputStream in=new FileInputStream("target/terminologie.xml");
+		WordsParser parser=WordsParser.createFromXML(in);
+		in.close();
+		for (Result r:parser.find("peer-to-peer"))
+		{
+			System.out.println(r);
+		}
 	}
 }
