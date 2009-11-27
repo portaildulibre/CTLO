@@ -52,8 +52,8 @@
 
   <!-- Defining the root of the new XML document -->
   <xsl:template match="/">
-    <xsl:variable name="total-angliscim-no-variation"  select="count(//Article/Equivalent[(@langue = 'en')])"/>
-    <xsl:variable name="addons-variations"      select="count(//Article/Equivalent[@langue = 'en']/variante)"/>
+    <xsl:variable name="total-angliscim-no-variation"  select="count(//Article/Equivalent)"/>
+    <xsl:variable name="addons-variations"      select="count(//Article/Equivalent/variante)"/>
     <xsl:variable name="sum-anglicism"      select="$total-angliscim-no-variation + $addons-variations"/>
 
     <anglicismes>
@@ -73,7 +73,7 @@ TOTAL Anglicismes:<xsl:value-of select="$sum-anglicism"/>
     of our new XML document.
   -->
   <xsl:template match="Article">
-    <xsl:for-each select="Equivalent[(@langue = 'en')]">
+    <xsl:for-each select="Equivalent">
       <xsl:variable name="anglicisme">
         <xsl:call-template name="recursive-text-assembling">
           <xsl:with-param name="text-position"
