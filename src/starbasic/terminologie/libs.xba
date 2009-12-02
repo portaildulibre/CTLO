@@ -9,7 +9,7 @@ Option Explicit
 REM
 REM Data for the service layer
 REM
-Private Const USE_ON_ERROR = true &apos; Hide some errors
+Private Const USE_ON_ERROR = false &apos; Hide some errors
 
 Private Const selectWord = true &apos; Select current word to update
 
@@ -127,9 +127,11 @@ end sub
 &apos; Manage all document
 Sub ManageDocument()
 	Dim viewCursor as object
+	Dim oldViewCursor as object
 	Dim listParagraph as Object
 	Dim paraCursor as Object
 	Dim elementText as Object
+	Dim i as Integer
 
 	if USE_ON_ERROR then
 		on error goto Ignore &apos; Trap to all errors
@@ -149,11 +151,34 @@ Sub ManageDocument()
 	&apos; Paragraphes
 	abort=manageParagraphs(nothing,ThisComponent.text,ThisComponent.text.createEnumeration())
 	
+	&apos; Text frames
+	Dim frame as object
+	Dim frameCursor as Object
+    For i = 0 To Ubound( ThisComponent.TextFrames.ElementNames() ) 
+		frame = ThisComponent.TextFrames.getByIndex( i )
+		frameCursor=frame.createTextCursor
+		frameCursor.gotoStart(false)
+		frameCursor.gotoEnd(true)
+		cursor=frameCursor
+		if (not ManageCursor) then
+			abort=true
+			exit for
+		end if
+    Next i
+	
+	&apos; Shapes
+&apos;	Dim shape as Object
+&apos;	Dim shapeCursor as Object
+&apos;	For i = 0 To ThisComponent.TextFrames.getCount() - 1 
+&apos;		shape = ThisComponent.TextFrames.getByIndex(i)
+&apos;		MsgBox &quot;Dimensions &quot; &amp; shape.getSize.Width &amp; &quot; x &quot; &amp; shape.getSize.Height
+&apos;	Next i
+	
+	
 	&apos; Header &amp; footer
 	if (not abort) then
 		Dim pagesStyles as Object
 		Dim pageStyle as Object
-		Dim i as Integer
 		Dim headerCursor
 		Dim footerCursor
 		

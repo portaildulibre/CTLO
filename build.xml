@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<!-- Regular project property -->
 	<property name="out.path" 			value="bin/ant" 					/>
 	<!-- Deuxième chiffre à modifier lors de la mise à jour de la base franceterm. Dernier lors de la correction d'un bug -->
-	<property name="version" 			value="1.0.2" 						/>
+	<property name="version" 			value="1.0.3" 						/>
 	<property name="src.java"			value="src/java"					/>
 	<property name="src.test"			value="src/tests"					/>
 	<property name="src.xsl"			value="src/xsl"						/>
