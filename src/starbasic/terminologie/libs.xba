@@ -9,7 +9,7 @@ Option Explicit
 REM
 REM Data for the service layer
 REM
-Private Const USE_ON_ERROR = false &apos; Hide some errors
+Private Const USE_ON_ERROR = true &apos; Hide some errors
 
 Private Const selectWord = true &apos; Select current word to update
 
@@ -863,7 +863,7 @@ REM @author Romain PELISSE &lt;romain.pelisse@atosorigin.com&gt;
 REM @author Manuel Odesser modesser@linagora.com
 REM
 Sub KeyHandler_disposing
-	removeHook
+	desactivate
 End Sub     
                                                                                                                                                               
 REM
