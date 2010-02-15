@@ -75,12 +75,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		depends="hudson-init,dev-init">
 		
 		<!-- properties specific to OOo -->
-		<property name="OOo_SDK"        value="${OOo_HOME}/basis-link/"/>
-		<property name="unopkg.exe"     value="${OOo_SDK}/ure-link/bin/uno.bin"/>
+		<property name="unopkg.exe"     value="${OOo_URE}/bin/uno"/>
 		<property name="project.lib"    value="${OOo_SDK}/program/classes/"/>
-		<property name="idlc.exe"	value="${OOo_HOME}/basis-link/sdk/bin/idlc"/>
+		<property name="idlc.exe"	value="${OOo_SDK}/sdk/bin/idlc"/>
 		<property name="remerge.exe"	value="${OOo_URE}/bin/regmerge"/>
-		<property name="javamaker.exe"	value="${OOo_HOME}/basis-link/sdk/bin/javamaker"/>
+		<property name="javamaker.exe"	value="${OOo_SDK}/sdk/bin/javamaker"/>
 		  
 		<path id="project.classpath">
 			<fileset dir="${project.lib}">
@@ -98,7 +97,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 	<target name="hudson-init" if="hudson.build">
 		<property name="OOo_HOME"	value="/opt/openoffice.org3/"/>
 		<property name="OOo_URE"	value="/opt/openoffice.org/ure/"/>
-		<property name="plugin.lib"	value="${OOo_URE}/share/java/openoffice"/>
+		<property name="plugin.lib"	value="${plugin.lib}"/>
 	</target>
 	
 	<target name="dev-init" unless="hudson.build">
@@ -117,7 +116,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<exec executable="${idlc.exe}"
 		      failonerror="yes"
 		      failifexecutionfails="yes">
-			<arg value="-I${OOo_HOME}/basis-link/sdk/idl/;${src.idl}"/>
+			<arg value="-I${OOo_SDK}/sdk/idl/;${src.idl}"/>
 			<arg value="-O"/>
 			<arg file="${target.generated.urd}"/>
 			<arg file="${src.idl}/org/atosorigin/ctOO/CtOO3.idl"/>
@@ -131,7 +130,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<exec executable="${remerge.exe}"
 		      failonerror="yes"
 		      failifexecutionfails="yes">
-		    <env key="LD_LIBRARY_PATH" path="${OOo_HOME}/ure/lib/"/>  
+		    <env key="LD_LIBRARY_PATH" path="${OOo_URE}/bin/"/>  
 		    <arg file="${target.generated.types}"/>
 		    <arg value="/UCR"/>
 		    <arg file="${target.generated.urd}/CtOO3.urd"/>
@@ -149,7 +148,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		       <arg value="-O"/> 
 		       <arg file="${target.generated.classes}"/>
                <arg file="${target.generated.types}"/>
-		       <arg file="${OOo_URE}/share/misc/types.rdb"/>
+		 	   <arg file="${OOo_MISC}/types.rdb"/>
 		 </exec>
 	</target>
 	
