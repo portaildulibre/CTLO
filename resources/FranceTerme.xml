@@ -1,3 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   <licence>
+
+        <licence_fr>
+                Copyright (c) 2008, Ministère de la Culture France.
+
+                Vous pouvez redistribuer le fichier « FranceTerme.xsd » sous les
+                termes de la licence « GNU Lesser General Public License 3.0 »
+                ou de la licence « Mozilla Public License 1.1 ».
+
+                « FranceTerme.xsd » est diffusé dans l'espoir d'être utile, mais
+                sans aucune garantie, même marchande ou d'adéquation �|  un usage
+                    particulier.
+
+                Pour plus de détails, consulter les fichiers lgpl-3.0_fr.txt.
+        </licence_fr>
+        <licence_en>
+                Copyright (c) 2008, Ministère de la Culture France.
+
+                You may distribute the file "FranceTerme.xsd" under the terms of either the "GNU Lesser General Public    License 3.0" or the "Mozilla Public License 1.1".
+
+                "FranceTerme.xsd" is distributed in the hope that it will be
+                useful, but WITHOUT ANY WARRANTY; without even the implied
+                warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                For more detail, See the files lgpl-3.0_en.txt and MPL-1.1.html.
+        </licence_en>
+   </licence>
+ -->
+<!-- timestamp 2010-02-16 16:46:02 -->
 <FRANCETERME>
 <Article numero="AGRI1191">
 <DatePub>23/11/2006</DatePub>
@@ -52,9 +82,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[electronic mail]]></Equivalent>
 <Synonyme>
-<![CDATA[message électronique]]></Synonyme>
-<Synonyme>
 <![CDATA[courrier électronique]]></Synonyme>
+<Synonyme>
+<![CDATA[message électronique]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Télécommunications]]></Dom>
 <Dom numero="2"><![CDATA[Informatique]]></Dom>
@@ -480,7 +510,7 @@
 <![CDATA[desoxyribonucleic acid]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI109">
@@ -490,7 +520,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[nucleic acid denaturation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -502,7 +532,7 @@
 <![CDATA[satellite DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI111">
@@ -512,7 +542,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[genetic diagnosis]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -589,7 +619,7 @@
 <![CDATA[antisense RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI140">
@@ -603,7 +633,8 @@
 <Synonyme>
 <![CDATA[extrémités collantes]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI144">
@@ -627,8 +658,9 @@
 <Synonyme>
 <![CDATA[facteur F]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Bactériologie]]></S-dom>
+<S-dom numero="2"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI156">
@@ -638,7 +670,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[translational fusion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -649,7 +681,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[extrachromosomal gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -662,7 +694,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[split gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -673,7 +705,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[nucleic acid hybridization]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI179">
@@ -685,7 +718,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[Grunstein-Hogness procedure]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI180">
@@ -695,7 +729,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[filter hybridization]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI183">
@@ -705,7 +740,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[hybridoma]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -727,7 +762,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[plasmid incompatibility]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI19">
@@ -742,7 +778,7 @@
 <![CDATA[ARN nucléaire hétérogène]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="COGE573">
@@ -766,7 +802,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[induction]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI196">
@@ -782,7 +819,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[intron]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI197">
@@ -792,7 +830,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[inversion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI199">
@@ -806,7 +845,8 @@
 <![CDATA[kb]]></variante>
 <![CDATA[kilobase]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI201">
@@ -816,7 +856,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[ligation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -827,7 +867,7 @@
 <Equivalent categorie="v." langue="en" admis="étranger">
 <![CDATA[ligate]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -848,8 +888,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[lysogenecity]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI206">
@@ -859,7 +900,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[labelling]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -870,7 +911,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[genetic marker]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -881,7 +922,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[maturase]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI210">
@@ -891,7 +933,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[processing]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI212">
@@ -903,7 +946,7 @@
 <![CDATA[pre-mRNA]]></variante>
 <![CDATA[premessenger RNA]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -914,7 +957,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[minichromosome]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI218">
@@ -924,7 +968,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[minigene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI219">
@@ -934,7 +979,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[miniphage]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI22">
@@ -945,7 +991,7 @@
 <![CDATA[precursor RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI220">
@@ -955,7 +1001,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[miniplasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI223">
@@ -967,7 +1014,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[site specific mutagenesis]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -978,7 +1025,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[localized mutagenesis]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -989,7 +1036,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[insertion mutagenesis]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1002,7 +1049,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[polar mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI229">
@@ -1012,7 +1060,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[conditional mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI23">
@@ -1025,7 +1074,7 @@
 <![CDATA[premessenger RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI233">
@@ -1035,7 +1084,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[silent mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI234">
@@ -1045,7 +1095,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[reverse mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI236">
@@ -1057,7 +1108,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[single site mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI239">
@@ -1102,7 +1154,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[oncogene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI245">
@@ -1112,7 +1165,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[oncogene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI247">
@@ -1122,7 +1176,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[operon]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI25">
@@ -1132,7 +1187,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[satellite RNA]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1147,7 +1202,8 @@
 <Synonyme>
 <![CDATA[séquence signal]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI253">
@@ -1161,8 +1217,9 @@
 <Synonyme>
 <![CDATA[phage lysogénique]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI255">
@@ -1172,8 +1229,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[virulent phage]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI256">
@@ -1183,7 +1241,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[phasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1198,8 +1256,9 @@
 <Synonyme>
 <![CDATA[plaque de lyse]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI258">
@@ -1209,7 +1268,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[plasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1220,7 +1279,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[runaway plasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1233,7 +1292,7 @@
 <Synonyme>
 <![CDATA[plasmide hybride]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1246,7 +1305,7 @@
 <![CDATA[RFLP]]></variante>
 <![CDATA[restriction fragment length polymorphism]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1261,7 +1320,8 @@
 <Synonyme categorie="n.m.">
 <![CDATA[polyribosome]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI274">
@@ -1271,8 +1331,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[defective prophage]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI279">
@@ -1282,7 +1343,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene rearrangement]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1295,7 +1356,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[recombined]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI283">
@@ -1307,7 +1369,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[recombined]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI285">
@@ -1320,7 +1383,7 @@
 <![CDATA[upwelling]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Sciences de la Terre]]></Dom>
-<S-dom numero="1"><![CDATA[océanographie]]></S-dom>
+<S-dom numero="1"><![CDATA[Océanographie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI286">
@@ -1330,7 +1393,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[filling in]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1341,7 +1404,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[restriction]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1363,7 +1426,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[sequencing]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1374,8 +1437,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[overlapping sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI304">
@@ -1385,7 +1449,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[insertion sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI307">
@@ -1395,7 +1460,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[consensus sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI310">
@@ -1409,7 +1475,7 @@
 <Synonyme categorie="n.m.">
 <![CDATA[palindrome]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1428,7 +1494,8 @@
 <Synonyme>
 <![CDATA[région polyA]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI314">
@@ -1438,7 +1505,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[inverted repeat]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI317">
@@ -1448,8 +1516,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[COS site]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI32">
@@ -1460,7 +1529,7 @@
 <![CDATA[enhancer]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI323">
@@ -1470,7 +1539,21 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[suppressor]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="AFET43">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[reconstruction de l'État]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[nation-building]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[state-building]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Politique]]></Dom>
+<Dom numero="2"><![CDATA[Relations internationales]]></Dom>
 </Domaine>
 </Article>
 <Article numero="AGRI324">
@@ -1482,7 +1565,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[intergenic suppression]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI325">
@@ -1492,7 +1576,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[intragenic suppression]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI330">
@@ -1502,7 +1587,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[melting temperature]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1513,7 +1598,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[terminal transferase]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI338">
@@ -1523,11 +1609,11 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[Southern blotting]]></Equivalent>
 <Synonyme>
-<![CDATA[technique de Southern]]></Synonyme>
-<Synonyme>
 <![CDATA[transfert de Southern]]></Synonyme>
+<Synonyme>
+<![CDATA[technique de Southern]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1538,11 +1624,11 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[Northern blotting]]></Equivalent>
 <Synonyme>
-<![CDATA[technique de Northern]]></Synonyme>
-<Synonyme>
 <![CDATA[transfert de Northern]]></Synonyme>
+<Synonyme>
+<![CDATA[technique de Northern]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1553,7 +1639,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transgenic]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1564,13 +1650,13 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[nick translation]]></Equivalent>
 <Synonyme>
-<![CDATA[translation de brèche]]></Synonyme>
+<![CDATA[translation de césure]]></Synonyme>
 <Synonyme>
 <![CDATA[translation de cassure]]></Synonyme>
 <Synonyme>
-<![CDATA[translation de césure]]></Synonyme>
+<![CDATA[translation de brèche]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1581,7 +1667,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transcription unit]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI355">
@@ -1591,7 +1678,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[vector]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1603,7 +1690,7 @@
 <![CDATA[monoclonal antibody]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI362">
@@ -1665,7 +1752,7 @@
 <![CDATA[complementary DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI41">
@@ -1676,7 +1763,8 @@
 <![CDATA[attenuation]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Bactériologie]]></S-dom>
+<S-dom numero="2"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI45">
@@ -1688,8 +1776,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[lysogenic bacteria]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI47">
@@ -1717,7 +1806,7 @@
 <Synonyme categorie="n.f.">
 <![CDATA[génothèque]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1733,7 +1822,7 @@
 <![CDATA[zig-zag DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI51">
@@ -1743,7 +1832,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[D loop]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1754,7 +1843,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[R loop]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1767,7 +1856,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[non coding strand]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI56">
@@ -1780,7 +1870,7 @@
 <![CDATA[sense strand]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI57">
@@ -1790,7 +1880,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[reading frame]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI58">
@@ -1802,7 +1893,8 @@
 <![CDATA[ORF]]></variante>
 <![CDATA[open reading frame]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI60">
@@ -1836,7 +1928,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[S 1 mapping]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1848,7 +1940,7 @@
 <![CDATA[non repetitive DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI70">
@@ -1861,7 +1953,7 @@
 <![CDATA[cercle tournant]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI71">
@@ -1884,7 +1976,7 @@
 <![CDATA[double minute chromosome]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI73">
@@ -1895,7 +1987,7 @@
 <![CDATA[cistron]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI74">
@@ -1906,7 +1998,7 @@
 <![CDATA[cloning]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI76">
@@ -1925,7 +2017,7 @@
 <![CDATA[codon de terminaison]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI77">
@@ -1938,7 +2030,7 @@
 <![CDATA[start codon]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI78">
@@ -1960,7 +2052,7 @@
 <![CDATA[cointegration]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI83">
@@ -1983,7 +2075,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[cell colony]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -1995,7 +2087,7 @@
 <![CDATA[genetic competence]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI88">
@@ -2006,7 +2098,7 @@
 <![CDATA[concatemer]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI89">
@@ -2032,7 +2124,7 @@
 <![CDATA[Cot]]></variante>
 <![CDATA[Cot curve]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -2043,7 +2135,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[screening]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -5904,24 +5996,6 @@
 <Dom numero="1"><![CDATA[Informatique]]></Dom>
 <Dom numero="2"><![CDATA[Télécommunications]]></Dom>
 <S-dom numero="1"><![CDATA[Internet]]></S-dom>
-</Domaine>
-</Article>
-<Article numero="INFO672">
-<DatePub>16/03/1999</DatePub>
-<Terme_Vedette>
-<variante type="Abréviation">
-<![CDATA[RNA]]></variante>
-<![CDATA[raccordement numérique asymétrique]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<variante type="Abréviation">
-<![CDATA[ADSL]]></variante>
-<![CDATA[asymmetric digital subscriber line]]></Equivalent>
-<Synonyme>
-<![CDATA[liaison numérique à débit asymétrique]]></Synonyme>
-<Domaine>
-<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
-<S-dom numero="1"><![CDATA[Réseaux]]></S-dom>
-<S-dom numero="2"><![CDATA[Internet]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="INFO679">
@@ -12426,21 +12500,6 @@
 <S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
 </Domaine>
 </Article>
-<Article numero="SPAT105">
-<DatePub>22/09/2000</DatePub>
-<Terme_Vedette>
-<![CDATA[corps de propulseur]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[engine body]]></Equivalent>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[jet body]]></Equivalent>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[motor body]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
-</Domaine>
-</Article>
 <Article numero="SPAT106">
 <DatePub>22/09/2000</DatePub>
 <Terme_Vedette categorie="n.m.">
@@ -12448,8 +12507,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[cosmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="SPAT11">
@@ -14584,10 +14644,10 @@
 <variante type="Forme abrégée">
 <![CDATA[RF channel]]></variante>
 <![CDATA[radiofrequency channel]]></Equivalent>
-<Synonyme categorie="n.m.">
-<![CDATA[radiocanal]]></Synonyme>
 <Synonyme>
 <![CDATA[canal de radiofréquences]]></Synonyme>
+<Synonyme categorie="n.m.">
+<![CDATA[radiocanal]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Télécommunications]]></Dom>
 </Domaine>
@@ -14772,7 +14832,7 @@
 <![CDATA[DWDM]]></variante>
 <![CDATA[dense wavelength division multiplexing]]></Equivalent>
 <Synonyme>
-<![CDATA[multiplexage multicolore.]]></Synonyme>
+<![CDATA[multiplexage multicolore]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Télécommunications]]></Dom>
 <S-dom numero="1"><![CDATA[Techniques]]></S-dom>
@@ -15528,7 +15588,7 @@
 <![CDATA[repetitive DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI100">
@@ -15606,7 +15666,7 @@
 <![CDATA[mutation du cadre de lecture]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI107">
@@ -15616,8 +15676,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[defective]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI108">
@@ -15627,7 +15688,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[deletion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15638,7 +15699,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[derepression]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI112">
@@ -15648,7 +15710,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[genetic distance]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15727,7 +15789,7 @@
 <![CDATA[ADN superhélicoïdal]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI121">
@@ -15773,7 +15835,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[position effect]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI126">
@@ -15794,7 +15857,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[electroporation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15805,7 +15868,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[nuclease footprinting]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15821,7 +15884,7 @@
 <![CDATA[ribonucleic acid]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI130">
@@ -15833,7 +15896,7 @@
 <Synonyme>
 <![CDATA[trace génétique]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15844,8 +15907,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[packaging]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI134">
@@ -15855,7 +15919,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[episome]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15866,7 +15930,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[splicing]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15881,7 +15945,8 @@
 <Synonyme>
 <![CDATA[ADN espaceur]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI137">
@@ -15891,7 +15956,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene tagging]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15902,7 +15967,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transient expression]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15913,7 +15978,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[tailing]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -15924,7 +15989,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[blunt ends]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI142">
@@ -15945,7 +16011,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[antitermination factor]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI145">
@@ -15965,8 +16032,9 @@
 <Synonyme>
 <![CDATA[plasmide R]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Bactériologie]]></S-dom>
+<S-dom numero="2"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI146">
@@ -15976,8 +16044,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[terminator]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Bactériologie]]></S-dom>
+<S-dom numero="2"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI147">
@@ -15989,7 +16058,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[sigma subunit]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI148">
@@ -16003,7 +16073,8 @@
 <Synonyme>
 <![CDATA[famille multigénique]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI149">
@@ -16029,7 +16100,7 @@
 <![CDATA[messenger RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI150">
@@ -16063,7 +16134,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[replication fork]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI153">
@@ -16073,7 +16145,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[restriction fragment]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16098,7 +16170,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene fusion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16109,7 +16181,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transcriptional fusion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16124,7 +16196,7 @@
 <Synonyme>
 <![CDATA[gène synthétique]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16143,7 +16215,7 @@
 <Synonyme>
 <![CDATA[gène hybride]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16157,7 +16229,7 @@
 <![CDATA[MIC RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI160">
@@ -16167,7 +16239,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[constitutive gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16178,7 +16250,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[continuous gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16191,7 +16263,7 @@
 <Synonyme>
 <![CDATA[gène de contrôle]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16202,7 +16274,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[structural gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16213,7 +16285,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[housekeeping gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16224,8 +16296,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[early gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI168">
@@ -16237,7 +16310,7 @@
 <Synonyme categorie="n.m.">
 <![CDATA[pseudogène]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16248,7 +16321,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[suppressor gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16260,7 +16333,7 @@
 <![CDATA[monocistronic RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI170">
@@ -16270,8 +16343,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[late gene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI171">
@@ -16297,7 +16371,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[linkage group]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI173">
@@ -16317,7 +16392,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[heteroduplex]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI175">
@@ -16327,7 +16403,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[histone]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI176">
@@ -16337,7 +16414,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[homoduplex]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI177">
@@ -16347,7 +16425,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[in situ hybridization]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI18">
@@ -16359,7 +16438,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[polycistronic mRNA]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16370,7 +16449,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[plaque hybridization]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI182">
@@ -16380,7 +16460,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[DNA RNA hybrid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16431,7 +16511,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[insert]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16442,7 +16522,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[insertion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16453,7 +16533,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[integration]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16464,7 +16544,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[isoschizomere]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16476,7 +16556,7 @@
 <![CDATA[chimeric DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI20">
@@ -16487,7 +16567,7 @@
 <![CDATA[polycistronic RNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI200">
@@ -16497,7 +16577,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[lariat]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16518,7 +16598,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[template]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI21">
@@ -16529,7 +16610,7 @@
 <![CDATA[RNA polymerase]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI211">
@@ -16539,7 +16620,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[mismatch]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI216">
@@ -16549,7 +16631,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[minicell]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI221">
@@ -16559,7 +16642,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[monocistronic]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI222">
@@ -16580,7 +16664,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI230">
@@ -16590,7 +16675,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[constitutive mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI231">
@@ -16600,7 +16686,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[regulation mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI232">
@@ -16610,7 +16697,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[missense mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI235">
@@ -16620,7 +16708,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[nonsense mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI237">
@@ -16641,7 +16730,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[suppressor mutation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI24">
@@ -16651,7 +16741,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[recombinant RNA]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16672,7 +16762,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[operator]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI248">
@@ -16716,8 +16807,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[defective phage]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Physiologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI254">
@@ -16731,7 +16823,7 @@
 <Synonyme>
 <![CDATA[phage de transfert]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16742,7 +16834,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[amplifiable plasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16754,7 +16846,7 @@
 <![CDATA[adaptor]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI261">
@@ -16764,7 +16856,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[mobilisable plasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16775,7 +16867,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[multicopy plasmid]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16786,7 +16878,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[polynucleotide kinase]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI267">
@@ -16841,7 +16934,7 @@
 <![CDATA[intercalating agent]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI270">
@@ -16886,7 +16979,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[promotor]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI275">
@@ -16896,7 +16990,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[prosome]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI276">
@@ -16906,7 +17001,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[protooncogene]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI277">
@@ -16916,8 +17012,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[provirus]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI278">
@@ -16958,7 +17055,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[genetic recombination]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI284">
@@ -16978,7 +17076,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[renaturation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -16989,7 +17087,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[DNA repair]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17021,8 +17119,9 @@
 <![CDATA[LTR]]></variante>
 <![CDATA[long terminal repeat]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI291">
@@ -17032,7 +17131,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[replicon]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI292">
@@ -17042,7 +17142,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[repressor]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI293">
@@ -17052,7 +17153,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[cointegrate resolution]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI295">
@@ -17062,7 +17164,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[retrotransposon]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI296">
@@ -17072,8 +17175,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[retrovirus]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI297">
@@ -17105,7 +17209,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[hybrid selection]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17117,7 +17221,7 @@
 <![CDATA[random priming]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI301">
@@ -17127,7 +17231,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[amplified sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17138,7 +17242,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[coding sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI305">
@@ -17148,7 +17253,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[Shine Dalgarno sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI306">
@@ -17162,7 +17268,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[leader sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI308">
@@ -17172,7 +17279,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[highly repeated sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI309">
@@ -17182,7 +17290,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[non coding sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI31">
@@ -17193,7 +17302,7 @@
 <![CDATA[primer]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI312">
@@ -17203,7 +17312,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[direct repeat]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI313">
@@ -17213,7 +17323,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[tandem repeat]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI315">
@@ -17223,7 +17334,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[unique sequence]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI316">
@@ -17237,7 +17349,8 @@
 <Synonyme>
 <![CDATA[séquence de polyadénylation]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI318">
@@ -17247,7 +17360,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transcription initiation site]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI319">
@@ -17257,7 +17371,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[restriction site]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17280,7 +17394,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[nucleic probe]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17345,7 +17459,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[DNA synthetizer]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI33">
@@ -17356,7 +17471,7 @@
 <![CDATA[gene amplification]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI331">
@@ -17366,7 +17481,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene therapy]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17399,7 +17514,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[translational readthrough]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI335">
@@ -17411,7 +17527,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transcriptional readthrough]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI336">
@@ -17421,8 +17538,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transfection]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI340">
@@ -17432,7 +17550,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene transfer]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17443,7 +17561,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[plaque lift]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17454,7 +17572,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[genetic transformation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17465,7 +17583,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[tumoral transformation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI344">
@@ -17475,7 +17594,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transformed]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17486,7 +17605,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transgenesis]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17497,7 +17616,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[translocation]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17508,7 +17627,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transposase]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17520,7 +17639,7 @@
 <![CDATA[anticodon]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI350">
@@ -17530,7 +17649,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transposition]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17541,7 +17660,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[transversion]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI352">
@@ -17551,7 +17671,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[cell sorter]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI353">
@@ -17561,7 +17682,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[repeat unit]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI356">
@@ -17571,7 +17693,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[expression vector]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17582,7 +17704,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[shuttle vector]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17593,8 +17715,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[helper virus]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI359">
@@ -17658,8 +17781,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[attenuator]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Bactériologie]]></S-dom>
+<S-dom numero="2"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI42">
@@ -17694,7 +17818,8 @@
 <Synonyme>
 <![CDATA[régulation autogène]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI46">
@@ -17708,8 +17833,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[lysogenic phage]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
-<S-dom numero="1"><![CDATA[Virologie]]></S-dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
+<S-dom numero="2"><![CDATA[Virologie]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI49">
@@ -17719,7 +17845,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene cluster]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI50">
@@ -17729,7 +17856,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[loop]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17744,7 +17871,7 @@
 <Synonyme>
 <![CDATA[structure en épingle à cheveux]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17757,7 +17884,8 @@
 <Synonyme>
 <![CDATA[espace vide]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI59">
@@ -17779,7 +17907,7 @@
 <![CDATA[hybrid DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI62">
@@ -17793,7 +17921,7 @@
 <Synonyme>
 <![CDATA[carte physique]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17804,7 +17932,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[genetic map]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17815,7 +17943,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[gene mapping]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17826,7 +17954,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[restriction mapping]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17841,7 +17969,7 @@
 <Synonyme>
 <![CDATA[coupure simple brin]]></Synonyme>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17852,7 +17980,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[helper cell]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI69">
@@ -17862,7 +17991,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[host cell]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI75">
@@ -17875,7 +18005,7 @@
 <![CDATA[shotgun cloning]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI79">
@@ -17899,7 +18029,7 @@
 <![CDATA[DNA polymerase]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI80">
@@ -17912,7 +18042,7 @@
 <![CDATA[chapeau]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI81">
@@ -17923,7 +18053,7 @@
 <![CDATA[cointegrate]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI85">
@@ -17934,7 +18064,7 @@
 <![CDATA[compatibility]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI87">
@@ -17949,7 +18079,7 @@
 <![CDATA[major histocompatibility complex]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI9">
@@ -17960,7 +18090,7 @@
 <![CDATA[recombinant DNA]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI90">
@@ -17972,7 +18102,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[mating]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -17984,7 +18114,7 @@
 <![CDATA[cis control]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI93">
@@ -17994,7 +18124,8 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[trans control]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI94">
@@ -18005,7 +18136,7 @@
 <![CDATA[corepressor]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
-<S-dom numero="1"><![CDATA[Génétique]]></S-dom>
+<S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="AGRI95">
@@ -18727,9 +18858,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[dissolve]]></Equivalent>
 <Synonyme>
-<![CDATA[fondu au noir]]></Synonyme>
-<Synonyme>
 <![CDATA[fermeture en fondu]]></Synonyme>
+<Synonyme>
+<![CDATA[fondu au noir]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Audiovisuel]]></Dom>
 <S-dom numero="1"><![CDATA[Cinéma]]></S-dom>
@@ -21009,10 +21140,10 @@
 <![CDATA[déborder]]></Terme_Vedette>
 <Equivalent categorie="v." langue="en" admis="étranger">
 <![CDATA[overshoot]]></Equivalent>
-<Synonyme categorie="v.">
-<![CDATA[dépasser]]></Synonyme>
 <Synonyme>
 <![CDATA[atterrir trop long]]></Synonyme>
+<Synonyme categorie="v.">
+<![CDATA[dépasser]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Défense]]></Dom>
 <Dom numero="2"><![CDATA[Aéronautique]]></Dom>
@@ -28852,18 +28983,6 @@
 <S-dom numero="2"><![CDATA[Infrastructures]]></S-dom>
 </Domaine>
 </Article>
-<Article numero="SPAT447">
-<DatePub>18/04/2001</DatePub>
-<Terme_Vedette categorie="n.f.">
-<![CDATA[rétrofusée]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[retrorocket]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-<S-dom numero="1"><![CDATA[Véhicules aérospatiaux]]></S-dom>
-<S-dom numero="2"><![CDATA[Propulsion]]></S-dom>
-</Domaine>
-</Article>
 <Article numero="SPAT458">
 <DatePub>18/04/2001</DatePub>
 <Terme_Vedette>
@@ -29069,20 +29188,6 @@
 <Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
 <S-dom numero="1"><![CDATA[Équipements]]></S-dom>
 <S-dom numero="2"><![CDATA[Véhicules spatiaux]]></S-dom>
-</Domaine>
-</Article>
-<Article numero="SPAT71">
-<DatePub>22/09/2000</DatePub>
-<Terme_Vedette categorie="n.m.">
-<![CDATA[chargement]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[filling]]></Equivalent>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[loading]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-<S-dom numero="1"><![CDATA[Pyrotechnie]]></S-dom>
-<S-dom numero="2"><![CDATA[Propulsion]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="SPAT72">
@@ -32194,7 +32299,9 @@
 <Terme_Vedette>
 <![CDATA[livre électronique]]></Terme_Vedette>
 <Equivalent langue="en" admis="étranger">
-<![CDATA[e-book]]></Equivalent>
+<variante type="Forme abrégée">
+<![CDATA[e-book]]></variante>
+<![CDATA[electronic book]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Communication]]></Dom>
 <Dom numero="2"><![CDATA[Livre]]></Dom>
@@ -34674,16 +34781,6 @@
 <![CDATA[indice de déviation]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Finances]]></Dom>
-</Domaine>
-</Article>
-<Article numero="ECON9">
-<DatePub>14/08/1998</DatePub>
-<Terme_Vedette categorie="n.f.">
-<![CDATA[déqualification]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[ladder effect]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Économie générale]]></Dom>
 </Domaine>
 </Article>
 <Article numero="ECON90">
@@ -37234,17 +37331,6 @@
 <S-dom numero="1"><![CDATA[Internet]]></S-dom>
 </Domaine>
 </Article>
-<Article numero="INFO741">
-<DatePub>07/06/2007</DatePub>
-<Terme_Vedette>
-<![CDATA[toile sémantique]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[semantic web]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Informatique]]></Dom>
-<S-dom numero="1"><![CDATA[Internet]]></S-dom>
-</Domaine>
-</Article>
 <Article numero="INFO78">
 <DatePub>01/09/2000</DatePub>
 <Terme_Vedette categorie="n.f.">
@@ -39711,17 +39797,6 @@
 <S-dom numero="1"><![CDATA[Structures]]></S-dom>
 </Domaine>
 </Article>
-<Article numero="SPAT1402">
-<DatePub>31/12/2005</DatePub>
-<Terme_Vedette>
-<![CDATA[lanceur aéroporté]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[airborne launcher]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-<S-dom numero="1"><![CDATA[Véhicules aérospatiaux]]></S-dom>
-</Domaine>
-</Article>
 <Article numero="SPAT1407">
 <DatePub>31/12/2005</DatePub>
 <Terme_Vedette>
@@ -40357,18 +40432,6 @@
 <S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
 </Domaine>
 </Article>
-<Article numero="SPAT291">
-<DatePub>22/09/2000</DatePub>
-<Terme_Vedette>
-<![CDATA[satellite captif]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[tethered satellite]]></Equivalent>
-<Synonyme>
-<![CDATA[satellite en laisse]]></Synonyme>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-</Domaine>
-</Article>
 <Article numero="SPAT3">
 <DatePub>22/09/2000</DatePub>
 <Terme_Vedette categorie="n.m.">
@@ -40910,17 +40973,6 @@
 <![CDATA[limb path absorption]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Physique de l'atmosphère]]></Dom>
-</Domaine>
-</Article>
-<Article numero="SPAT40">
-<DatePub>22/09/2000</DatePub>
-<Terme_Vedette>
-<![CDATA[bloc de poudre]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[grain]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="SPAT400">
@@ -41515,25 +41567,6 @@
 <Domaine>
 <Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
 <S-dom numero="1"><![CDATA[Structures]]></S-dom>
-</Domaine>
-</Article>
-<Article numero="SPAT62">
-<DatePub>22/09/2000</DatePub>
-<Terme_Vedette>
-<![CDATA[centrale inertielle]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<variante type="Forme abrégée">
-<![CDATA[inertial unit]]></variante>
-<variante type="Abréviation">
-<![CDATA[IMU]]></variante>
-<![CDATA[inertial measurement unit]]></Equivalent>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[inertial platform]]></Equivalent>
-<Synonyme>
-<![CDATA[centrale à inertie]]></Synonyme>
-<Domaine>
-<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
-<S-dom numero="1"><![CDATA[Guidage]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="SPAT63">
@@ -43975,7 +44008,7 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[colony lift]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Génétique moléculaire]]></Dom>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Génie génétique]]></S-dom>
 </Domaine>
 </Article>
@@ -46059,9 +46092,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[big bag]]></Equivalent>
 <Synonyme>
-<![CDATA[grand sac]]></Synonyme>
-<Synonyme>
 <![CDATA[grande poche]]></Synonyme>
+<Synonyme>
+<![CDATA[grand sac]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Transports]]></Dom>
 </Domaine>
@@ -47207,11 +47240,11 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[by-pass]]></Equivalent>
 <Synonyme>
-<![CDATA[dispositif d'évitement]]></Synonyme>
-<Synonyme>
 <![CDATA[dispositif de dérivation]]></Synonyme>
 <Synonyme>
 <![CDATA[dispositif de déviation]]></Synonyme>
+<Synonyme>
+<![CDATA[dispositif d'évitement]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Pétrole et gaz]]></Dom>
 </Domaine>
@@ -49306,6 +49339,56 @@
 <![CDATA[pooling]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="TELE449">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[appairage]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[peering]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Réseaux]]></S-dom>
+<S-dom numero="2"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE450">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[liaison numérique asymétrique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[ADSL]]></variante>
+<![CDATA[asymmetric digital subscriber line]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Réseaux]]></S-dom>
+<S-dom numero="2"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE451">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[liaison numérique symétrique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[SDSL]]></variante>
+<![CDATA[symmetric digital subscriber line]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Réseaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE452">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[découpage temporel]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[time slicing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Techniques]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="COGE516">
@@ -51480,6 +51563,24 @@
 <S-dom numero="1"><![CDATA[Risques]]></S-dom>
 </Domaine>
 </Article>
+<Article numero="ENVI15">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[EIE]]></variante>
+<variante type="Forme abrégée">
+<![CDATA[étude d'impact]]></variante>
+<![CDATA[étude d'impact sur l'environnement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[EIA]]></variante>
+<![CDATA[environmental impact assessment]]></Equivalent>
+<Synonyme>
+<![CDATA[étude d'incidences sur l'environnement]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
 <Article numero="ENVI16">
 <DatePub>12/04/2009</DatePub>
 <Terme_Vedette>
@@ -51557,6 +51658,231 @@
 <![CDATA[free flow toll]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Transports]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI24">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[analyse du cycle de vie]]></variante>
+<variante type="Abréviation">
+<![CDATA[ACV]]></variante>
+<![CDATA[analyse du cycle de vie d'un produit]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[LCA]]></variante>
+<![CDATA[life cycle analysis]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[LCA]]></variante>
+<![CDATA[life cycle assessment]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI25">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[audit environnemental]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[environmental audit]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[environmental auditing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI28">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[écocertification]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[environmental certification]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[green certification]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI29">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[écoconception]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecodesign]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[green design]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[sustainable design]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI31">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[écodéveloppement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecodevelopment]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI32">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[écotoxicologie]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecotoxicology]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI33">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[écotype]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecotype]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI34">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[effet de serre]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[greenhouse effect]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="TELE453">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[turbocode]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[turbo code]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Techniques]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE454">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[domaine de premier niveau]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[TLD]]></variante>
+<![CDATA[top-level domain]]></Equivalent>
+<Synonyme>
+<![CDATA[domaine de tête]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<Dom numero="2"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE455">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[office d'enregistrement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[TLD registrar]]></variante>
+<![CDATA[top-level domain registrar]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<Dom numero="2"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE456">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[registraire]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[DNS registrar]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[registrar]]></variante>
+<![CDATA[domain name registrar]]></Equivalent>
+<Synonyme>
+<![CDATA[bureau d'enregistrement]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<Dom numero="2"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE457">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[voix par le protocole de l'internet]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[VoIP]]></variante>
+<![CDATA[voice over Internet Protocol]]></Equivalent>
+<Synonyme>
+<![CDATA[voix par IP]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE458">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[opérateur sans réseau]]></variante>
+<![CDATA[opérateur de téléphonie mobile sans réseau]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[MVNO]]></variante>
+<![CDATA[mobile virtual network operator]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Radiocommunications]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE459">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[bouche-trou]]></variante>
+<![CDATA[réémetteur bouche-trou]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[gap filler]]></Equivalent>
+<Synonyme>
+<![CDATA[réémetteur de complément]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Radiocommunications]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="TELE460">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TP]]></variante>
+<![CDATA[terminal de poche]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[PDA phone]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[personal communicator]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[smartphone]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[wireless handheld device]]></Equivalent>
+<Synonyme categorie="n.m.">
+<![CDATA[ordiphone]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<Dom numero="2"><![CDATA[Télécommunications]]></Dom>
+<S-dom numero="1"><![CDATA[Radiocommunications]]></S-dom>
 </Domaine>
 </Article>
 <Article numero="TELE461">
@@ -51833,9 +52159,9 @@
 <Equivalent langue="en" admis="étranger">
 <![CDATA[endosome]]></Equivalent>
 <Synonyme>
-<![CDATA[vésicule endosomale]]></Synonyme>
-<Synonyme>
 <![CDATA[vésicule d’endocytose]]></Synonyme>
+<Synonyme>
+<![CDATA[vésicule endosomale]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Biologie]]></Dom>
 <S-dom numero="1"><![CDATA[Biologie cellulaire]]></S-dom>
@@ -52085,6 +52411,1105 @@
 <S-dom numero="1"><![CDATA[Biochimie et biologie moléculaire]]></S-dom>
 </Domaine>
 </Article>
+<Article numero="INFO742">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="loc.adj.">
+<![CDATA[option d'adhésion (à)]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[opt-in]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO743">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="loc.adj.">
+<![CDATA[option de retrait (à)]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[opt-out]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO744">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[bannière]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[skyscraper]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Communication]]></Dom>
+<Dom numero="2"><![CDATA[Informatique]]></Dom>
+<S-dom numero="2"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO745">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[démon]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[daemon]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[disk and execution monitor]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO746">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[démon de messagerie]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[mailer daemon]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO747">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[dévoiement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[pharming]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO749">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[encre en poudre]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[toner]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO750">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[espace de confiance]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[trust environment]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO751">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[cercle de confiance]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[circle of trust]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO752">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[DSI]]></variante>
+<![CDATA[directeur des systèmes d'information]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CIO]]></variante>
+<![CDATA[chief information officer]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+<Dom numero="2"><![CDATA[Informatique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO753">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[DTI]]></variante>
+<![CDATA[directeur des techniques informatiques]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CTO]]></variante>
+<![CDATA[chief technology officer]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+<Dom numero="2"><![CDATA[Informatique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO755">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[gestionnaire d'évènement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[handler]]></variante>
+<![CDATA[event handler]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO756">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[indexation personnelle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[folksonomy]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO759">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[offre groupée]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[bundle]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[package]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO760">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[parcours]]></variante>
+<![CDATA[parcours sur la toile]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[clickstream]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO761">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[service de la toile]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[Web service]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO802">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[toile sémantique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[semantic web]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Informatique]]></Dom>
+<S-dom numero="1"><![CDATA[Internet]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO763">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[actionneur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[actuator]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO764">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[microsystème]]></variante>
+<![CDATA[microsystème électromécanique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[MEMS]]></variante>
+<![CDATA[micro-electromechanical system]]></Equivalent>
+<Synonyme categorie="n.m.">
+<![CDATA[mems]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO765">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[micro-usinage]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[micromachining]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO766">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[micropoutre]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[microcantilever]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO767">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[trou de liaison]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[via]]></Equivalent>
+<Synonyme>
+<![CDATA[trou d'interconnexion]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO768">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[DELO]]></variante>
+<![CDATA[diode électroluminescente organique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[OLED]]></variante>
+<![CDATA[organic light-emitting diode]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO769">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[micromiroir]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[micromirror]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO770">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[MDM]]></variante>
+<![CDATA[matrice de micromiroirs]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[DMD]]></variante>
+<![CDATA[digital micromirror device]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO771">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[cœur]]></variante>
+<![CDATA[cœur de processeur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[core]]></variante>
+<![CDATA[processor core]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO772">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[multicœur]]></variante>
+<![CDATA[processeur multicœur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[multicore]]></variante>
+<![CDATA[multicore processor]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO803">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[conducteur-poutre]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[beam lead]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO773">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[bicœur]]></variante>
+<![CDATA[processeur bicœur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[dual core]]></variante>
+<![CDATA[dual core processor]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO774">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[quadricœur]]></variante>
+<![CDATA[processeur quadricœur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[quadcore]]></variante>
+<![CDATA[quad core processor]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO775">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[boîtier à puce]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CSP]]></variante>
+<![CDATA[chip-scale package]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO776">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[boîtier matriciel]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[grid array]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO777">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[boîtier à billes]]></variante>
+<![CDATA[boîtier matriciel à billes]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[BGA]]></variante>
+<![CDATA[ball grid array]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO778">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[boîtier matriciel à broches]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[PGA]]></variante>
+<![CDATA[pin grid array]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO779">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[module multipuce]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[MCM]]></variante>
+<![CDATA[multi-chip module]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO780">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[encapsulation sur tranche]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[WLP]]></variante>
+<![CDATA[wafer-level packaging]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1516">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[aéroclipper]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[aeroclipper]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1517">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[guiderope]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[guiderope]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1518">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[ascenseur spatial]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[beanstalk]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<variante type="Variante orthographique">
+<![CDATA[space bridge]]></variante>
+<![CDATA[spacebridge]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[space elevator]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[space ladder]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[space lift]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1519">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[nacelle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[climber]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1520">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[BSO]]></variante>
+<![CDATA[ballon stratosphérique ouvert]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[open stratospheric balloon]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules aérospatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1521">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[biosatellite]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[biosatellite]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1522">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[bloc de propergol]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[propellant charge]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[grain]]></variante>
+<![CDATA[propellant grain]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1523">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[centrale inertielle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[IMU]]></variante>
+<variante type="Forme abrégée">
+<![CDATA[inertial unit]]></variante>
+<![CDATA[inertial measurement unit]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[inertial platform]]></Equivalent>
+<Synonyme>
+<![CDATA[centrale à inertie]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Électromécanique]]></Dom>
+<Dom numero="2"><![CDATA[Transports]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1526">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[chambre anéchoïque]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[anechoic chamber]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[anechoic room]]></Equivalent>
+<Synonyme>
+<![CDATA[salle anéchoïque]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Acoustique]]></Dom>
+<Dom numero="2"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Moyens d'essais]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1527">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[chargement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[load]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[loading]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[propellant loading]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1528">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[corps de propulseur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[engine body]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[jet body]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[motor body]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1529">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[décontamination préventive]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[preventive decontamination]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1530">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[densification de pupille]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[pupil densification]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1531">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TSO]]></variante>
+<![CDATA[télescope à synthèse d'ouverture]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[aperture synthesis telescope]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1532">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[hypertélescope]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[hypertelescope]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1533">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[effet de culot]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[base flow effect]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Aérodynamique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1534">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[traînée de culot]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[base drag]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Aérodynamique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1535">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[essai censuré]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[censored test]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Statistique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1536">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[essai tronqué]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[truncated test]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Statistique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1537">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[étoile de neutrons]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[neutron star]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Astronomie]]></Dom>
+<S-dom numero="1"><![CDATA[Astrophysique]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1538">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[magnétoile]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[magnetar]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Astronomie]]></Dom>
+<S-dom numero="1"><![CDATA[Astrophysique]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1539">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[exoterre]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Variante orthographique">
+<![CDATA[exo-Earth]]></variante>
+<variante type="Variante orthographique">
+<![CDATA[exoEarth]]></variante>
+<![CDATA[exo Earth]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1540">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[planète errante]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme développée">
+<![CDATA[free-floating planet]]></variante>
+<![CDATA[floating planet]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1541">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[face arrière]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[trailing side]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1542">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[face avant]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[leading side]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Astronomie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1543">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[fusée de tassement]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[setting motor]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ullage rocket]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+<S-dom numero="2"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1544">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[gestion de la circulation spatiale]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[space traffic management]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1546">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[impacteur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[impactor]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1547">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[inertage]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[inerting]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Transports]]></Dom>
+<S-dom numero="1"><![CDATA[Sécurité]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1548">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[lanceur aéroporté]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[airborne launcher]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules aérospatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1549">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[liaison interpolaire]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[top-to-bottom cable]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules aérospatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1550">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[mélange figé]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[frozen mixture]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1551">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[mesure préventive]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[countermeasure]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[preventive measure]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Vols habités]]></S-dom>
+<S-dom numero="2"><![CDATA[Médecine]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1552">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[météorologie de l’espace]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[space weather]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Géophysique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1553">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[MIR]]></variante>
+<![CDATA[montgolfière à infrarouge]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Variante orthographique">
+<![CDATA[infrared montgolfier]]></variante>
+<variante type="Variante orthographique">
+<![CDATA[infrared montgolfiere]]></variante>
+<![CDATA[infra-red montgolfier]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules aérospatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1554">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[orbiteur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[orbiter]]></Equivalent>
+<Synonyme>
+<![CDATA[véhicule orbital]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1555">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[embardée]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[nudging]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1556">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[prophylactorium]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[prophylactorium]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Vols habités]]></S-dom>
+<S-dom numero="2"><![CDATA[Médecine]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1557">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[rapport de mélange]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[mixture ratio]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Moteur thermique]]></Dom>
+<Dom numero="2"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="2"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1558">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[rayonnement de freinage]]></Terme_Vedette>
+<Equivalent langue="de" admis="étranger">
+<![CDATA[Bremsstrahlung]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[free-free emission]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Géophysique]]></Dom>
+<Dom numero="2"><![CDATA[Physique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1559">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[rétrofusée]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[retrorocket]]></Equivalent>
+<Synonyme>
+<![CDATA[fusée de freinage]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+<S-dom numero="2"><![CDATA[Véhicules aérospatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1560">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[réunion de démarrage]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[kick-off meeting]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1561">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[satellite berger]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[shepherd satellite]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Astronomie]]></Dom>
+<S-dom numero="1"><![CDATA[Astrophysique]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1562">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[satellite captif]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[tethered satellite]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1563">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[satellite fictif]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[paper satellite]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1564">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[satellite passif]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[passive satellite]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1565">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[satellite réflecteur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[reflecting satellite]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1566">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[spationique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[aerospace electronics]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[astrionics]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[spacecraft avionics]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1567">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[tourisme spatial]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[space tourism]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Tourisme]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1568">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[transfert liquidien]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[fluid shift]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Vols habités]]></S-dom>
+<S-dom numero="2"><![CDATA[Médecine]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1569">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[tuyère adaptée]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[adapted nozzle]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[matched nozzle]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1570">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[vitesse caractéristique]]></variante>
+<![CDATA[vitesse caractéristique de combustion]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[characteristic velocity]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1571">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[vitesse d’éjection efficace]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[effective exhaust velocity]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Propulsion]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1572">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[yoyo]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[yoyo]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<S-dom numero="1"><![CDATA[Véhicules spatiaux]]></S-dom>
+</Domaine>
+</Article>
 <Article numero="AUTO71">
 <DatePub>22/02/2009</DatePub>
 <Terme_Vedette>
@@ -52122,9 +53547,9 @@
 <Article numero="AUTO74">
 <DatePub>22/02/2009</DatePub>
 <Terme_Vedette>
-<variante type="Forme développée">
-<![CDATA[étiquetage CO2]]></variante>
-<![CDATA[étiquetage des émissions de CO2]]></Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[étiquetage CO<sub>2</sub>]]></variante>
+<![CDATA[étiquetage des émissions de CO<sub>2</sub>]]></Terme_Vedette>
 <Equivalent langue="en" admis="étranger">
 <![CDATA[car labelling]]></Equivalent>
 <Domaine>
@@ -52364,17 +53789,16 @@
 <Terme_Vedette>
 <variante type="Abréviation">
 <![CDATA[CSC]]></variante>
-<![CDATA[captage et stockage du CO2]]></Terme_Vedette>
+<![CDATA[captage et stockage du CO<sub>2</sub>]]></Terme_Vedette>
 <Equivalent langue="en" admis="étranger">
 <variante type="Abréviation">
 <![CDATA[CCS]]></variante>
-<![CDATA[CO2 capture and sequestration]]></Equivalent>
+<![CDATA[CO<sub>2</sub> capture and sequestration]]></Equivalent>
 <Equivalent langue="en" admis="étranger">
 <variante type="Abréviation">
 <![CDATA[CCS]]></variante>
-<![CDATA[CO2 capture and storage]]></Equivalent>
+<![CDATA[CO<sub>2</sub> capture and storage]]></Equivalent>
 <Domaine>
-<Dom numero="1"><![CDATA[Énergie]]></Dom>
 <Dom numero="2"><![CDATA[Environnement]]></Dom>
 </Domaine>
 </Article>
@@ -52408,6 +53832,223 @@
 <Domaine>
 <Dom numero="1"><![CDATA[Restauration]]></Dom>
 <Dom numero="2"><![CDATA[Tourisme]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI39">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[cindynique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[cindynics]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+<S-dom numero="1"><![CDATA[Risques]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="ENVI40">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[bioaccumulation]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[bioaccumulation]]></Equivalent>
+<Synonyme>
+<![CDATA[accumulation biologique]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI41">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[bioamplification]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[biomagnification]]></variante>
+<![CDATA[biological magnification]]></Equivalent>
+<Synonyme>
+<![CDATA[amplification biologique]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI42">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[écosystème]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecosystem]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI43">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[biocénose]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[biocoenosis]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI44">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[biotope]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[biotope]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI45">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[taxon]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[taxon]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI46">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[cogénération]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme développée">
+<![CDATA[combined heat and power generation]]></variante>
+<variante type="Abréviation">
+<![CDATA[CHPG]]></variante>
+<![CDATA[CHP generation]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Énergie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI47">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.">
+<![CDATA[diatomiste]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[diatomist]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Biologie]]></Dom>
+<Dom numero="2"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI48">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[éco-industrie]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecoindustry]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI49">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[écotechnologie]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme développée">
+<![CDATA[clean technology]]></variante>
+<![CDATA[clean tech]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[ecotechnology]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[green technology]]></Equivalent>
+<Synonyme>
+<![CDATA[technologie environnementale]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI50">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[évaluation environnementale]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[EIA]]></variante>
+<![CDATA[environmental impact assessment]]></Equivalent>
+<Synonyme>
+<![CDATA[évaluation d'incidences sur l'environnement]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI51">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[mesure compensatoire]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[compensatory measure]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+<S-dom numero="1"><![CDATA[Aménagement du territoire]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="ENVI52">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[compensation écologique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[offset]]></variante>
+<![CDATA[environmental offset]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+<S-dom numero="1"><![CDATA[Aménagement du territoire]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="ENVI53">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[nettoyage par ressac]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[surfwashing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI54">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[puits de carbone]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[carbon sink]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+<Dom numero="2"><![CDATA[Énergie]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI55">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[quota d'émission de gaz à effet de serre]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[greenhouse gas emission allowance]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ENVI56">
+<DatePub>04/02/2010</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[refroidissement naturel]]></variante>
+<![CDATA[refroidissement par une source naturelle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[free cooling]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Bâtiment]]></Dom>
+<Dom numero="2"><![CDATA[Énergie]]></Dom>
 </Domaine>
 </Article>
 <Article numero="EDUC36">
@@ -52893,10 +54534,10 @@
 <![CDATA[descendant, -e]]></Terme_Vedette>
 <Equivalent langue="en" admis="étranger">
 <![CDATA[top-down]]></Equivalent>
-<Synonyme>
-<![CDATA[haut en bas (de)]]></Synonyme>
 <Synonyme categorie="adj.">
 <![CDATA[déductif, -ive]]></Synonyme>
+<Synonyme>
+<![CDATA[haut en bas (de)]]></Synonyme>
 <Domaine>
 <Dom numero="1"><![CDATA[Sciences]]></Dom>
 </Domaine>
@@ -53100,6 +54741,164 @@
 <Domaine>
 <Dom numero="1"><![CDATA[Environnement]]></Dom>
 <S-dom numero="1"><![CDATA[Risques]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="AFET26">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[accessibilité]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[affordability]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie générale]]></Dom>
+<Dom numero="2"><![CDATA[Relations internationales]]></Dom>
+<S-dom numero="1"><![CDATA[Développement]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="AFET27">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[anticipation des risques]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[disaster preparedness]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[emergency preparedness]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Environnement]]></Dom>
+<S-dom numero="1"><![CDATA[Risques]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="AFET28">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[brevetabilité]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[patentability]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET29">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[construction de l'État]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[nation-building]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[state-building]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Politique]]></Dom>
+<Dom numero="2"><![CDATA[Relations internationales]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET30">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[DPT]]></variante>
+<![CDATA[droits patrimoniaux traditionnels]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[TRR]]></variante>
+<![CDATA[traditional resource rights]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Droit]]></Dom>
+<S-dom numero="1"><![CDATA[Droit international]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="AFET31">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[financement incitatif]]></Terme_Vedette>
+<Equivalent langue="es" admis="étranger">
+<![CDATA[impulso financiero]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[push funding]]></variante>
+<![CDATA[push and pull funding]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+<Dom numero="2"><![CDATA[Relations internationales]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET32">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[mise au pilori]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[naming and shaming]]></Equivalent>
+<Synonyme categorie="n.f.">
+<![CDATA[stigmatisation]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET33">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[orateur principal]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[keynote speaker]]></Equivalent>
+<Equivalent langue="es" admis="étranger">
+<![CDATA[ponente principal]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Communication]]></Dom>
+<Dom numero="2"><![CDATA[Relations internationales]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET34">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[ordre du jour]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[agenda]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET35">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante categorie="n.m." type="Forme abrégée">
+<![CDATA[programme]]></variante>
+<![CDATA[programme d'action]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[agenda]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET36">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[plaidoyer]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[advocacy]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Relations internationales]]></Dom>
+<S-dom numero="1"><![CDATA[Développement]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="AFET40">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[ralliement opportuniste]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[bandwagoning]]></Equivalent>
+<Synonyme categorie="n.m.">
+<![CDATA[suivisme]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Relations internationales]]></Dom>
+</Domaine>
+</Article>
+<Article numero="AFET41">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette categorie="n.m.">
+<![CDATA[rééquilibrage]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[balancing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Relations internationales]]></Dom>
 </Domaine>
 </Article>
 <Article numero="COGE583">
@@ -53384,6 +55183,276 @@
 <![CDATA[competitiveness cluster]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1087">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[BTACT]]></variante>
+<![CDATA[billet de trésorerie adossé à des créances titrisées]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[ABCP]]></variante>
+<![CDATA[asset-backed commercial paper]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1088">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[commerce équitable]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[fair trade]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1090">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[déqualification]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[deskilling]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1091">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[directeur des enchères]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[auction manager]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1092">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[ERT]]></variante>
+<![CDATA[échange de rendement total]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Forme abrégée">
+<![CDATA[TROR swap]]></variante>
+<![CDATA[total rate of return swap]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1094">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[fonds d'amorçage]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[seed money]]></Equivalent>
+<Synonyme>
+<![CDATA[capital d'amorçage]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1096">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[marché primaire]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[primary market]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1097">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[marché secondaire]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[secondary market]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1100">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[organisateur des achats]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[supplier developer]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1101">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[perte potentielle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[VaR]]></variante>
+<![CDATA[value at risk]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1102">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[publipostage en ligne]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[e-mailing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+<Dom numero="2"><![CDATA[Communication]]></Dom>
+<S-dom numero="1"><![CDATA[Publicité]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="ECON1103">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[réapprovisionnement continu]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CRP]]></variante>
+<![CDATA[continuous replenishment program]]></Equivalent>
+<Synonyme>
+<![CDATA[réassort continu]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1104">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[négoce minute]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[scalping]]></Equivalent>
+<Synonyme categorie="n.m.">
+<![CDATA[micro-négoce]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1105">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[stratégie d'image de l'employeur]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[employer branding]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1106">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[politique opportuniste]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[event driven strategy]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1107">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[surqualification]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[overqualification]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1108">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TDB]]></variante>
+<![CDATA[taux de distribution des bénéfices]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[pay-out ratio]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1109">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TACT]]></variante>
+<![CDATA[titre adossé à des créances titrisées]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[ABS]]></variante>
+<![CDATA[asset-backed security]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1110">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TCA]]></variante>
+<![CDATA[titre de créance adossé]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CDO]]></variante>
+<![CDATA[collateralized debt obligation]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1111">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TCAO]]></variante>
+<![CDATA[titre de créance adossé à des obligations]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CBO]]></variante>
+<![CDATA[collateralized bond obligation]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1112">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TCAP]]></variante>
+<![CDATA[titre de créance adossé à des prêts]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CLO]]></variante>
+<![CDATA[collateralized loan obligation]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1114">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[levée de fonds]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[fund raising]]></Equivalent>
+<Synonyme>
+<![CDATA[collecte de fonds]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1115">
+<DatePub>19/01/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[suiveur de tendance]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[trend follower]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
 </Domaine>
 </Article>
 <Article numero="PETR236">
@@ -53767,6 +55836,37 @@
 <Domaine>
 <Dom numero="1"><![CDATA[Pétrole et gaz]]></Dom>
 <S-dom numero="1"><![CDATA[Production]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="INFO800">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[micro-usinage de surface]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[surface micromachining]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="INFO801">
+<DatePub>27/12/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[micro-usinage de volume]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[bulk micromachining]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Électronique]]></Dom>
+</Domaine>
+</Article>
+<Article numero="SPAT1576">
+<DatePub>10/10/2009</DatePub>
+<Terme_Vedette>
+<![CDATA[onde gravitationnelle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[gravitational wave]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Sciences et techniques spatiales]]></Dom>
+<Dom numero="2"><![CDATA[Astronomie]]></Dom>
 </Domaine>
 </Article>
 </FRANCETERME>
