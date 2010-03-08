@@ -27,7 +27,7 @@
         </licence_en>
    </licence>
  -->
-<!-- timestamp 2010-02-16 16:46:02 -->
+<!-- timestamp 2010-03-08 07:29:23 -->
 <FRANCETERME>
 <Article numero="AGRI1191">
 <DatePub>23/11/2006</DatePub>
@@ -2488,6 +2488,16 @@
 <Dom numero="1"><![CDATA[Audiovisuel]]></Dom>
 </Domaine>
 </Article>
+<Article numero="ECON1118">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[assistant, -e d'achat]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[personal shopper]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
 <Article numero="DEFE106">
 <DatePub>22/09/2000</DatePub>
 <Terme_Vedette categorie="n.m.">
@@ -3495,16 +3505,6 @@
 <![CDATA[haircut]]></Equivalent>
 <Domaine>
 <Dom numero="1"><![CDATA[Finances]]></Dom>
-</Domaine>
-</Article>
-<Article numero="ECON251">
-<DatePub>22/09/2000</DatePub>
-<Terme_Vedette categorie="n.f.">
-<![CDATA[mercatique]]></Terme_Vedette>
-<Equivalent langue="en" admis="admis">
-<![CDATA[marketing]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
 </Domaine>
 </Article>
 <Article numero="ECON255">
@@ -34505,16 +34505,6 @@
 <Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
 </Domaine>
 </Article>
-<Article numero="ECON840">
-<DatePub>26/03/2004</DatePub>
-<Terme_Vedette>
-<![CDATA[vache à lait]]></Terme_Vedette>
-<Equivalent langue="en" admis="étranger">
-<![CDATA[cash-cow]]></Equivalent>
-<Domaine>
-<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
-</Domaine>
-</Article>
 <Article numero="ECON841">
 <DatePub>26/03/2004</DatePub>
 <Terme_Vedette>
@@ -47873,6 +47863,16 @@
 <Dom numero="2"><![CDATA[Géophysique]]></Dom>
 </Domaine>
 </Article>
+<Article numero="ECON1117">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[acheteur pionnier]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[early adopter]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
 <Article numero="COGE572">
 <DatePub>07/12/2008</DatePub>
 <Terme_Vedette categorie="n.m. ou adj.">
@@ -55527,6 +55527,258 @@
 <Domaine>
 <Dom numero="1"><![CDATA[Pétrole et gaz]]></Dom>
 <S-dom numero="1"><![CDATA[Forage]]></S-dom>
+</Domaine>
+</Article>
+<Article numero="ECON1123">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[faiseur, -euse d'argent]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[money maker]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+<Dom numero="2"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1124">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[GCVP]]></variante>
+<![CDATA[gestion du cycle de vie du produit]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[PLM]]></variante>
+<![CDATA[product lifecycle management]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1125">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[gestion partagée des stocks]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[jointly managed inventory]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1126">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[internalisation]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[in-sourcing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1127">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[lecteur de poche]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[pocket shopper]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1128">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[GECL]]></variante>
+<variante type="Forme abrégée">
+<![CDATA[gestion de la chaîne logistique]]></variante>
+<variante type="Abréviation">
+<![CDATA[GCL]]></variante>
+<![CDATA[gestion des évènements de la chaîne logistique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[SCEM]]></variante>
+<![CDATA[supply chain event management]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1129">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[meilleures pratiques]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Variante orthographique">
+<![CDATA[best practices]]></variante>
+<![CDATA[best practice]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1130">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette categorie="n.f.">
+<![CDATA[mercatique]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[marketing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1132">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[parachute doré]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[golden parachute]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1133">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[PPA]]></variante>
+<![CDATA[planification partagée des approvisionnements]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[CPFR]]></variante>
+<![CDATA[collaborative planning, forecasting and replenishment]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1134">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette categorie="loc.adj.">
+<![CDATA[pointe (de)]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[high tech]]></Equivalent>
+<Synonyme categorie="loc.adj.">
+<![CDATA[pointe de la technique (à la)]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1135">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[pont d'or]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[golden hello]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1136">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[réassortiment délégué]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[rack jobbing]]></Equivalent>
+<Synonyme>
+<![CDATA[réassort délégué]]></Synonyme>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1137">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette categorie="n.">
+<![CDATA[réassortisseur, -euse]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[rack jobber]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1138">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[rencontre express]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[speed date]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[speed dating]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Tous domaines]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1139">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[entretien minute]]></variante>
+<![CDATA[entretien d'embauche minute]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[job date]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[job dating]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[speed networking]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1141">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<variante type="Abréviation">
+<![CDATA[TBB]]></variante>
+<![CDATA[traitement de bout en bout]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[end-to-end processing]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<variante type="Abréviation">
+<![CDATA[STP]]></variante>
+<![CDATA[straight-through processing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Finances]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1142">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[vache à lait]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[cash cow]]></Equivalent>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[cash machine]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1143">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[vente in situ]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[house sale]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1144">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<variante type="Forme abrégée">
+<![CDATA[mercatique sensorielle]]></variante>
+<![CDATA[mercatique par stimulation sensorielle]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[sensory marketing]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+</Domaine>
+</Article>
+<Article numero="ECON1145">
+<DatePub>02/03/2010</DatePub>
+<Terme_Vedette>
+<![CDATA[congrès d'affaires]]></Terme_Vedette>
+<Equivalent langue="en" admis="étranger">
+<![CDATA[business convention]]></Equivalent>
+<Domaine>
+<Dom numero="1"><![CDATA[Économie et gestion d'entreprise]]></Dom>
+<Dom numero="2"><![CDATA[Tourisme]]></Dom>
 </Domaine>
 </Article>
 <Article numero="COGE592">
