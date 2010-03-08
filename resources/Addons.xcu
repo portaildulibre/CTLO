@@ -80,8 +80,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 				<!--
 					OOo order icons by their name, therefore the numbered prefix is
 					here to ensure proper ordering.
+					http://wiki.services.openoffice.org/wiki/Documentation/DevGuide/WritingUNO/AddOns/Toolbars
 				-->
-				<node oor:name="order1.activate" oor:op="replace">
+				<node oor:name="m1" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.activate</value>
 					</prop>
@@ -98,7 +99,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
 				</node>
-				<node oor:name="order2.desactivate" oor:op="replace">
+				<node oor:name="m2" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.desactivate</value>
 					</prop>
@@ -115,7 +116,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
 				</node>
-				<node oor:name="order3.checkAll" oor:op="replace">
+				<node oor:name="m3" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.ManageDocument</value>
 					</prop>
@@ -132,7 +133,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 						<value>com.sun.star.text.TextDocument</value>
 					</prop>
 				</node>
-				<node oor:name="order4.checkSelection" oor:op="replace">
+				<node oor:name="m4" oor:op="replace">
 					<prop oor:name="URL" oor:type="xs:string">
 						<value>macro:///terminologie.libs.ManageSelection</value>
 					</prop>

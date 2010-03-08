@@ -251,10 +251,11 @@ Function ManageKeyPressedEvent(keyEvent As Object) As Boolean
 		REM We keep running the dialog until we end
 		Redim IgnoreTermArray(0)
 		&apos; Remove last cr
-&apos;		poscurrent=poscurrent-1
-		poscurrent=poscurrent-2 &apos; REM Recule encore de 1 pour gérer l&apos;espace insécable
+		poscurrent=poscurrent-1
+&apos;		poscurrent=poscurrent-2 &apos; REM Recule encore de 1 pour gérer l&apos;espace insécable
 		ManageMixedCursor(theText,contextCursor)
 		ThisComponent.CurrentController.select(oldViewCursor)
+		viewCursor.collapseToEnd()
 &apos;		if ThisComponent.currentSelection.supportsService(&quot;com.sun.star.text.TextTableCursor&quot;) then
 &apos;			viewCursor.collapseToEnd()
 &apos;			viewCursor.goRight(1,false)

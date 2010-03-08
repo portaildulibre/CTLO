@@ -1,13 +1,12 @@
 ====DEBUT DE LA LISTE D'EXCLUSION====
+activation
 ad
 adapter
 ai
 alu
 aoc
 arranger
-asp
 attitude
-b2b
 bas
 base
 bop
@@ -31,6 +30,7 @@ dea
 des
 diffuser
 dvd
+encapsulation
 enveloppe
 est
 fade
@@ -48,8 +48,10 @@ immobiliser
 information
 intelligence
 interactif
+interactive
 interface
 jack
+limiter
 loi
 maisonnette
 master
@@ -67,14 +69,15 @@ pif
 pin
 pointer
 poison
-portfolio
 post
 pressing
 primer
 prompt
 radical
 range
+report
 retarder
+reverser
 roi
 sage
 score
