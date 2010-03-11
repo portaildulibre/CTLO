@@ -14,8 +14,10 @@
     </update-information>-->
        
     <registration>
-        <simple-license  accept-by="admin" default-license-id="en-GB" suppress-on-update="true" >
-            <license-text xlink:href="COPYING" lang="en-GB" />
+        <simple-license  
+        	accept-by="admin" 
+        	suppress-on-update="true" >
+            <license-text id="def" xlink:href="COPYING" lang="en-GB" />
         </simple-license>
     </registration>
 </description> 
