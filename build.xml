@@ -385,6 +385,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<mkdir dir="${target}/META-INF"/>
 		<copy file="${basedir}/resources/META-INF/manifest.xml" todir="${target}/META-INF/"/>
 		<replace file="${target}/META-INF/manifest.xml" token="@@VERSION@@" value="${version}"/>
+		<copy file="${basedir}/resources/description.xml" todir="${target}"/>
+		<replace file="${target}/description.xml" token="@@VERSION@@" value="${version}"/>
 	</target>
 
 	<!-- Building the pkg file for OOo -->
@@ -400,6 +402,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 		<zip 	destfile="${target}/${ant.project.name}-${version}.oxt"
 		     	basedir="${package}">
 			<fileset dir="${target}/"		includes="META-INF/manifest.xml"	/>
+			<fileset dir="${target}/" 		includes="description.xml"	/>
 			<fileset dir="${basedir}" 		includes="README"			/>
 			<fileset dir="${basedir}" 		includes="COPYING"			/>
 			<fileset dir="${basedir}"		includes="resources/ChangeLog"		/>

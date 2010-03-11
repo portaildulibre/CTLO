@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description 
+	xmlns="http://openoffice.org/extensions/description/2006" 
+	xmlns:d="http://openoffice.org/extensions/description/2006" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <version value="@@VERSION@@" />    
+ 
+    <dependencies>
+         <OpenOffice.org-minimal-version value="2.2" d:name="OpenOffice.org 2.2"/>
+    </dependencies>
+ 
+    <!--<update-information>
+      <src xlink:href="http://extensions.openoffice.org/testarea/desktop/license/update/lic3.update.xml" />
+    </update-information>-->
+       
+    <registration>
+        <simple-license  accept-by="admin" default-license-id="en-GB" suppress-on-update="true" >
+            <license-text xlink:href="COPYING" lang="en-GB" />
+        </simple-license>
+    </registration>
+</description> 
