@@ -13,7 +13,7 @@ Private Const USE_ON_ERROR = true &apos; Hide some errors
 
 Private Const selectWord = true &apos; Select current word to update
 
-Private Const defaultStartup = true
+Private Const defaultStartup = false
 
 REM data for the functionnality part
 Private results as Object 			&apos; Array of results from the last search for foreign term
