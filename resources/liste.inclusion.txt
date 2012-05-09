@@ -1,5 +1,4 @@
-====DEBUT DE LA LISTE D'INCLUSION====
+﻿====DEBUT DE LA LISTE D'INCLUSION====
 mail=courriel
 middle-ware=logiciel médiateur
 ====FIN DE LA LISTE D'INCLUSION===
-
