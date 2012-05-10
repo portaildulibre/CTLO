@@ -1,0 +1,12 @@
+CVS/*
+.cvsignore
+.project
+.settings/org.eclipse.jdt.core.prefs
+target/*
+.settings/*
+.pmd
+.~lock*#
+~
+bin
+.classpath
+.metadata
